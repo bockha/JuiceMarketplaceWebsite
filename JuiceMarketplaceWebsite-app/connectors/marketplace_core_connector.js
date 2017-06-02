@@ -6,7 +6,7 @@ var self = {};
 
 var https = require('https');
 var logger = require('../global/logger');
-const HOST_SETTINGS = require('../config/host_settings');
+const HOST_SETTINGS = require('../config/config_loader').HOST_SETTINGS;
 var request = require('request');
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
