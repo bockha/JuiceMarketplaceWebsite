@@ -44,14 +44,14 @@ module.exports = function(passport) {
     // passport needs ability to serialize and unserialize users out of session
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
-        logger.debug('Serialize User');
-        done(null, user.id);
+        logger.debug('Serialize User: '+ JSON.stringify(user));
+        done(null, user);
     });
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        logger.debug('Deserialize User');
-        done(null, {id: id});
+        logger.debug('Deserialize User: ' + JSON.stringify(id));
+        done(null, id);
     });
 
 

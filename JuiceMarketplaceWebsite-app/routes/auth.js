@@ -15,28 +15,41 @@ function isLoggedIn(req, res, next) {
 module.exports = function (passport) {
     var router = express.Router();
 
+    // LOGOUT ==============================
+    router.get('/logout', function (req, res) {
+        req.logout();
+        res.redirect('/');
+    });
+
+
     // =============================================================================
     // AUTHENTICATE (FIRST LOGIN) ==================================================
     // =============================================================================
 
-    router.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+    router.get('/google', passport.authenticate('google', {
+        scope: ['profile', 'email'],
+        accessType: 'offline', approvalPrompt: 'force'
+    }));
 
     router.get('/google/callback', passport.authenticate('google', {
-        successRedirect: 'https://www.google.de/search?q=Success',
-        failureRedirect: 'https://www.google.de/search?q=Failure'
+        successRedirect: '/profile.html',
+        failureRedirect: '/',
+        failureFlash: true,
+        successFlash: 'Success!'
     }));
 
 
-// =============================================================================
-// UNLINK ACCOUNTS =============================================================
-// =============================================================================
+    // =============================================================================
+    // UNLINK ACCOUNTS =============================================================
+    // =============================================================================
 
-// google ---------------------------------
+    // google ---------------------------------
     router.get('/unlink/google', isLoggedIn, function (req, res, next) {
         logger.debug('unlink google');
+        logger.debug('AccessToken: ' + req.user.token);
         //TODO: Remove google account from user profile
+        res.send(200);
     });
-
 
     return router;
 };

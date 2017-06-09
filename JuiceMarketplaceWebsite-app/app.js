@@ -6,8 +6,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
+var flash    = require('connect-flash');
 
 var app = express();
+
 
 //Configure Passport
 require('./oauth/passport')(passport); // pass passport for configuration
@@ -18,6 +20,9 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
+app.use(flash());
+
+app.use('/profile.html', isLoggedIn);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -29,6 +34,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/reports', require('./routes/reports'));
 app.use('/auth', require('./routes/auth')(passport));
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+
+    res.redirect('/');
+}
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

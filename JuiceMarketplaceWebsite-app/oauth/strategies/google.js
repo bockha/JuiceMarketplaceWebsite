@@ -4,8 +4,9 @@
 
 var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 var oAuthConfig = require('../../config/config_loader').OAUTH_PROVIDER;
-
+var oAuthConnector = require('../../connectors/auth_service_connector');
 var logger = require('../../global/logger');
+var strategyName = 'google';
 
 module.exports = function(passport) {
     logger.debug('Configure google oauth');
@@ -29,13 +30,17 @@ module.exports = function(passport) {
             process.nextTick(function() {
 
 
-                // check if the user is already logged in
-                if (!req.user) {
-                    //TODO: Login the user
-
-                } else {
-                    //TODO: Link account to user
+                // Check if the user is already logged in
+                // In this case we have to link the account to the existing user
+                if (req.user) {
+                    oAuthConnector.linkProfileToExistingAccount(strategyName, token, profile);
                 }
+
+                oAuthConnector.getDefaultScope(strategyName, token, profile, function(intToken, userId, scopes) {
+
+                });
+
+                profile.token = token;
 
                 done(null, profile);
             });
