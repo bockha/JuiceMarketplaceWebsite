@@ -59,7 +59,7 @@ module.exports = function(passport) {
         var user = userStore[id];
 
         authServiceConnector.refreshTokenForUser(user, function(err, updatedUser) {
-            done(null, updatedUser);
+            done(err, updatedUser);
         });
 
     });
