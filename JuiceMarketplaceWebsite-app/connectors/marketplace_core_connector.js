@@ -22,6 +22,60 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
     }
 }
 
+
+self.getUserInfo = function (userId, tokenInfo, callback) {
+    if (typeof(callback) !== 'function') {
+
+        callback = function (err, data) {
+            logger.warn('Callback not handled by caller');
+        };
+    }
+
+    if (err) {
+        logger.crit(err);
+
+        return;
+    }
+
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/users/' + userId,
+        {
+            userUUID: userId,
+            accessToken: accessToken
+        }
+    );
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
+
+
+        if (e) {
+            logger.crit(e);
+
+            callback(e);
+        }
+
+        if (r && r.statusCode !== 200) {
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn('Call not successful: Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        callback(null, jsonData);
+    });
+};
+
+
+// --- REPORTS START ---
 self.getTopDrinksSince = function (sinceDate, topCount, callback) {
 
     var options = buildOptionsForRequest(
@@ -40,7 +94,7 @@ self.getTopDrinksSince = function (sinceDate, topCount, callback) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
         if (typeof(callback) != 'function') {
 
-            callback = function(err, data) {
+            callback = function (err, data) {
                 logger.warn('Callback not handled by caller');
             };
         }
@@ -66,7 +120,6 @@ self.getTopDrinksSince = function (sinceDate, topCount, callback) {
     });
 };
 
-
 self.getFavoriteJuicesSince = function (sinceDate, callback) {
 
     var options = buildOptionsForRequest(
@@ -84,7 +137,7 @@ self.getFavoriteJuicesSince = function (sinceDate, callback) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
         if (typeof(callback) != 'function') {
 
-            callback = function(err, data) {
+            callback = function (err, data) {
                 logger.warn('Callback not handled by caller');
             };
         }
@@ -127,7 +180,7 @@ self.getWorkloadSince = function (sinceDate, callback) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
         if (typeof(callback) != 'function') {
 
-            callback = function(err, data) {
+            callback = function (err, data) {
                 logger.warn('Callback not handled by caller');
             };
         }
@@ -171,7 +224,7 @@ self.getRevenueSince = function (sinceDate, time, callback) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
         if (typeof(callback) != 'function') {
 
-            callback = function(err, data) {
+            callback = function (err, data) {
                 logger.warn('Callback not handled by caller');
             };
         }
@@ -196,5 +249,7 @@ self.getRevenueSince = function (sinceDate, time, callback) {
         callback(null, jsonData);
     });
 };
+// --- REPORTS END ---
+
 
 module.exports = self;

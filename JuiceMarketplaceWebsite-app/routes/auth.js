@@ -15,28 +15,49 @@ function isLoggedIn(req, res, next) {
 module.exports = function (passport) {
     var router = express.Router();
 
+    // LOGOUT ==============================
+    router.get('/logout', function (req, res) {
+        req.logout();
+        res.redirect('/');
+    });
+
+
     // =============================================================================
     // AUTHENTICATE (FIRST LOGIN) ==================================================
     // =============================================================================
 
-    router.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+    router.get('/google', function (req, res) {
+        logger.info('google login');
 
-    router.get('/google/callback', passport.authenticate('google', {
-        successRedirect: 'https://www.google.de/search?q=Success',
-        failureRedirect: 'https://www.google.de/search?q=Failure'
-    }));
-
-
-// =============================================================================
-// UNLINK ACCOUNTS =============================================================
-// =============================================================================
-
-// google ---------------------------------
-    router.get('/unlink/google', isLoggedIn, function (req, res, next) {
-        logger.debug('unlink google');
-        //TODO: Remove google account from user profile
+        passport.authenticate('google', {
+            scope: ['profile', 'email'],
+            accessType: 'offline', approvalPrompt: 'force'
+        })(req, res);
     });
 
+    router.get('/google/callback', function (req, res) {
+        logger.info('google callback');
+
+        passport.authenticate('google', {
+            successRedirect: '/profile.html',
+            failureRedirect: '/',
+            failureFlash: true,
+            successFlash: 'Success!'
+        })(req, res);
+    });
+
+
+    // =============================================================================
+    // UNLINK ACCOUNTS =============================================================
+    // =============================================================================
+
+    // google ---------------------------------
+    router.get('/unlink/google', isLoggedIn, function (req, res, next) {
+        logger.debug('unlink google');
+        logger.debug('AccessToken: ' + req.user.token);
+        //TODO: Remove google account from user profile
+        res.send(200);
+    });
 
     return router;
 };

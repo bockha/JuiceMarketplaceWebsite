@@ -3,6 +3,8 @@ var fs = require('fs');
 var path = require('path');
 var logger = require('../global/logger');
 
+var userStore = {}; //TODO: Maybe move this into a database
+
 function configurePassportForStragiesInPath(dirPath, passport) {
     // Loop through all the files in the temp directory
     fs.readdir(dirPath, function (err, files) {
@@ -44,14 +46,16 @@ module.exports = function(passport) {
     // passport needs ability to serialize and unserialize users out of session
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
-        logger.debug('Serialize User');
+        logger.debug('Serialize User: '+ JSON.stringify(user));
+        userStore[user.id] = user;
+
         done(null, user.id);
     });
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        logger.debug('Deserialize User');
-        done(null, {id: id});
+        logger.debug('Deserialize User: ' + JSON.stringify(id));
+        done(null, userStore[id]);
     });
 
 

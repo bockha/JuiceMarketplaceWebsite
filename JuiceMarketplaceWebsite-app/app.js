@@ -29,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/reports', require('./routes/reports'));
 app.use('/auth', require('./routes/auth')(passport));
+app.use('/users', isLoggedIn, require('./routes/users'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
