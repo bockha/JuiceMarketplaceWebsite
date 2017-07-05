@@ -23,18 +23,12 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 }
 
 
-self.getUserInfo = function (userId, tokenInfo, callback) {
+self.getUserInfo = function (userId, accessToken, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function (err, data) {
             logger.warn('Callback not handled by caller');
         };
-    }
-
-    if (err) {
-        logger.crit(err);
-
-        return;
     }
 
     var options = buildOptionsForRequest(

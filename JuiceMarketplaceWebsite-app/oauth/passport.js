@@ -2,6 +2,7 @@
 var fs = require('fs');
 var path = require('path');
 var logger = require('../global/logger');
+var authServiceConnector = require('../connectors/auth_service_connector');
 
 var userStore = {}; //TODO: Maybe move this into a database
 
@@ -55,7 +56,12 @@ module.exports = function(passport) {
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
         logger.debug('Deserialize User: ' + JSON.stringify(id));
-        done(null, userStore[id]);
+        var user = userStore[id];
+
+        authServiceConnector.refreshTokenForUser(user, function(err, updatedUser) {
+            done(null, updatedUser);
+        });
+
     });
 
 

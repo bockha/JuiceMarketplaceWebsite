@@ -81,4 +81,54 @@ self.login = function (strategy, token, profile, callback) {
 
 };
 
+self.refreshTokenForUser = function (user, callback) {
+    if (new Date(user.intTokenInfo.accessTokenExpiresAt) > new Date()) {
+        callback(null, user);
+        return;
+    }
+
+    if (new Date(user.intTokenInfo.refreshTokenExpiresAt) > new Date()) {
+        callback(new Error('RefreshTokenExpired'));
+        return;
+    }
+
+    // Refresh access token
+    var options = buildOptionsForRequest(
+        'POST',
+        'http',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        '/oauth/token',
+        {}
+    );
+
+
+    options.form = {
+        grant_type: 'refresh_token',
+        refresh_token: user.intTokenInfo.refreshToken
+    };
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response from OAUTH Server: ' + JSON.stringify(jsonData));
+        if (e) {
+            logger.crit(e);
+
+            callback(e);
+        }
+
+        if (r && r.statusCode !== 200) {
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn(err);
+            callback(err);
+
+            return;
+        }
+
+        callback(null, jsonData);
+    });
+};
+
 module.exports = self;
