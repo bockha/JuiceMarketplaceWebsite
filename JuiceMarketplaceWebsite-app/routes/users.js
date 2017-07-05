@@ -10,7 +10,7 @@ var logger = require('../global/logger');
 router.get('/me', function (req, res, next) {
 
 
-    marketplaceCore.getUserInfo(1, req.user.intTokenInfo, function (err, jsonData) {
+    marketplaceCore.getUserInfo(1, req.user.intTokenInfo.accessToken, function (err, jsonData) {
         res.json(jsonData)
     });
 });
