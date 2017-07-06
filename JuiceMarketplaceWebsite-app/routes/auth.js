@@ -26,16 +26,16 @@ module.exports = function (passport) {
     // AUTHENTICATE (FIRST LOGIN) ==================================================
     // =============================================================================
 
-    router.get('/google', function (req, res) {
+    router.get('/google', function (req, res, next) {
         logger.info('google login');
 
         passport.authenticate('google', {
             scope: ['profile', 'email'],
             accessType: 'offline', approvalPrompt: 'force'
-        })(req, res);
+        })(req, res, next);
     });
 
-    router.get('/google/callback', function (req, res) {
+    router.get('/google/callback', function (req, res, next) {
         logger.info('google callback');
 
         passport.authenticate('google', {
@@ -43,7 +43,7 @@ module.exports = function (passport) {
             failureRedirect: '/',
             failureFlash: true,
             successFlash: 'Success!'
-        })(req, res);
+        })(req, res, next);
     });
 
 
