@@ -6,7 +6,6 @@
 var self = {};
 
 
-
 // ---- CONFIGURATION EXPORT ----
 self.LOG_LEVEL = 'debug';
 
@@ -14,6 +13,10 @@ self.HOST_SETTINGS = {
     MARKETPLACE_CORE: {
         HOST: 'localhost',
         PORT: 3002
+    },
+    OAUTH_SERVER: {
+        HOST: 'localhost',
+        PORT: 3005
     }
 };
 
@@ -37,6 +40,11 @@ self.OAUTH_PROVIDER = {
         'clientSecret': '',
         'callbackURL': 'http://127.0.0.1:3004/auth/google/callback'
     }
+};
+
+self.OAUTH_CREDENTIALS = {
+    CLIENT_ID: '',
+    CLIENT_SECRET: ''
 };
 
 

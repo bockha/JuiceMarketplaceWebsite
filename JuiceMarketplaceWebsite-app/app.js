@@ -34,6 +34,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/reports', require('./routes/reports'));
 app.use('/auth', require('./routes/auth')(passport));
+app.use('/users', isLoggedIn, require('./routes/users'));
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+
+    res.redirect('/');
+}
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())

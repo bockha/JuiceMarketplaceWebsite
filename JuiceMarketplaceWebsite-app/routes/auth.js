@@ -26,17 +26,25 @@ module.exports = function (passport) {
     // AUTHENTICATE (FIRST LOGIN) ==================================================
     // =============================================================================
 
-    router.get('/google', passport.authenticate('google', {
-        scope: ['profile', 'email'],
-        accessType: 'offline', approvalPrompt: 'force'
-    }));
+    router.get('/google', function (req, res) {
+        logger.info('google login');
 
-    router.get('/google/callback', passport.authenticate('google', {
-        successRedirect: '/profile.html',
-        failureRedirect: '/',
-        failureFlash: true,
-        successFlash: 'Success!'
-    }));
+        passport.authenticate('google', {
+            scope: ['profile', 'email'],
+            accessType: 'offline', approvalPrompt: 'force'
+        })(req, res);
+    });
+
+    router.get('/google/callback', function (req, res) {
+        logger.info('google callback');
+
+        passport.authenticate('google', {
+            successRedirect: '/profile.html',
+            failureRedirect: '/',
+            failureFlash: true,
+            successFlash: 'Success!'
+        })(req, res);
+    });
 
 
     // =============================================================================

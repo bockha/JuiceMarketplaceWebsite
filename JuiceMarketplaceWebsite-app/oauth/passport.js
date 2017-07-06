@@ -2,6 +2,9 @@
 var fs = require('fs');
 var path = require('path');
 var logger = require('../global/logger');
+var authServiceConnector = require('../connectors/auth_service_connector');
+
+var userStore = {}; //TODO: Maybe move this into a database
 
 function configurePassportForStragiesInPath(dirPath, passport) {
     // Loop through all the files in the temp directory
@@ -45,13 +48,20 @@ module.exports = function(passport) {
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
         logger.debug('Serialize User: '+ JSON.stringify(user));
-        done(null, user);
+        userStore[user.id] = user;
+
+        done(null, user.id);
     });
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
         logger.debug('Deserialize User: ' + JSON.stringify(id));
-        done(null, id);
+        var user = userStore[id];
+
+        authServiceConnector.refreshTokenForUser(user, function(err, updatedUser) {
+            done(err, updatedUser);
+        });
+
     });
 
 
