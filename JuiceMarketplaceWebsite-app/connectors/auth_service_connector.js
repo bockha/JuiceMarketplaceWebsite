@@ -63,6 +63,7 @@ self.login = function (strategy, token, profile, callback) {
             logger.crit(e);
 
             callback(e);
+            return;
         }
 
         if (r && r.statusCode !== 200) {

@@ -41,7 +41,7 @@ module.exports = function (passport) {
 
                     profile.intTokenInfo = tokenInfo;
 
-                    done(err, profile);
+                    done(err, false);
                 });
             });
 
