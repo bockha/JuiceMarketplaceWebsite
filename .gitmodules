@@ -1,0 +1,3 @@
+[submodule "JuiceMarketplaceWebsite-app/public/juice-configurator"]
+	path = JuiceMarketplaceWebsite-app/public/juice-configurator
+	url = https://github.com/IUNO-TDM/JuiceConfigurator.git
