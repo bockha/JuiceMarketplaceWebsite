@@ -39,7 +39,7 @@ module.exports = function (passport) {
         logger.info('google callback');
 
         passport.authenticate('google', {
-            successRedirect: '/profile.html',
+            successRedirect: '/console.html',
             failureRedirect: '/',
             failureFlash: true,
             successFlash: 'Success!'
