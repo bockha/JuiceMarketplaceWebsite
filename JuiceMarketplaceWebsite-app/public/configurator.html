@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="utf-8">
+	<link href="jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet">
+	<link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/style.css">
+	<style>
+		h3 {
+			font-size: 16px;
+			font-weight: bold;
+			color: #000;
+		}
+
+		.label {
+			font-size: 14px;
+			font-weight: normal;
+			color: #000;
+		}
+	</style>
+	<script src="jquery-ui-1.12.1/external/jquery/jquery.js"></script>
+	<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
+	<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	<!-- Recipe Configurator -->
+	<link rel="stylesheet" href="juice-configurator/css/recipe-configurator.css">
+	<script src="juice-configurator/js/recipe-configurator.js"></script>
+</head>
+<body>
+<div id="main2">
+	<!-- Templates start -->
+	<div id="dialog-phase" title="Phase einstellen">
+		<p class="validateTips">Wieviel ml abspalten?</p>		
+		<form>
+			<fieldset>
+			<label for="splitml">Milliliter: </label>
+			<input type="text" name="splitml" id="splitml" value="50" class="text ui-widget-content ui-corner-all">
+			</fieldset>
+		</form>
+	</div>
+
+	<div id="dialog-add-ingredient" title="Zutat hinzufügen">
+		<p class="validateTips">Welche Zutat möchten Sie hinzufügen?</p>
+		<form>
+			<fieldset>
+			<label for="addml">Milliliter: </label>
+			<input type="text" name="addml" id="addml" value="50" class="text ui-widget-content ui-corner-all">
+			</fieldset>
+		</form>
+	</div>
+
+	<div id="recipe-template" style="display: none">
+		<div id="recipe-header" class="row">
+			<div class="col-xs-1"></div>
+			<div class="col-xs-2 fl-recipe-row fl-recipe-label"><span></span></div>
+			<div class="col-xs-8 fl-recipe-row content"></div>
+			<div class="col-xs-1"></div>
+		</div>
+		<div id="recipe-sequence" class="row">
+			<div class="col-xs-1"></div>
+			<div class="col-xs-2 fl-recipe-row fl-recipe-label"><span class="label"></span></div>
+			<div class="col-xs-8 fl-recipe-row content">
+				<div id="recipe-phase" class="phase">
+					<div class="phase-ml"></div>
+					<span class="phase-label"></span>
+					<div class="phase-controls" style="display: none;">
+						<div class="phase-controls-center"></div>
+						<div class="phase-controls-right"></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-1"></div>
+		</div>
+		<div id="recipe-pause" class="row">
+			<div class="col-xs-1"></div>
+			<div class="col-xs-2 fl-recipe-label fl-recipe-row"><span class="label"></span></div>
+			<div class="col-xs-8 fl-recipe-row content">
+				<div id="recipe-pause-phase" class="pause-phase">
+					<span class="phase-label"></span>
+				</div>				
+			</div>
+			<div class="col-xs-1"></div>
+		</div>
+		<div id="recipe-footer" class="row">
+			<div class="col-xs-1"></div>
+			<div class="col-xs-2 fl-recipe-row fl-recipe-label"><a href="javascript:openAddIngredientDialog();">Zutat hinzufügen</a></div>
+			<div class="col-xs-8 fl-recipe-row content"></div>
+			<div class="col-xs-1"></div>
+		</div>
+	</div>
+	<!-- Templates end -->
+
+	<div class="tdmc-page">
+		<div class="container-fluid">
+			<div class="row">
+				<h3>Produktdetails</h3>
+			</div>
+			<div class="row config">
+				<div class="col-sm-3"><p class="label">Titel</p></div>
+				<div class="col-sm-8"><input type="text" style="width: 100%;"></div>
+			</div>
+			<div class="row config">
+				<div class="col-sm-3"><p class="label">Kurze Beschreibung</p></div>
+				<div class="col-sm-8"><input type="text" style="width: 100%;"></div>
+			</div>
+			<div class="row config">
+				<div class="col-sm-3"><p class="label">Vollständige Beschreibung</p></div>
+				<div class="col-sm-8"><input type="text" style="width: 100%; height: 100px;"></div>
+			</div>
+			<div class="row config">
+				<div class="col-sm-3"><p class="label">Rezeptur</p></div>
+			</div>
+			<div id="recipe"></div>
+			<!--<div id="recipe-pauses" class="">
+				<div class="row">
+					<div class="col-xs-1"></div>
+					<div class="col-xs-2 fl-recipe-row fl-recipe-label">Pausen</div>
+					<div class="col-xs-8 fl-recipe-row content"></div>
+					<div class="col-xs-1"></div>
+				</div>
+			</div>-->
+			<div class="row config">
+				<div class="col-sm-3"><p class="label">Grafische Elemente</p></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-1"></div>
+				<div id="previews" class="col-xs-10">
+					<div class="preview">
+					<form method="post" action="https://isource.de//?" enctype="multipart/form-data" novalidate="" class="box" style="display: table;">
+					<div style="padding-top: 100px 200px;">+<br>Bild hinzufügen</div>
+					</form>
+					</div>
+				</div>
+				<div class="col-xs-1"></div>
+			</div>
+			<div class="row config">
+				<div class="col-sm-3"><p class="label">Kategorisierung</p></div>
+			</div>
+			<div class="row config">
+				<div class="col-sm-3"><p class="label">Lizenzgebühr</p></div>
+				<div class="col-sm-8"><input type="text" style="width: 100%; height: 100px;"></div>
+			</div>
+			<div class="row config">
+				<div class="col-sm-3"><p class="label">Verkaufsstatus</p></div>
+				<div class="col-sm-8"><input type="text" style="width: 100%; height: 100px;"></div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<script>
+	var apfelsaft = new Ingredient("Apfelsaft", 1);
+	var bananensaft = new Ingredient("Bananensaft", 1);
+	var sprudel = new Ingredient("Sprudel", 1);
+
+	var ingredients = [
+		apfelsaft,
+		bananensaft,
+		sprudel,
+	];
+
+	var recipe = new Recipe("Apfel-/Bananenschorle");
+	// var sequence = new Sequence(apfelsaft);
+	// sequence.addPhase(new Phase(0, 100, 100));
+	// sequence.addPhase(new Phase(110, 130, 100));
+	// recipe.addSequence(sequence);
+
+	sequence = new Sequence(bananensaft);
+	sequence.addPhase(new Phase(0, 80, 100));
+	sequence.addPhase(new Phase(100, 40, 80));
+	sequence.addPhase(new Phase(150, 100, 100));
+	recipe.addSequence(sequence);
+
+	// sequence = new Sequence(sprudel);
+	// sequence.addPhase(new Phase(60, 200, 70));
+	// recipe.addSequence(sequence);
+
+	var recipeConfigurator = new RecipeConfigurator(recipe, "recipe");
+	recipeConfigurator.render();
+
+		// var apfelsaft = new Ingredient("Apfelsaft");
+		// apfelsaft.phases.push(new Phase(apfelsaft, 0, 100, 100));
+		// apfelsaft.phases.push(new Phase(apfelsaft, 110, 130, 100));
+		// recipe.addIngredient(apfelsaft);
+
+		// var bananensaft = new Ingredient("Bananensaft");
+		// bananensaft.phases.push(new Phase(bananensaft, 0, 80, 100));
+		// bananensaft.phases.push(new Phase(bananensaft, 100, 40, 80));
+		// bananensaft.phases.push(new Phase(bananensaft, 150, 100, 100));
+		// recipe.addIngredient(bananensaft);
+
+		// var sprudel = new Ingredient("Sprudel");
+		// sprudel.phases.push(new Phase(sprudel, 60, 200, 70));
+		// recipe.addIngredient(sprudel);
+
+		// updateHtml(recipe);
+
+</script>
+</body>
+</html>
