@@ -6,8 +6,10 @@ var self = {};
 
 var https = require('https');
 var logger = require('../global/logger');
-const HOST_SETTINGS = require('../config/config_loader').HOST_SETTINGS;
+const CONFIG = require('../config/config_loader');
 var request = require('request');
+var Component = require('../model/component');
+var helper = require('../services/helper_service');
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
@@ -34,8 +36,8 @@ self.getUserInfo = function (userId, accessToken, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
-        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/users/' + userId,
         {
             userUUID: userId,
@@ -68,6 +70,42 @@ self.getUserInfo = function (userId, accessToken, callback) {
     });
 };
 
+self.getAllComponents = function (userId, accessToken, callback) {
+    if (typeof(callback) !== 'function') {
+
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/components',
+        {
+            userUUID: userId
+        }
+    );
+
+    request(options, function (e, r, jsonData) {
+        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        var components = [];
+
+        if (helper.isArray(jsonData)) {
+            jsonData.forEach(function (entry) {
+                components.push(new Component().CreateComponentFromJSON(entry));
+            });
+        }
+        else {
+            logger.warn('Unexpected response when retrieving components from market place core:');
+        }
+
+        callback(err, components);
+    });
+};
+
 
 // --- REPORTS START ---
 self.getTopDrinksSince = function (sinceDate, topCount, callback) {
@@ -75,8 +113,8 @@ self.getTopDrinksSince = function (sinceDate, topCount, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
-        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/reports',
         {
             sinceDate: sinceDate,
@@ -86,7 +124,7 @@ self.getTopDrinksSince = function (sinceDate, topCount, callback) {
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
-        if (typeof(callback) != 'function') {
+        if (typeof(callback) !== 'function') {
 
             callback = function (err, data) {
                 logger.warn('Callback not handled by caller');
@@ -99,7 +137,7 @@ self.getTopDrinksSince = function (sinceDate, topCount, callback) {
             callback(e);
         }
 
-        if (r && r.statusCode != 200) {
+        if (r && r.statusCode !== 200) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
@@ -119,8 +157,8 @@ self.getFavoriteJuicesSince = function (sinceDate, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
-        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/reports/favorit',
         {
             sinceDate: sinceDate
@@ -129,7 +167,7 @@ self.getFavoriteJuicesSince = function (sinceDate, callback) {
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
-        if (typeof(callback) != 'function') {
+        if (typeof(callback) !== 'function') {
 
             callback = function (err, data) {
                 logger.warn('Callback not handled by caller');
@@ -142,7 +180,7 @@ self.getFavoriteJuicesSince = function (sinceDate, callback) {
             callback(e);
         }
 
-        if (r && r.statusCode != 200) {
+        if (r && r.statusCode !== 200) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
@@ -162,8 +200,8 @@ self.getWorkloadSince = function (sinceDate, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
-        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/reports/workload',
         {
             sinceDate: sinceDate
@@ -172,7 +210,7 @@ self.getWorkloadSince = function (sinceDate, callback) {
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
-        if (typeof(callback) != 'function') {
+        if (typeof(callback) !== 'function') {
 
             callback = function (err, data) {
                 logger.warn('Callback not handled by caller');
@@ -185,7 +223,7 @@ self.getWorkloadSince = function (sinceDate, callback) {
             callback(e);
         }
 
-        if (r && r.statusCode != 200) {
+        if (r && r.statusCode !== 200) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
@@ -205,8 +243,8 @@ self.getRevenueSince = function (sinceDate, time, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
-        HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/reports/revenue',
         {
             sinceDate: sinceDate,
@@ -216,7 +254,7 @@ self.getRevenueSince = function (sinceDate, time, callback) {
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
-        if (typeof(callback) != 'function') {
+        if (typeof(callback) !== 'function') {
 
             callback = function (err, data) {
                 logger.warn('Callback not handled by caller');
@@ -229,7 +267,7 @@ self.getRevenueSince = function (sinceDate, time, callback) {
             callback(e);
         }
 
-        if (r && r.statusCode != 200) {
+        if (r && r.statusCode !== 200) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
