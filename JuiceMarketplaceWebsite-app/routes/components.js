@@ -12,6 +12,8 @@ router.get('/', function (req, res, next) {
     var userUUUID = req.user.id;
     var token = req.user.intTokenInfo.accessToken;
 
+    userUUUID = '16f69912-d6be-4ef0-ada8-2c1c75578b51';
+
     marketplaceCore.getAllComponents(userUUUID, token, function (err, components) {
 
         if (err) {
