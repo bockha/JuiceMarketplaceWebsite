@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
-var flash    = require('connect-flash');
+var flash = require('connect-flash');
 
 var app = express();
 
@@ -35,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/reports', require('./routes/reports'));
 app.use('/auth', require('./routes/auth')(passport));
 app.use('/users', isLoggedIn, require('./routes/users'));
+app.use('/components', isLoggedIn, require('./routes/components'));
 
 
 function isLoggedIn(req, res, next) {
@@ -53,6 +54,13 @@ app.use(function (req, res, next) {
 
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
+        try {
+            err.message = JSON.parse(err.message)
+        }
+        catch (err) {
+
+        }
+
         console.error(err.stack);
         res.status(err.status || 500);
         res.json({
