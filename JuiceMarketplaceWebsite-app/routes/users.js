@@ -35,7 +35,7 @@ router.get('/me/*', function (req, res, next) {
 router.get('/:id', function (req, res, next) {
 
 
-    res.send('Not implemented yet');
+    res.json(req.user);
 });
 
 
