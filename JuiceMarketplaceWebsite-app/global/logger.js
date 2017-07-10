@@ -43,6 +43,11 @@ winston.addColors(customColors);
 //Logging wrapper, to remove "unknown function" warnings
 var origLog = logger.log;
 logger.log = function (level, msg) {
+    if (arguments.length > 2) {
+        for (var i = 2; i < arguments.length; i++) {
+            msg += ' ' + JSON.stringify(arguments[i]);
+        }
+    }
     if (!msg) {
         msg = level;
         level = 'info';
@@ -52,26 +57,51 @@ logger.log = function (level, msg) {
 
 var origFatal = logger.fatal;
 logger.fatal = function (msg) {
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            msg += ' ' + JSON.stringify(arguments[i]);
+        }
+    }
     origFatal.call(logger, msg);
 };
 
 var origCrit = logger.crit;
 logger.crit = function (msg) {
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            msg += ' ' + JSON.stringify(arguments[i]);
+        }
+    }
     origCrit.call(logger, msg);
 };
 
 var origWarn = logger.warn;
 logger.warn = function (msg) {
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            msg += ' ' + JSON.stringify(arguments[i]);
+        }
+    }
     origWarn.call(logger, msg);
 };
 
 var origInfo = logger.info;
 logger.info = function (msg) {
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            msg += ' ' + JSON.stringify(arguments[i]);
+        }
+    }
     origInfo.call(logger, msg);
 };
 
 var origDebug = logger.debug;
 logger.debug = function (msg) {
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            msg += ' ' + JSON.stringify(arguments[i]);
+        }
+    }
     origDebug.call(logger, msg);
 };
 
@@ -82,8 +112,49 @@ logger.trace = function (msg) {
     if (objType === '[object Error]') {
         origTrace.call(logger, msg);
     } else {
+        if (arguments.length > 1) {
+            for (var i = 1; i < arguments.length; i++) {
+                msg += ' ' + JSON.stringify(arguments[i]);
+            }
+        }
         origTrace.call(logger, new Error(msg));
     }
+};
+
+
+// Custom log method for request responses
+logger.logRequestAndResponse = function (err, options, res, data) {
+
+    var loggerOutput = {};
+
+    if (options) {
+        loggerOutput.options = options;
+    }
+
+    if (res) {
+        loggerOutput.statusCode = res.statusCode;
+        loggerOutput.statusMessage = res.statusMessage;
+    }
+
+    if (data) {
+        loggerOutput.data = data;
+    }
+
+    if (err) {
+        loggerOutput.err = err;
+        logger.crit(loggerOutput);
+        return new Error(JSON.stringify(loggerOutput, null, 4));
+    }
+    else if (res && res.statusCode > 201) {
+        logger.warn(loggerOutput);
+        return new Error(JSON.stringify(loggerOutput, null, 4));
+    }
+    else {
+        logger.debug(loggerOutput);
+    }
+
+
+    return null;
 };
 
 module.exports = logger;
