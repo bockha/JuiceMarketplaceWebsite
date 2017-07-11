@@ -9,7 +9,7 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
 
-    res.redirect('/');
+    res.redirect('/login.html');
 }
 
 module.exports = function (passport) {
@@ -18,7 +18,7 @@ module.exports = function (passport) {
     // LOGOUT ==============================
     router.get('/logout', function (req, res) {
         req.logout();
-        res.redirect('/');
+        res.redirect('/login.html');
     });
 
 
@@ -39,8 +39,8 @@ module.exports = function (passport) {
         logger.info('google callback');
 
         passport.authenticate('google', {
-            successRedirect: '/console.html',
-            failureRedirect: '/',
+            successRedirect: '/console/console.html',
+            failureRedirect: '/login.html',
             failureFlash: true,
             successFlash: 'Success!'
         })(req, res, next);
