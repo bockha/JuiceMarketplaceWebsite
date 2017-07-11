@@ -27,9 +27,7 @@
 
 		$( function() {
             openNav();
-            $.getJSON('users/me', function(data) {
-            	console.log(data);
-            	console.log("Display Name: " + data['displayName']);
+            $.getJSON('/users/me', function(data) {
             	$("#user-id").text(data['displayName']);
             })
         })

@@ -5,30 +5,19 @@
 	<link href="jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet">
 	<link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/style.css">
-	<style>
-		h3 {
-			font-size: 16px;
-			font-weight: bold;
-			color: #000;
-		}
-
-		.label {
-			font-size: 14px;
-			font-weight: normal;
-			color: #000;
-		}
-	</style>
 	<script src="jquery-ui-1.12.1/external/jquery/jquery.js"></script>
 	<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 	<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 	<!-- Recipe Configurator -->
 	<link rel="stylesheet" href="juice-configurator/css/recipe-configurator.css">
+	<link rel="stylesheet" href="css/configurator.css">
 	<script src="juice-configurator/js/recipe-configurator.js"></script>
+	<script src="js/configurator.js"></script>
 </head>
 <body>
 <div id="main2">
 	<!-- Templates start -->
-	<div id="dialog-phase" title="Phase einstellen">
+	<div id="dialog-phase" title="Phase einstellen" style="display: none">
 		<p class="validateTips">Wieviel ml abspalten?</p>		
 		<form>
 			<fieldset>
@@ -38,14 +27,39 @@
 		</form>
 	</div>
 
-	<div id="dialog-add-ingredient" title="Zutat hinzufügen">
-		<p class="validateTips">Welche Zutat möchten Sie hinzufügen?</p>
+	<div id="dialog-add-ingredient" title="Zutat hinzufügen" style="display: none">
+		<input type="hidden" name="ingredientId" value="">
+		<div id="dialog-add-ingredient-table">
+			<input type="text" id="ingredientSearchBox" onkeyup="ingredientSearch()" placeholder="Zutat suchen">
+			<div class="table">
+				<table id="ingredientTable">
+					<tr class="header">
+						<th style="width:60%;">Name</th>
+						<th style="width:40%;">Beschreibung</th>
+					</tr>
+					<tr class="ingredient">
+						<td class="name"></td>
+						<td class="description"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div id="dialog-add-ingredient-amount">
+			<!--<form>-->
+				<!--<fieldset>-->
+				<span class="ingredient">Zutat:</span><br>
+				<label for="addml">Milliliter: </label>
+				<input type="text" name="addml" id="addml" value="50" class="text ui-widget-content ui-corner-all">
+				<!--</fieldset>-->
+			<!--</form>-->
+		</div>
+		<!--<p class="validateTips">Welche Zutat möchten Sie hinzufügen?</p>
 		<form>
 			<fieldset>
 			<label for="addml">Milliliter: </label>
 			<input type="text" name="addml" id="addml" value="50" class="text ui-widget-content ui-corner-all">
 			</fieldset>
-		</form>
+		</form>-->
 	</div>
 
 	<div id="recipe-template" style="display: none">
@@ -148,23 +162,26 @@
 	</div>
 </div>
 <script>
-	var apfelsaft = new Ingredient("Apfelsaft", 1);
-	var bananensaft = new Ingredient("Bananensaft", 1);
-	var sprudel = new Ingredient("Sprudel", 1);
 
-	var ingredients = [
-		apfelsaft,
-		bananensaft,
-		sprudel,
-	];
+	// var apfelsaft = new Ingredient("Apfelsaft", 1);
+	// var bananensaft = new Ingredient("Bananensaft", 1);
+	// var sprudel = new Ingredient("Sprudel", 1);
+
+	// var ingredients = [
+	// 	apfelsaft,
+	// 	bananensaft,
+	// 	sprudel,
+	// ];
+
+	console.log("Setup recipe");
 
 	var recipe = new Recipe("Apfel-/Bananenschorle");
-	// var sequence = new Sequence(apfelsaft);
-	// sequence.addPhase(new Phase(0, 100, 100));
-	// sequence.addPhase(new Phase(110, 130, 100));
-	// recipe.addSequence(sequence);
+	var sequence = new Sequence(ingredients[0]);
+	sequence.addPhase(new Phase(0, 100, 100));
+	sequence.addPhase(new Phase(110, 130, 100));
+	recipe.addSequence(sequence);
 
-	sequence = new Sequence(bananensaft);
+	sequence = new Sequence(ingredients[1]);
 	sequence.addPhase(new Phase(0, 80, 100));
 	sequence.addPhase(new Phase(100, 40, 80));
 	sequence.addPhase(new Phase(150, 100, 100));
