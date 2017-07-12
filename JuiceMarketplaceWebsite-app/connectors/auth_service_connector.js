@@ -132,4 +132,47 @@ self.refreshTokenForUser = function (user, callback) {
     });
 };
 
+self.getUserInfoForToken = function (token, callback) {
+    if (typeof(callback) !== 'function') {
+        callback = function (err, data) {
+            logger.warn('Callback not handled by caller');
+        };
+    }
+
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        '/userinfo',
+        {
+            accessToken: token
+        }
+    );
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response from OAUTH Server: ' + JSON.stringify(jsonData));
+        if (e) {
+            logger.crit(e);
+
+            callback(e);
+            return;
+        }
+
+        if (r && r.statusCode !== 200) {
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn(err);
+            callback(err);
+
+            return;
+        }
+
+        callback(null, jsonData);
+    });
+
+};
+
 module.exports = self;
