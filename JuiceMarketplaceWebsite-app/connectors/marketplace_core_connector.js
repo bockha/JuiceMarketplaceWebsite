@@ -39,10 +39,10 @@ self.getAllComponents = function (userId, accessToken, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/components',
         {
-            userUUID: userId,
-            accessToken: accessToken
+            userUUID: userId
         }
     );
+    options.headers.authorization = 'Bearer ' + accessToken;
 
     request(options, function (e, r, jsonData) {
         var err = logger.logRequestAndResponse(e, options, r, jsonData);
@@ -60,7 +60,6 @@ self.getAllComponents = function (userId, accessToken, callback) {
         callback(err, components);
     });
 };
-
 
 // --- REPORTS START ---
 self.getTopDrinksSince = function (sinceDate, topCount, callback) {
