@@ -74,4 +74,25 @@ router.delete('/:id/recipes/:recipe_id', function (req, res, next) {
 
     res.send('Not implemented yet');
 });
+
+
+/**
+ * Retrieves the user image
+ */
+router.get('/:id/image', function (req, res, next) {
+    authService.getImageForUser(req.user, function (err, data) {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        if (!data) {
+            res.sendStatus(404);
+            return;
+        }
+
+        res.set('Content-Type', data.contentType);
+        res.send(data.imageBuffer);
+    });
+});
 module.exports = router;

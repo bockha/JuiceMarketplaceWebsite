@@ -175,4 +175,33 @@ self.getUserInfoForToken = function (token, callback) {
 
 };
 
+self.getImageForUser = function (user, callback) {
+    if (typeof(callback) !== 'function') {
+
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        '/users/' + user.intTokenInfo.user + '/image',
+        {}
+    );
+    options.headers.authorization = 'Bearer ' + user.intTokenInfo.accessToken;
+    options.encoding = null;
+
+    request(options, function (e, r, imageBuffer) {
+        var err = logger.logRequestAndResponse(e, options, r, imageBuffer);
+
+        callback(err, {
+            imageBuffer: imageBuffer,
+            contentType: r ? r.headers['content-type'] : null
+        });
+    });
+};
+
 module.exports = self;
