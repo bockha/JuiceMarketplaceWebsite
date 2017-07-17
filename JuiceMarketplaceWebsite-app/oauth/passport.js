@@ -59,7 +59,15 @@ module.exports = function(passport) {
         var user = userStore[id];
 
         authServiceConnector.refreshTokenForUser(user, function(err, updatedUser) {
-            done(err, updatedUser);
+            if (err) {
+                logger.warn('Error while refreshing access token: ' + JSON.stringify(err));
+                logger.info('Forcing log out user.');
+
+                done(null, false);
+            }
+            else {
+                done(err, updatedUser);
+            }
         });
 
     });

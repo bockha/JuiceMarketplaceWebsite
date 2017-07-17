@@ -24,52 +24,6 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
     }
 }
 
-
-self.getUserInfo = function (userId, accessToken, callback) {
-    if (typeof(callback) !== 'function') {
-
-        callback = function (err, data) {
-            logger.warn('Callback not handled by caller');
-        };
-    }
-
-    var options = buildOptionsForRequest(
-        'GET',
-        'http',
-        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
-        '/users/' + userId,
-        {
-            userUUID: userId,
-            accessToken: accessToken
-        }
-    );
-
-    request(options, function (e, r, jsonData) {
-        logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
-
-
-        if (e) {
-            logger.crit(e);
-
-            callback(e);
-        }
-
-        if (r && r.statusCode !== 200) {
-            var err = {
-                status: r.statusCode,
-                message: jsonData
-            };
-            logger.warn('Call not successful: Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
-            callback(err);
-
-            return;
-        }
-
-        callback(null, jsonData);
-    });
-};
-
 self.getAllComponents = function (userId, accessToken, callback) {
     if (typeof(callback) !== 'function') {
 
@@ -88,6 +42,7 @@ self.getAllComponents = function (userId, accessToken, callback) {
             userUUID: userId
         }
     );
+    options.headers.authorization = 'Bearer ' + accessToken;
 
     request(options, function (e, r, jsonData) {
         var err = logger.logRequestAndResponse(e, options, r, jsonData);
@@ -105,7 +60,6 @@ self.getAllComponents = function (userId, accessToken, callback) {
         callback(err, components);
     });
 };
-
 
 // --- REPORTS START ---
 self.getTopDrinksSince = function (sinceDate, topCount, callback) {

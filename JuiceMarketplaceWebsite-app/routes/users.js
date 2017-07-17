@@ -5,6 +5,8 @@
 var express = require('express');
 var router = express.Router();
 var marketplaceCore = require('../connectors/marketplace_core_connector');
+var authService = require('../connectors/auth_service_connector');
+
 var logger = require('../global/logger');
 
 
@@ -13,18 +15,20 @@ var logger = require('../global/logger');
  */
 router.get('/me', function (req, res, next) {
 
+    authService.getUserInfoForToken(req.user.intTokenInfo.accessToken, function (err, data) {
+        if (err) {
+            return next(err);
+        }
 
-    //TODO: Replace users.id with internal userUUID
-    var redirectPath = req.originalUrl.replace('/me', '/' + req.user.id);
-
-    res.redirect(redirectPath);
+        res.json(data);
+    });
 
 });
 
 router.get('/me/*', function (req, res, next) {
 
     //TODO: Replace users.id with internal userUUID
-    var redirectPath = req.originalUrl.replace('/me/', '/' + req.user.id + '/');
+    var redirectPath = req.originalUrl.replace('/me/', '/' + req.user.intTokenInfo.user + '/');
 
     res.redirect(redirectPath);
 });
@@ -34,8 +38,7 @@ router.get('/me/*', function (req, res, next) {
  */
 router.get('/:id', function (req, res, next) {
 
-
-    res.json(req.user);
+    res.send('Not implemented yet');
 });
 
 
