@@ -48,7 +48,7 @@ function componentsLoaded(success) {
         // recipe.addSequence(sequence);
 
         // var recipeConfigurator = new RecipeConfigurator(recipe, "recipe");
-        recipeConfigurator.render();
+        programConfigurator.render();
     } else {
 
     }

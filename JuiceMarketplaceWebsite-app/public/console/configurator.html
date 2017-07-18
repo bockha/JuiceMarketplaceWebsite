@@ -8,10 +8,10 @@
 	<script src="jquery-ui-1.12.1/external/jquery/jquery.js"></script>
 	<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 	<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-	<!-- Recipe Configurator -->
-	<link rel="stylesheet" href="juice-configurator/css/recipe-configurator.css">
+	<!-- Program Configurator -->
+	<link rel="stylesheet" href="juice-configurator/css/program-configurator.css">
 	<link rel="stylesheet" href="css/configurator.css">
-	<script src="juice-configurator/js/recipe-configurator.js"></script>
+	<script src="juice-configurator/js/program-configurator.js"></script>
 	<script src="js/configurator.js"></script>
 </head>
 <body>
@@ -19,12 +19,10 @@
 	<!-- Templates start -->
 	<div id="dialog-phase" title="Phase einstellen" style="display: none">
 		<p class="validateTips">Wieviel ml abspalten?</p>		
-		<form>
-			<fieldset>
+		<fieldset>
 			<label for="splitml">Milliliter: </label>
 			<input type="text" name="splitml" id="splitml" value="50" class="text ui-widget-content ui-corner-all">
-			</fieldset>
-		</form>
+		</fieldset>
 	</div>
 
 	<div id="dialog-add-ingredient" title="Zutat hinzufügen" style="display: none">
@@ -62,18 +60,18 @@
 		</form>-->
 	</div>
 
-	<div id="recipe-template" style="display: none">
-		<div id="recipe-header" class="row">
+	<div id="program-template" style="display: none">
+		<div id="program-header" class="row">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-2 fl-recipe-row fl-recipe-label"><span></span></div>
 			<div class="col-xs-8 fl-recipe-row content"></div>
 			<div class="col-xs-1"></div>
 		</div>
-		<div id="recipe-sequence" class="row">
+		<div id="program-sequence" class="row">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-2 fl-recipe-row fl-recipe-label"><span class="label"></span></div>
 			<div class="col-xs-8 fl-recipe-row content">
-				<div id="recipe-phase" class="phase">
+				<div id="program-phase" class="phase">
 					<div class="phase-ml"></div>
 					<span class="phase-label"></span>
 					<div class="phase-controls" style="display: none;">
@@ -84,17 +82,17 @@
 			</div>
 			<div class="col-xs-1"></div>
 		</div>
-		<div id="recipe-pause" class="row">
+		<div id="program-pause" class="row">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-2 fl-recipe-label fl-recipe-row"><span class="label"></span></div>
 			<div class="col-xs-8 fl-recipe-row content">
-				<div id="recipe-pause-phase" class="pause-phase">
+				<div id="program-pause-phase" class="pause-phase">
 					<span class="phase-label"></span>
 				</div>				
 			</div>
 			<div class="col-xs-1"></div>
 		</div>
-		<div id="recipe-footer" class="row">
+		<div id="program-footer" class="row">
 			<div class="col-xs-1"></div>
 			<div class="col-xs-2 fl-recipe-row fl-recipe-label"><a href="javascript:openAddIngredientDialog();">Zutat hinzufügen</a></div>
 			<div class="col-xs-8 fl-recipe-row content"></div>
@@ -113,20 +111,20 @@
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Titel</p></div>
-				<div class="col-sm-8"><input id="product-title" type="text" style="width: 100%;"></div>
+				<div class="col-sm-8"><input id="recipe-title" type="text" style="width: 100%;"></div>
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Kurze Beschreibung</p></div>
-				<div class="col-sm-8"><input id="product-description" type="text" style="width: 100%;"></div>
+				<div class="col-sm-8"><input id="recipe-short-description" type="text" style="width: 100%;"></div>
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Vollständige Beschreibung</p></div>
-				<div class="col-sm-8"><input type="text" style="width: 100%; height: 100px;"></div>
+				<div class="col-sm-8"><textarea id="recipe-description" style="width: 100%; height: 100px;"/></div>
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Rezeptur</p></div>
 			</div>
-			<div id="recipe"></div>
+			<div id="program"></div>
 			<!--<div id="recipe-pauses" class="">
 				<div class="row">
 					<div class="col-xs-1"></div>
@@ -154,7 +152,18 @@
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Lizenzgebühr</p></div>
-				<div class="col-sm-8"><input type="text" style="width: 100%; height: 100px;"></div>
+				<div class="col-sm-8">
+					<select name="files" id="files">
+					<optgroup label="Scripts">
+						<option value="jquery">jQuery.js</option>
+						<option value="jqueryui">ui.jQuery.js</option>
+					</optgroup>
+					<optgroup label="Other files">
+						<option value="somefile">Some unknown file</option>
+						<option value="someotherfile">Some other file with a very long option text</option>
+					</optgroup>
+					</select>
+				</div>
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Verkaufsstatus</p></div>
@@ -176,10 +185,10 @@
 	// 	sprudel,
 	// ];
 
-	console.log("Setup recipe");
-	var product = new Product();
-	product.title = "Apfel-/Bananenschorle";
-	product.recipe = new Recipe();
+	console.log("Setup Recipe");
+	var recipe = new Recipe();
+	recipe.title = "Apfel-/Bananenschorle";
+	recipe.recipe = new Recipe();
 
 	// var recipe = new Recipe("Apfel-/Bananenschorle");
 	// var sequence = new Sequence(ingredients[0]);
@@ -197,8 +206,8 @@
 	// sequence.addPhase(new Phase(60, 200, 70));
 	// recipe.addSequence(sequence);
 
-	var recipeConfigurator = new RecipeConfigurator(product.recipe, "recipe");
-	recipeConfigurator.render();
+	var programConfigurator = new ProgramConfigurator(recipe.program, "program");
+	programConfigurator.render();
 
 		// var apfelsaft = new Ingredient("Apfelsaft");
 		// apfelsaft.phases.push(new Phase(apfelsaft, 0, 100, 100));
@@ -216,13 +225,18 @@
 		// recipe.addIngredient(sprudel);
 
 		// updateHtml(recipe);
-		$('#product-title').on("input", function() {
-			product.title = this.value;
-			console.log("Title: "+product.title);
+		$('#recipe-title').on("input", function() {
+			recipe.title = this.value;
+		});
+		$('#recipe-short-description').on("input", function() {
+			recipe.shortDescription = this.value;
+		});
+		$('#recipe-description').on("input", function() {
+			recipe.description = this.value;
 		});
 
 		$('#button-save').on("click", function() {
-			var json = product.toJSON();
+			var json = recipe.toJSON();
 			var jsonString = JSON.stringify(json);
 			console.log("JSON = "+jsonString);
 		});

@@ -17,6 +17,11 @@ input {
     border: 1px solid #ddd;
 }
 
+textarea {
+    background-color: #eee;
+    border: 1px solid #ddd;
+}
+
 #previews {
     /*width: 100%;*/
     /*height: 150px;*/
