@@ -25,9 +25,17 @@
             $("#page_content").load("configurator.html");
         }
 
+        function getDisplayName(firstName, lastName) {
+            var displayName = firstName + " " + lastName;
+            return displayName;
+        }
+
 		$( function() {
             openNav();
             $.getJSON('/users/me', function(data) {
-            	$("#user-id").text(data['displayName']);
+                var firstName = data['firstname'];
+                var lastName = data['lastname'];
+                var displayName = getDisplayName(firstName, lastName);
+            	$("#user-id").text(displayName);
             })
         })

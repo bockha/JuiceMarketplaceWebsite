@@ -31,7 +31,7 @@ function componentsLoaded(success) {
             table.append(row);
             // table.crea
         });
-        var recipe = new Recipe("Apfel-/Bananenschorle");
+        // var recipe = product.recipe;
         // var sequence = new Sequence(ingredients[3]);
         // sequence.addPhase(new Phase(0, 100, 100));
         // sequence.addPhase(new Phase(110, 130, 100));
@@ -47,7 +47,7 @@ function componentsLoaded(success) {
         // sequence.addPhase(new Phase(60, 200, 70));
         // recipe.addSequence(sequence);
 
-        var recipeConfigurator = new RecipeConfigurator(recipe, "recipe");
+        // var recipeConfigurator = new RecipeConfigurator(recipe, "recipe");
         recipeConfigurator.render();
     } else {
 

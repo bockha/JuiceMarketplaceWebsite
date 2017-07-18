@@ -106,15 +106,18 @@
 	<div class="tdmc-page">
 		<div class="container-fluid">
 			<div class="row">
-				<h3>Produktdetails</h3>
+				<button id="button-save" class="ui-button ui-widget ui-corner-all" style="float: right;">Speichern</button>
+			</div>
+			<div class="row">
+				 <h3>Produktdetails</h3> 
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Titel</p></div>
-				<div class="col-sm-8"><input type="text" style="width: 100%;"></div>
+				<div class="col-sm-8"><input id="product-title" type="text" style="width: 100%;"></div>
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Kurze Beschreibung</p></div>
-				<div class="col-sm-8"><input type="text" style="width: 100%;"></div>
+				<div class="col-sm-8"><input id="product-description" type="text" style="width: 100%;"></div>
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Vollständige Beschreibung</p></div>
@@ -174,24 +177,27 @@
 	// ];
 
 	console.log("Setup recipe");
+	var product = new Product();
+	product.title = "Apfel-/Bananenschorle";
+	product.recipe = new Recipe();
 
-	var recipe = new Recipe("Apfel-/Bananenschorle");
-	var sequence = new Sequence(ingredients[0]);
-	sequence.addPhase(new Phase(0, 100, 100));
-	sequence.addPhase(new Phase(110, 130, 100));
-	recipe.addSequence(sequence);
+	// var recipe = new Recipe("Apfel-/Bananenschorle");
+	// var sequence = new Sequence(ingredients[0]);
+	// sequence.addPhase(new Phase(0, 100, 100));
+	// sequence.addPhase(new Phase(110, 130, 100));
+	// recipe.addSequence(sequence);
 
-	sequence = new Sequence(ingredients[1]);
-	sequence.addPhase(new Phase(0, 80, 100));
-	sequence.addPhase(new Phase(100, 40, 80));
-	sequence.addPhase(new Phase(150, 100, 100));
-	recipe.addSequence(sequence);
+	// sequence = new Sequence(ingredients[1]);
+	// sequence.addPhase(new Phase(0, 80, 100));
+	// sequence.addPhase(new Phase(100, 40, 80));
+	// sequence.addPhase(new Phase(150, 100, 100));
+	// recipe.addSequence(sequence);
 
 	// sequence = new Sequence(sprudel);
 	// sequence.addPhase(new Phase(60, 200, 70));
 	// recipe.addSequence(sequence);
 
-	var recipeConfigurator = new RecipeConfigurator(recipe, "recipe");
+	var recipeConfigurator = new RecipeConfigurator(product.recipe, "recipe");
 	recipeConfigurator.render();
 
 		// var apfelsaft = new Ingredient("Apfelsaft");
@@ -210,6 +216,16 @@
 		// recipe.addIngredient(sprudel);
 
 		// updateHtml(recipe);
+		$('#product-title').on("input", function() {
+			product.title = this.value;
+			console.log("Title: "+product.title);
+		});
+
+		$('#button-save').on("click", function() {
+			var json = product.toJSON();
+			var jsonString = JSON.stringify(json);
+			console.log("JSON = "+jsonString);
+		});
 
 </script>
 </body>
