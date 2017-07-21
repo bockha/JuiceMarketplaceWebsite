@@ -4,8 +4,8 @@
 
 var express = require('express');
 var router = express.Router();
-var marketplaceCore = require('../connectors/marketplace_core_connector');
-var authService = require('../connectors/auth_service_connector');
+var marketplaceCore = require('../adapter/marketplace_core_adapter');
+var authService = require('../adapter/auth_service_adapter');
 
 var logger = require('../global/logger');
 

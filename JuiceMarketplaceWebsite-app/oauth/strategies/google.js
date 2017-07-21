@@ -4,7 +4,7 @@
 
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var oAuthConfig = require('../../config/config_loader').OAUTH_PROVIDER;
-var oAuthConnector = require('../../connectors/auth_service_connector');
+var oAuthConnector = require('../../adapter/auth_service_adapter');
 var logger = require('../../global/logger');
 var strategyName = 'google';
 

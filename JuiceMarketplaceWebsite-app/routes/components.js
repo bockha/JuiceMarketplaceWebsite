@@ -4,7 +4,7 @@
 
 var express = require('express');
 var router = express.Router();
-var marketplaceCore = require('../connectors/marketplace_core_connector');
+var marketplaceCore = require('../adapter/marketplace_core_adapter');
 var logger = require('../global/logger');
 
 router.get('/', function (req, res, next) {

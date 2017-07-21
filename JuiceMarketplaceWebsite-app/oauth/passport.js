@@ -2,7 +2,7 @@
 var fs = require('fs');
 var path = require('path');
 var logger = require('../global/logger');
-var authServiceConnector = require('../connectors/auth_service_connector');
+var authServer = require('../adapter/auth_service_adapter');
 
 var userStore = {}; //TODO: Maybe move this into a database
 
@@ -58,7 +58,7 @@ module.exports = function(passport) {
         logger.debug('Deserialize User: ' + JSON.stringify(id));
         var user = userStore[id];
 
-        authServiceConnector.refreshTokenForUser(user, function(err, updatedUser) {
+        authServer.refreshTokenForUser(user, function(err, updatedUser) {
             if (err) {
                 logger.warn('Error while refreshing access token: ' + JSON.stringify(err));
                 logger.info('Forcing log out user.');
