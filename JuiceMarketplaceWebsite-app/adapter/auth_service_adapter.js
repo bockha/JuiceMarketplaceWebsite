@@ -83,12 +83,12 @@ self.login = function (strategy, token, profile, callback) {
 };
 
 self.refreshTokenForUser = function (user, callback) {
-    if (new Date(user.intTokenInfo.accessTokenExpiresAt) > new Date()) {
+    if (new Date(user.token.accessTokenExpiresAt) > new Date()) {
         callback(null, user);
         return;
     }
 
-    if (new Date(user.intTokenInfo.refreshTokenExpiresAt) > new Date()) {
+    if (new Date(user.token.refreshTokenExpiresAt) > new Date()) {
         callback(new Error('RefreshTokenExpired'));
         return;
     }
@@ -106,7 +106,7 @@ self.refreshTokenForUser = function (user, callback) {
 
     options.form = {
         grant_type: 'refresh_token',
-        refresh_token: user.intTokenInfo.refreshToken
+        refresh_token: user.token.refreshToken
     };
 
     request(options, function (e, r, jsonData) {
@@ -188,10 +188,10 @@ self.getImageForUser = function (user, callback) {
         'http',
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
-        '/users/' + user.intTokenInfo.user + '/image',
+        '/users/' + user.token.user + '/image',
         {}
     );
-    options.headers.authorization = 'Bearer ' + user.intTokenInfo.accessToken;
+    options.headers.authorization = 'Bearer ' + user.token.accessToken;
     options.encoding = null;
 
     request(options, function (e, r, imageBuffer) {

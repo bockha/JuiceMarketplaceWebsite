@@ -37,9 +37,7 @@ module.exports = function (passport) {
                 // }
 
                 oAuthConnector.login(strategyName, token, profile, function (err, tokenInfo) {
-                    profile.token = token;
-
-                    profile.intTokenInfo = tokenInfo;
+                    profile.token = tokenInfo;
 
                     done(err, profile);
                 });

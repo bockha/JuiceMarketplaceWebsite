@@ -15,7 +15,7 @@ var logger = require('../global/logger');
  */
 router.get('/me', function (req, res, next) {
 
-    authService.getUserInfoForToken(req.user.intTokenInfo.accessToken, function (err, data) {
+    authService.getUserInfoForToken(req.user.token.accessToken, function (err, data) {
         if (err) {
             return next(err);
         }
@@ -27,8 +27,7 @@ router.get('/me', function (req, res, next) {
 
 router.get('/me/*', function (req, res, next) {
 
-    //TODO: Replace users.id with internal userUUID
-    var redirectPath = req.originalUrl.replace('/me/', '/' + req.user.intTokenInfo.user + '/');
+    var redirectPath = req.originalUrl.replace('/me/', '/' + req.user.token.user + '/');
 
     res.redirect(redirectPath);
 });
@@ -46,7 +45,7 @@ router.get('/:id', function (req, res, next) {
  * Retrieves all recipes for the user
  */
 router.get('/:id/recipes', function (req, res, next) {
-
+    marketplaceCore.getRecipesForUser();
     res.send('Not implemented yet');
 });
 
