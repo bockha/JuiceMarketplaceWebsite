@@ -3,6 +3,7 @@
     <envs>
       <env name="DEBUG" value="juicemarketplacewebsite-app:*" />
       <env name="TDM_JMW_CONFIG" value="private_config" />
+      <env name="NODE_ENV" value="testing" />
     </envs>
     <browser url="http://localhost:3000/" />
     <EXTENSION ID="com.jetbrains.nodejs.remote.docker.NodeJSDockerRunConfigurationExtension">

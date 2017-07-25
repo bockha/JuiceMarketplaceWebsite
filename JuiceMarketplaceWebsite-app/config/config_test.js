@@ -36,8 +36,8 @@ self.OAUTH_PROVIDER = {
     },
 
     googleAuth: {
-        'clientID': '',
-        'clientSecret': '',
+        'clientID': '{CLIENT_ID}.apps.googleusercontent.com',
+        'clientSecret': '{CLIENT_SECRET}',
         'callbackURL': 'http://127.0.0.1:3004/auth/google/callback'
     }
 };
