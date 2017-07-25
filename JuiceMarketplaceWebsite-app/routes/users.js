@@ -45,8 +45,13 @@ router.get('/:id', function (req, res, next) {
  * Retrieves all recipes for the user
  */
 router.get('/:id/recipes', function (req, res, next) {
-    marketplaceCore.getRecipesForUser();
-    res.send('Not implemented yet');
+    marketplaceCore.getRecipesForUser(req.query['id'], req.user.token.accessToken, function (err, recipes) {
+        if (err) {
+            return next(err);
+        }
+
+        res.send(recipes);
+    });
 });
 
 /**
