@@ -9,6 +9,7 @@ var logger = require('../global/logger');
 const CONFIG = require('../config/config_loader');
 var request = require('request');
 var Component = require('../model/component');
+var Recipe = require('../model/recipe');
 var helper = require('../services/helper_service');
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
@@ -50,7 +51,7 @@ self.getAllComponents = function (userId, accessToken, callback) {
 
         if (helper.isArray(jsonData)) {
             jsonData.forEach(function (entry) {
-                components.push(new Component().CreateComponentFromJSON(entry));
+                components.push(Component.CreateComponentFromJSON(entry));
             });
         }
         else {
@@ -60,6 +61,45 @@ self.getAllComponents = function (userId, accessToken, callback) {
         callback(err, components);
     });
 };
+
+self.getRecipesForUser = function (userId, accessToken, callback) {
+    if (typeof(callback) !== 'function') {
+
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/technologydata',
+        {
+            userUUID: userId
+        }
+    );
+    options.headers.authorization = 'Bearer ' + accessToken;
+
+    request(options, function (e, r, jsonData) {
+        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        var components = [];
+
+        if (helper.isArray(jsonData)) {
+            jsonData.forEach(function (entry) {
+                components.push(Recipe.CreateRecipeFromJSON(entry));
+            });
+        }
+        else {
+            logger.warn('Unexpected response when retrieving components from market place core:');
+        }
+
+        callback(err, components);
+    });
+};
+
+
 
 // --- REPORTS START ---
 self.getTopDrinksSince = function (sinceDate, topCount, callback) {
