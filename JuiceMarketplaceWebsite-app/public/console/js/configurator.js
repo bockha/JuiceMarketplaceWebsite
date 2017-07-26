@@ -1,19 +1,21 @@
-$.getJSON('/components', function(data) {
-    ingredients = [];
-    data.forEach(function(element) {
-        var id = element['id'];
-        var name = element['name'];
-        var description = element['description'];
-        var ingredient = new Ingredient(id, name, description);
-        ingredients.push(ingredient);
-        console.log("Component: id = "+id+", name = '"+name+"', description = '"+description+"'.");
-    });
-    componentsLoaded(true);
-}).fail(function() {
-    ingredients = [];
-    componentsLoaded(false);
-    console.log("Error");
-})
+$(function() {
+    $.getJSON('/components', function(data) {
+        ingredients = [];
+        data.forEach(function(element) {
+            var id = element['id'];
+            var name = element['name'];
+            var description = element['description'];
+            var ingredient = new Ingredient(id, name, description);
+            ingredients.push(ingredient);
+            console.log("Component: id = "+id+", name = '"+name+"', description = '"+description+"'.");
+        });
+        componentsLoaded(true);
+    }).fail(function() {
+        ingredients = [];
+        componentsLoaded(false);
+        console.log("Error");
+    })
+});
 
 function componentsLoaded(success) {
     if (success) {
