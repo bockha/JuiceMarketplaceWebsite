@@ -25,6 +25,14 @@
 		</fieldset>
 	</div>
 
+	<div id="dialog-change-amount" title="Menge einstellen" style="display: none">
+		<p class="validateTips">Wieviel ml?</p>
+		<fieldset>
+			<label for="changeml">Milliliter: </label>
+			<input type="text" name="changeml" id="changeml" value="0" class="text ui-widget-content ui-corner-all">
+		</fieldset>
+	</div>
+
 	<div id="dialog-add-ingredient" title="Zutat hinzufügen" style="display: none">
 		<input type="hidden" name="ingredientId" value="">
 		<div id="dialog-add-ingredient-table">
@@ -63,14 +71,14 @@
 	<div id="program-template" style="display: none">
 		<div id="program-header" class="row">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-2 fl-recipe-row fl-recipe-label"><span></span></div>
-			<div class="col-xs-8 fl-recipe-row content"></div>
+			<div class="col-xs-2 program-row program-row-label"><span></span></div>
+			<div class="col-xs-8 program-row content"></div>
 			<div class="col-xs-1"></div>
 		</div>
-		<div id="program-sequence" class="row">
+		<div id="program-sequence" class="row sequence">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-2 fl-recipe-row fl-recipe-label"><span class="label"></span></div>
-			<div class="col-xs-8 fl-recipe-row content">
+			<div class="col-xs-2 program-row program-row-label"><span class="label"></span></div>
+			<div class="col-xs-7 program-row content">
 				<div id="program-phase" class="phase">
 					<div class="phase-ml"></div>
 					<span class="phase-label"></span>
@@ -80,22 +88,24 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-xs-1 program-row-total"><a href="javascript:void(0);" class="total-label change-amount">150 ml</a></div>
 			<div class="col-xs-1"></div>
 		</div>
 		<div id="program-pause" class="row">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-2 fl-recipe-label fl-recipe-row"><span class="label"></span></div>
-			<div class="col-xs-8 fl-recipe-row content">
+			<div class="col-xs-2 program-row-label program-row"><span class="label"></span></div>
+			<div class="col-xs-7 program-row content">
 				<div id="program-pause-phase" class="pause-phase">
 					<span class="phase-label"></span>
 				</div>				
 			</div>
+			<div class="col-xs-1 program-row-total">150 ml</div>
 			<div class="col-xs-1"></div>
 		</div>
 		<div id="program-footer" class="row">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-2 fl-recipe-row fl-recipe-label"><a href="javascript:openAddIngredientDialog();">Zutat hinzufügen</a></div>
-			<div class="col-xs-8 fl-recipe-row content"></div>
+			<div class="col-xs-2 program-row program-row-label"><a href="javascript:void(0);" class="add-ingredient">Zutat hinzufügen</a></div>
+			<div class="col-xs-8 program-row content"></div>
 			<div class="col-xs-1"></div>
 		</div>
 	</div>
@@ -119,7 +129,7 @@
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Vollständige Beschreibung</p></div>
-				<div class="col-sm-8"><textarea id="recipe-description" style="width: 100%; height: 100px;"/></div>
+				<div class="col-sm-8"><textarea id="recipe-description" style="width: 100%; height: 100px;"></textarea></div>
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Rezeptur</p></div>
@@ -128,8 +138,8 @@
 			<!--<div id="recipe-pauses" class="">
 				<div class="row">
 					<div class="col-xs-1"></div>
-					<div class="col-xs-2 fl-recipe-row fl-recipe-label">Pausen</div>
-					<div class="col-xs-8 fl-recipe-row content"></div>
+					<div class="col-xs-2 program-row program-row-label">Pausen</div>
+					<div class="col-xs-8 program-row content"></div>
 					<div class="col-xs-1"></div>
 				</div>
 			</div>-->
@@ -153,15 +163,7 @@
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Lizenzgebühr</p></div>
 				<div class="col-sm-8">
-					<select name="files" id="files">
-					<optgroup label="Scripts">
-						<option value="jquery">jQuery.js</option>
-						<option value="jqueryui">ui.jQuery.js</option>
-					</optgroup>
-					<optgroup label="Other files">
-						<option value="somefile">Some unknown file</option>
-						<option value="someotherfile">Some other file with a very long option text</option>
-					</optgroup>
+					<select name="license-fee" id="license-fee">
 					</select>
 				</div>
 			</div>
@@ -228,9 +230,11 @@
 		$('#recipe-title').on("input", function() {
 			recipe.title = this.value;
 		});
+
 		$('#recipe-short-description').on("input", function() {
 			recipe.shortDescription = this.value;
 		});
+
 		$('#recipe-description').on("input", function() {
 			recipe.description = this.value;
 		});
@@ -239,6 +243,19 @@
 			var json = recipe.toJSON();
 			var jsonString = JSON.stringify(json);
 			console.log("JSON = "+jsonString);
+		});
+
+		$( "#license-fee" ).selectmenu();
+
+		var formatter = new Intl.NumberFormat('de-DE', {
+			style: 'currency',
+			currency: 'EUR',
+			minimumFractionDigits: 2,
+		});
+		var licenseFeeTiers = [0.49, 0.99, 1.49, 1.99, 2.99, 3.99, 4.99, 5.99, 7.99, 9.99, 14.99, 19.99];
+		licenseFeeTiers.forEach(function(tier) {
+			var fee = formatter.format(tier);
+			$( "#license-fee" ).append($('<option></option>').val(tier).html(fee));
 		});
 
 </script>
