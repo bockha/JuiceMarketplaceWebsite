@@ -33,21 +33,41 @@ function componentsLoaded(success) {
             table.append(row);
             // table.crea
         });
-        // var recipe = product.recipe;
+
+        // test program for targetMode 1
+        var sequence = new Sequence(ingredients[3]);
+        sequence.addPhase(new Phase(0, 200, 100));
+        sequence.addPhase(new Phase(260, 130, 100));
+        recipe.program.addSequence(sequence);
+
+        sequence = new Sequence(ingredients[1]);
+        sequence.addPhase(new Phase(0, 100, 100));
+        sequence.addPhase(new Phase(130, 40, 100));
+        recipe.program.addSequence(sequence);
+
+        sequence = new Sequence(ingredients[2]);
+        sequence.addPhase(new Phase(0, 80, 100));
+        recipe.program.addSequence(sequence);
+
+
+        sequence = new Sequence(ingredients[4]);
+        sequence.addPhase(new Phase(20, 80, 100));
+        recipe.program.addSequence(sequence);
+
         // var sequence = new Sequence(ingredients[3]);
         // sequence.addPhase(new Phase(0, 100, 100));
-        // sequence.addPhase(new Phase(110, 130, 100));
-        // recipe.addSequence(sequence);
+        // sequence.addPhase(new Phase(260, 130, 100));
+        // recipe.program.addSequence(sequence);
 
         // sequence = new Sequence(ingredients[1]);
-        // sequence.addPhase(new Phase(0, 80, 100));
-        // sequence.addPhase(new Phase(100, 40, 80));
-        // sequence.addPhase(new Phase(150, 100, 100));
-        // recipe.addSequence(sequence);
+        // sequence.addPhase(new Phase(150, 80, 100));
+        // sequence.addPhase(new Phase(250, 40, 80));
+        // sequence.addPhase(new Phase(300, 100, 100));
+        // recipe.program.addSequence(sequence);
 
         // sequence = new Sequence(ingredients[2]);
-        // sequence.addPhase(new Phase(60, 200, 70));
-        // recipe.addSequence(sequence);
+        // sequence.addPhase(new Phase(260, 200, 70));
+        // recipe.program.addSequence(sequence);
 
         // var recipeConfigurator = new RecipeConfigurator(recipe, "recipe");
         programConfigurator.render();
