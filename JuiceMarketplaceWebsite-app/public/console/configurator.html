@@ -192,7 +192,10 @@
 	console.log("Setup Recipe");
 	var recipe = new Recipe();
 	recipe.title = "Apfel-/Bananenschorle";
-	recipe.recipe = new Recipe();
+	recipe.shortDescription = "Short description";
+	recipe.description = "Long description";
+	recipe.licenseFee = 0.55;
+//	recipe.title = "Apfel-/Bananenschorle";
 
 	// var recipe = new Recipe("Apfel-/Bananenschorle");
 	// var sequence = new Sequence(ingredients[0].id);
@@ -242,13 +245,37 @@
 		});
 
 		$('#button-save').on("click", function() {
-			var json = recipe.toJSON();
-			var jsonString = JSON.stringify(json);
-			var recovery = JSON.parse(jsonString);
-			var rec = Recipe.fromJSON(recovery);
-			// convertJSONRecipe(jsonString);
-			// convertProgramToMachinecode(recipe.program);
-			console.log("JSON = "+jsonString);
+			// validate recipe
+			var valid = true;
+			if (valid && recipe.title == "") {
+				alert("Bitte geben Sie einen Titel ein.");
+				valid = false;
+			}
+			if (valid && recipe.shortDescription == "") {
+				alert("Bitte geben Sie eine Kurzbeschreibung ein.");
+				valid = false;
+			}
+			if (valid && recipe.description == "") {
+				alert("Bitte geben Sie eine Beschreibung ein.");
+				valid = false;
+			}
+			if (valid && recipe.licenseFee == -1) {
+				alert("Bitte wählen Sie eine Lizenzgebühr aus.");
+				valid = false;
+			}
+			if (valid) {
+				var json = recipe.toJSON();
+				console.log("JSON = "+jsonString);
+				var jsonString = JSON.stringify(json);
+				var recovery = JSON.parse(jsonString);
+				var rec = Recipe.fromJSON(recovery);
+				var converter = new ProgramConverter();
+				var machineCode = converter.convert(rec.program);
+				var machineCodeString = JSON.stringify(machineCode);
+				console.log("Machine-Code:\n\n"+machineCodeString);
+				// convertJSONRecipe(jsonString);
+				// convertProgramToMachinecode(recipe.program);
+			}
 		});
 
 		$( "#license-fee" ).selectmenu();

@@ -1,6 +1,7 @@
 
 function ProgramConverter() {
     this.convert = function(program) {
+        var convertedJson = {};
         var sequences = {};
         // copy sequences
         program.sequences.forEach(function(sequence) {
@@ -9,6 +10,7 @@ function ProgramConverter() {
             console.log("Copied sequence: "+copySequence);
         });
 
+        var jsonLines = [];
         var phasesAvailable = true;
         while (phasesAvailable) {
             console.log("");
@@ -166,17 +168,26 @@ function ProgramConverter() {
             }
             
             // setup line
+            var jsonLine = {};
+            var jsonComponents = [];
             var pauseMs = convertMilliliterToMilliseconds(pause);
             console.log("line timing = "+targetMode+", sleep = "+pauseMs);
+            jsonLine['timing'] = targetMode;
+            jsonLine['sleep'] = pauseMs;
             for (var key in phasesToProcess) {
                 var sequence = sequences[key];
-                var ingredient = sequence.ingredient.name;
+                var ingredientId = sequence.ingredientId;
                 var phase = phasesToProcess[key];
-                console.log(" - ingredient = "+ingredient+", amount = "+phase.milliliter);
+                var jsonComponent = {};
+                jsonComponent['ingredient'] = ingredientId;
+                jsonComponent['amount'] = phase.milliliter;
+                jsonComponents.push(jsonComponent);
+                console.log(" - ingredient = "+ingredientId+", amount = "+phase.milliliter);
                 var phaseEnd = phase.getEnd();
                 end = Math.max(end, phaseEnd);
             }
-
+            jsonLine['components'] = jsonComponents;
+            jsonLines.push(jsonLine);
             // check if phases available
             phasesAvailable = false;
             for (var key in sequences) {
@@ -187,5 +198,9 @@ function ProgramConverter() {
                 }
             }
         }
+        var jsonRecipe = {};
+        jsonRecipe['lines'] = jsonLines;
+        convertedJson['recipe'] = jsonRecipe;
+        return convertedJson;
     }
 }
