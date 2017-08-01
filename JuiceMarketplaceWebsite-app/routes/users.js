@@ -70,6 +70,7 @@ router.post('/:id/recipes', function (req, res, next) {
 
     var coreData = {};
 
+    return res.sendStatus(200);
     marketplaceCore.saveRecipeForUser(req.user.token, coreData, function(err, recipe) {
        if (err) {
            return next(err);
