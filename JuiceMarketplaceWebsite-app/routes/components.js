@@ -4,13 +4,13 @@
 
 var express = require('express');
 var router = express.Router();
-var marketplaceCore = require('../connectors/marketplace_core_connector');
+var marketplaceCore = require('../adapter/marketplace_core_adapter');
 var logger = require('../global/logger');
 
 router.get('/', function (req, res, next) {
 
-    var userUUUID = req.user.intTokenInfo.user;
-    var token = req.user.intTokenInfo.accessToken;
+    var userUUUID = req.user.token.user;
+    var token = req.user.token.accessToken;
 
     marketplaceCore.getAllComponents(userUUUID, token, function (err, components) {
 

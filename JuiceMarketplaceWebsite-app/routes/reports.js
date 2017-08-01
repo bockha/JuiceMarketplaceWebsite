@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var marketplaceCore = require('../connectors/marketplace_core_connector');
+var marketplaceCore = require('../adapter/marketplace_core_adapter');
 
 router.get('/', function (req, res, next) {
     marketplaceCore.getTopDrinksSince(req.query['sinceDate'], req.query['topValue'], function (err, data) {

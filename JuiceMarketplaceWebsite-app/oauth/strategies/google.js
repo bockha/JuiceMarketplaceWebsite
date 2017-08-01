@@ -4,7 +4,7 @@
 
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var oAuthConfig = require('../../config/config_loader').OAUTH_PROVIDER;
-var oAuthConnector = require('../../connectors/auth_service_connector');
+var oAuthConnector = require('../../adapter/auth_service_adapter');
 var logger = require('../../global/logger');
 var strategyName = 'google';
 
@@ -37,9 +37,7 @@ module.exports = function (passport) {
                 // }
 
                 oAuthConnector.login(strategyName, token, profile, function (err, tokenInfo) {
-                    profile.token = token;
-
-                    profile.intTokenInfo = tokenInfo;
+                    profile.token = tokenInfo;
 
                     done(err, profile);
                 });

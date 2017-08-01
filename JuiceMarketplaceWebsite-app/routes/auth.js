@@ -31,7 +31,7 @@ module.exports = function (passport) {
 
         passport.authenticate('google', {
             scope: ['profile', 'email'],
-            accessType: 'offline', approvalPrompt: 'force'
+            approvalPrompt: 'force'
         })(req, res, next);
     });
 

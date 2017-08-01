@@ -11,11 +11,11 @@ self.LOG_LEVEL = 'debug';
 
 self.HOST_SETTINGS = {
     MARKETPLACE_CORE: {
-        HOST: 'localhost',
+        HOST: 'test-tdm.fritz.box',
         PORT: 3002
     },
     OAUTH_SERVER: {
-        HOST: 'localhost',
+        HOST: 'test-tdm.fritz.box',
         PORT: 3006
     }
 };
@@ -36,15 +36,15 @@ self.OAUTH_PROVIDER = {
     },
 
     googleAuth: {
-        'clientID': '',
-        'clientSecret': '',
+        'clientID': '{CLIENT_ID}.apps.googleusercontent.com',
+        'clientSecret': '{CLIENT_SECRET}',
         'callbackURL': 'http://127.0.0.1:3004/auth/google/callback'
     }
 };
 
 self.OAUTH_CREDENTIALS = {
-    CLIENT_ID: '',
-    CLIENT_SECRET: ''
+    CLIENT_ID: '43d9bfb5-cdf4-4a00-9658-175397a69efc',
+    CLIENT_SECRET: 'is secret ;-)'
 };
 
 

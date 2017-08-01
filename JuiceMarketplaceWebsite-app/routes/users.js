@@ -4,9 +4,9 @@
 
 var express = require('express');
 var router = express.Router();
-var marketplaceCore = require('../connectors/marketplace_core_connector');
-var authService = require('../connectors/auth_service_connector');
-
+var marketplaceCore = require('../adapter/marketplace_core_adapter');
+var authService = require('../adapter/auth_service_adapter');
+var programConverter = require('../services/program_converter');
 var logger = require('../global/logger');
 
 
@@ -15,7 +15,7 @@ var logger = require('../global/logger');
  */
 router.get('/me', function (req, res, next) {
 
-    authService.getUserInfoForToken(req.user.intTokenInfo.accessToken, function (err, data) {
+    authService.getUserInfoForToken(req.user.token.accessToken, function (err, data) {
         if (err) {
             return next(err);
         }
@@ -27,8 +27,7 @@ router.get('/me', function (req, res, next) {
 
 router.get('/me/*', function (req, res, next) {
 
-    //TODO: Replace users.id with internal userUUID
-    var redirectPath = req.originalUrl.replace('/me/', '/' + req.user.intTokenInfo.user + '/');
+    var redirectPath = req.originalUrl.replace('/me/', '/' + req.user.token.user + '/');
 
     res.redirect(redirectPath);
 });
@@ -46,8 +45,13 @@ router.get('/:id', function (req, res, next) {
  * Retrieves all recipes for the user
  */
 router.get('/:id/recipes', function (req, res, next) {
+    marketplaceCore.getRecipesForUser(req.query['id'], req.user.token.accessToken, function (err, recipes) {
+        if (err) {
+            return next(err);
+        }
 
-    res.send('Not implemented yet');
+        res.send(recipes);
+    });
 });
 
 /**
@@ -55,7 +59,26 @@ router.get('/:id/recipes', function (req, res, next) {
  */
 router.post('/:id/recipes', function (req, res, next) {
 
-    res.send('Not implemented yet');
+    //TODO: Parse recipe from req.body
+    //TODO: Convert program
+    var convertedProgram = programConverter.convert({});
+    //TODO: Encrypt program
+
+    //TODO: Wrap program into core metadata
+
+    logger.log(req.body);
+
+    var coreData = {};
+
+    return res.sendStatus(200);
+    marketplaceCore.saveRecipeForUser(req.user.token, coreData, function(err, recipe) {
+       if (err) {
+           return next(err);
+       }
+
+       //TODO: return recipe id
+       res.sendStatus(201);
+    });
 });
 
 
@@ -73,5 +96,26 @@ router.put('/:id/recipes/:recipe_id', function (req, res, next) {
 router.delete('/:id/recipes/:recipe_id', function (req, res, next) {
 
     res.send('Not implemented yet');
+});
+
+
+/**
+ * Retrieves the user image
+ */
+router.get('/:id/image', function (req, res, next) {
+    authService.getImageForUser(req.user, function (err, data) {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        if (!data) {
+            res.sendStatus(404);
+            return;
+        }
+
+        res.set('Content-Type', data.contentType);
+        res.send(data.imageBuffer);
+    });
 });
 module.exports = router;
