@@ -11,8 +11,10 @@
 	<!-- Program Configurator -->
 	<link rel="stylesheet" href="juice-configurator/css/program-configurator.css">
 	<link rel="stylesheet" href="css/configurator.css">
+	<script src="juice-configurator/js/recipe.js"></script>
 	<script src="juice-configurator/js/program-configurator.js"></script>
 	<script src="js/configurator.js"></script>
+	<script src="js/program-converter.js"></script>
 </head>
 <body>
 <div id="main2">
@@ -193,18 +195,18 @@
 	recipe.recipe = new Recipe();
 
 	// var recipe = new Recipe("Apfel-/Bananenschorle");
-	// var sequence = new Sequence(ingredients[0]);
+	// var sequence = new Sequence(ingredients[0].id);
 	// sequence.addPhase(new Phase(0, 100, 100));
 	// sequence.addPhase(new Phase(110, 130, 100));
 	// recipe.addSequence(sequence);
 
-	// sequence = new Sequence(ingredients[1]);
+	// sequence = new Sequence(ingredients[1].id);
 	// sequence.addPhase(new Phase(0, 80, 100));
 	// sequence.addPhase(new Phase(100, 40, 80));
 	// sequence.addPhase(new Phase(150, 100, 100));
 	// recipe.addSequence(sequence);
 
-	// sequence = new Sequence(sprudel);
+	// sequence = new Sequence(sprudel.id);
 	// sequence.addPhase(new Phase(60, 200, 70));
 	// recipe.addSequence(sequence);
 
@@ -242,6 +244,10 @@
 		$('#button-save').on("click", function() {
 			var json = recipe.toJSON();
 			var jsonString = JSON.stringify(json);
+			var recovery = JSON.parse(jsonString);
+			var rec = Recipe.fromJSON(recovery);
+			// convertJSONRecipe(jsonString);
+			// convertProgramToMachinecode(recipe.program);
 			console.log("JSON = "+jsonString);
 		});
 
@@ -257,6 +263,15 @@
 			var fee = formatter.format(tier);
 			$( "#license-fee" ).append($('<option></option>').val(tier).html(fee));
 		});
+
+		function convertJSONRecipe(recipe) {
+			alert("Converting recipe: "+recipe);
+		}
+
+		function convertProgramToMachinecode(program) {
+			var converter = new ProgramConverter(program);
+			converter.convert();
+		}
 
 </script>
 </body>
