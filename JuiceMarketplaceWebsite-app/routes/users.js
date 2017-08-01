@@ -6,7 +6,7 @@ var express = require('express');
 var router = express.Router();
 var marketplaceCore = require('../adapter/marketplace_core_adapter');
 var authService = require('../adapter/auth_service_adapter');
-
+var programConverter = require('../services/program_converter');
 var logger = require('../global/logger');
 
 
@@ -59,7 +59,24 @@ router.get('/:id/recipes', function (req, res, next) {
  */
 router.post('/:id/recipes', function (req, res, next) {
 
-    res.send('Not implemented yet');
+    //TODO: Parse recipe from req.body
+    //TODO: Convert program
+    var convertedProgram = programConverter.convert({});
+    //TODO: Encrypt program
+
+    //TODO: Wrap program into core metadata
+
+
+    var coreData = {};
+
+    marketplaceCore.saveRecipeForUser(req.user.token, coreData, function(err, recipe) {
+       if (err) {
+           return next(err);
+       }
+
+       //TODO: return recipe id
+       res.sendStatus(201);
+    });
 });
 
 

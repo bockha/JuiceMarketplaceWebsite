@@ -99,6 +99,37 @@ self.getRecipesForUser = function (userId, accessToken, callback) {
     });
 };
 
+self.saveRecipeForUser = function (token, callback) {
+    if (typeof(callback) !== 'function') {
+
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
+    var options = buildOptionsForRequest(
+        'POST',
+        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/technologydata',
+        {
+            userUUID: token.user.id
+        }
+    );
+    options.headers.authorization = 'Bearer ' + token.accessToken;
+
+    request(options, function (e, r, jsonData) {
+        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        var recipe = null;
+
+        if (jsonData) {
+            Recipe.CreateRecipeFromJSON(jsonData)
+        }
+
+        callback(err, recipe);
+    });
+};
 
 
 // --- REPORTS START ---
