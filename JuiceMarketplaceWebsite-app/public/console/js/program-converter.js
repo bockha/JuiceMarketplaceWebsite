@@ -1,6 +1,6 @@
 
-function ProgramConverter (program) {
-    this.convert = function() {
+function ProgramConverter() {
+    this.convert = function(program) {
         var sequences = {};
         // copy sequences
         program.sequences.forEach(function(sequence) {
@@ -64,15 +64,6 @@ function ProgramConverter (program) {
 
             console.log("targetMode = "+targetMode+", minThroughput = "+minThroughput+", maxThroughput = "+maxThroughput);
 
-            // // move start of remaining phases by maxThroughput / 100
-            // for (var key in sequences) {
-            //     var sequence = sequences[key];
-            //     sequence.phases.forEach(function(phase) {
-            //         console.log("moving phase "+phase.id+" with start "+phase.start+" to "+Math.floor(phase.start * maxThroughput / 100));
-            //         phase.start = Math.floor(phase.start * maxThroughput / 100);
-            //     })
-            // }
-            
             // calculate end of current run
             // calculate end of phases
             var end = -1;
@@ -196,39 +187,5 @@ function ProgramConverter (program) {
                 }
             }
         }
-    }
-
-    /**
-     * Selects the target mode by checking the throughput of each phase.
-     * If all phases have 100% throughput, the targetMode is 1 (all begin as fast as possible).
-     * If at least one phase has a lower throughput, the targetMode is 2 (all begin and try to end together).
-     * @param {array} sequences Array of sequences
-     * @return {int} targetMode (1 or 2)
-     */
-    this.getTargetMode = function(sequences) {
-        var targetMode = 1;
-        sequences.forEach(function(sequence) {
-            var phase = sequence.phases[0];
-            if (phase.throughput != 100) {
-                targetMode = 2;
-            }
-        })
-        return targetMode;
-    }
-
-    /**
-     * Selects all sequences which first phase starts at 0.
-     * @return {array} Array with sequences.
-     */
-    this.selectInvoledSequences = function() {
-        var currentSequences = [];
-        this.remainingSequences.forEach(function(sequence) {
-            if (sequence.phases.length > 0) {
-                if (sequence.phases[0].start == 0) {
-                    currentSequences.push(sequence);
-                }
-            }
-        })
-        return currentSequences;
     }
 }

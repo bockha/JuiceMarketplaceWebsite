@@ -194,18 +194,18 @@
 	recipe.recipe = new Recipe();
 
 	// var recipe = new Recipe("Apfel-/Bananenschorle");
-	// var sequence = new Sequence(ingredients[0]);
+	// var sequence = new Sequence(ingredients[0].id);
 	// sequence.addPhase(new Phase(0, 100, 100));
 	// sequence.addPhase(new Phase(110, 130, 100));
 	// recipe.addSequence(sequence);
 
-	// sequence = new Sequence(ingredients[1]);
+	// sequence = new Sequence(ingredients[1].id);
 	// sequence.addPhase(new Phase(0, 80, 100));
 	// sequence.addPhase(new Phase(100, 40, 80));
 	// sequence.addPhase(new Phase(150, 100, 100));
 	// recipe.addSequence(sequence);
 
-	// sequence = new Sequence(sprudel);
+	// sequence = new Sequence(sprudel.id);
 	// sequence.addPhase(new Phase(60, 200, 70));
 	// recipe.addSequence(sequence);
 
@@ -243,9 +243,11 @@
 		$('#button-save').on("click", function() {
 			var json = recipe.toJSON();
 			var jsonString = JSON.stringify(json);
+			var recovery = JSON.parse(jsonString);
+			var rec = Recipe.fromJSON(recovery);
 			// convertJSONRecipe(jsonString);
-			convertProgramToMachinecode(recipe.program);
-			// console.log("JSON = "+jsonString);
+			// convertProgramToMachinecode(recipe.program);
+			console.log("JSON = "+jsonString);
 		});
 
 		$( "#license-fee" ).selectmenu();
