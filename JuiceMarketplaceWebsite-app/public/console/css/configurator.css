@@ -1,0 +1,45 @@
+h3 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+}
+
+.label {
+    font-size: 14px;
+    font-weight: normal;
+    color: #000;
+}
+
+#dialog-add-ingredient-table .table {
+    height: 250px;
+    overflow-y: auto;    
+}
+
+#ingredientSearchBox {
+    width: 100%; /* Full-width */
+    /*font-size: 16px;  Increase font-size */
+    border: 1px solid #ddd; /* Add a grey border */
+    margin-bottom: 12px; /* Add some space below the input */
+}
+
+#ingredientTable {
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full-width */
+    border: 1px solid #ddd; /* Add a grey border */
+    /*font-size: 18px;  Increase font-size */
+}
+
+#ingredientTable th, #ingredientTable td {
+    text-align: left; /* Left-align text */
+    padding: 12px; /* Add padding */
+}
+
+#ingredientTable tr {
+    /* Add a bottom border to all table rows */
+    border-bottom: 1px solid #ddd; 
+}
+
+#ingredientTable tr.header, #ingredientTable tr:hover {
+    /* Add a grey background color to the table header and on hover */
+    background-color: #f1f1f1;
+}

@@ -5,61 +5,81 @@
 	<link href="jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet">
 	<link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/style.css">
-	<style>
-		h3 {
-			font-size: 16px;
-			font-weight: bold;
-			color: #000;
-		}
-
-		.label {
-			font-size: 14px;
-			font-weight: normal;
-			color: #000;
-		}
-	</style>
 	<script src="jquery-ui-1.12.1/external/jquery/jquery.js"></script>
 	<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 	<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-	<!-- Recipe Configurator -->
-	<link rel="stylesheet" href="juice-configurator/css/recipe-configurator.css">
-	<script src="juice-configurator/js/recipe-configurator.js"></script>
+	<!-- Program Configurator -->
+	<link rel="stylesheet" href="juice-configurator/css/program-configurator.css">
+	<link rel="stylesheet" href="css/configurator.css">
+	<script src="juice-configurator/js/program-configurator.js"></script>
+	<script src="js/configurator.js"></script>
 </head>
 <body>
 <div id="main2">
 	<!-- Templates start -->
-	<div id="dialog-phase" title="Phase einstellen">
+	<div id="dialog-phase" title="Phase einstellen" style="display: none">
 		<p class="validateTips">Wieviel ml abspalten?</p>		
-		<form>
-			<fieldset>
+		<fieldset>
 			<label for="splitml">Milliliter: </label>
 			<input type="text" name="splitml" id="splitml" value="50" class="text ui-widget-content ui-corner-all">
-			</fieldset>
-		</form>
+		</fieldset>
 	</div>
 
-	<div id="dialog-add-ingredient" title="Zutat hinzufügen">
-		<p class="validateTips">Welche Zutat möchten Sie hinzufügen?</p>
+	<div id="dialog-change-amount" title="Menge einstellen" style="display: none">
+		<p class="validateTips">Wieviel ml?</p>
+		<fieldset>
+			<label for="changeml">Milliliter: </label>
+			<input type="text" name="changeml" id="changeml" value="0" class="text ui-widget-content ui-corner-all">
+		</fieldset>
+	</div>
+
+	<div id="dialog-add-ingredient" title="Zutat hinzufügen" style="display: none">
+		<input type="hidden" name="ingredientId" value="">
+		<div id="dialog-add-ingredient-table">
+			<input type="text" id="ingredientSearchBox" onkeyup="ingredientSearch()" placeholder="Zutat suchen">
+			<div class="table">
+				<table id="ingredientTable">
+					<tr class="header">
+						<th style="width:60%;">Name</th>
+						<th style="width:40%;">Beschreibung</th>
+					</tr>
+					<tr class="ingredient">
+						<td class="name"></td>
+						<td class="description"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div id="dialog-add-ingredient-amount">
+			<!--<form>-->
+				<!--<fieldset>-->
+				<span class="ingredient">Zutat:</span><br>
+				<label for="addml">Milliliter: </label>
+				<input type="text" name="addml" id="addml" value="50" class="text ui-widget-content ui-corner-all">
+				<!--</fieldset>-->
+			<!--</form>-->
+		</div>
+		<!--<p class="validateTips">Welche Zutat möchten Sie hinzufügen?</p>
 		<form>
 			<fieldset>
 			<label for="addml">Milliliter: </label>
 			<input type="text" name="addml" id="addml" value="50" class="text ui-widget-content ui-corner-all">
 			</fieldset>
-		</form>
+		</form>-->
 	</div>
 
-	<div id="recipe-template" style="display: none">
-		<div id="recipe-header" class="row">
+	<div id="program-template" style="display: none">
+		<div id="program-header" class="row">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-2 fl-recipe-row fl-recipe-label"><span></span></div>
-			<div class="col-xs-8 fl-recipe-row content"></div>
+			<div class="col-xs-2 program-row program-row-label"><span></span></div>
+			<div class="col-xs-8 program-row content"></div>
 			<div class="col-xs-1"></div>
 		</div>
-		<div id="recipe-sequence" class="row">
+		<div id="program-sequence" class="row sequence">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-2 fl-recipe-row fl-recipe-label"><span class="label"></span></div>
-			<div class="col-xs-8 fl-recipe-row content">
-				<div id="recipe-phase" class="phase">
+			<div class="col-xs-2 program-row program-row-label"><span class="label"></span></div>
+			<div class="col-xs-7 program-row content">
+				<div id="program-phase" class="phase">
 					<div class="phase-ml"></div>
 					<span class="phase-label"></span>
 					<div class="phase-controls" style="display: none;">
@@ -68,22 +88,24 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-xs-1 program-row-total"><a href="javascript:void(0);" class="total-label change-amount">150 ml</a></div>
 			<div class="col-xs-1"></div>
 		</div>
-		<div id="recipe-pause" class="row">
+		<div id="program-pause" class="row">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-2 fl-recipe-label fl-recipe-row"><span class="label"></span></div>
-			<div class="col-xs-8 fl-recipe-row content">
-				<div id="recipe-pause-phase" class="pause-phase">
+			<div class="col-xs-2 program-row-label program-row"><span class="label"></span></div>
+			<div class="col-xs-7 program-row content">
+				<div id="program-pause-phase" class="pause-phase">
 					<span class="phase-label"></span>
 				</div>				
 			</div>
+			<div class="col-xs-1 program-row-total">150 ml</div>
 			<div class="col-xs-1"></div>
 		</div>
-		<div id="recipe-footer" class="row">
+		<div id="program-footer" class="row">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-2 fl-recipe-row fl-recipe-label"><a href="javascript:openAddIngredientDialog();">Zutat hinzufügen</a></div>
-			<div class="col-xs-8 fl-recipe-row content"></div>
+			<div class="col-xs-2 program-row program-row-label"><a href="javascript:void(0);" class="add-ingredient">Zutat hinzufügen</a></div>
+			<div class="col-xs-8 program-row content"></div>
 			<div class="col-xs-1"></div>
 		</div>
 	</div>
@@ -92,29 +114,32 @@
 	<div class="tdmc-page">
 		<div class="container-fluid">
 			<div class="row">
-				<h3>Produktdetails</h3>
+				<button id="button-save" class="ui-button ui-widget ui-corner-all" style="float: right;">Speichern</button>
+			</div>
+			<div class="row">
+				 <h3>Produktdetails</h3> 
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Titel</p></div>
-				<div class="col-sm-8"><input type="text" style="width: 100%;"></div>
+				<div class="col-sm-8"><input id="recipe-title" type="text" style="width: 100%;"></div>
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Kurze Beschreibung</p></div>
-				<div class="col-sm-8"><input type="text" style="width: 100%;"></div>
+				<div class="col-sm-8"><input id="recipe-short-description" type="text" style="width: 100%;"></div>
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Vollständige Beschreibung</p></div>
-				<div class="col-sm-8"><input type="text" style="width: 100%; height: 100px;"></div>
+				<div class="col-sm-8"><textarea id="recipe-description" style="width: 100%; height: 100px;"></textarea></div>
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Rezeptur</p></div>
 			</div>
-			<div id="recipe"></div>
+			<div id="program"></div>
 			<!--<div id="recipe-pauses" class="">
 				<div class="row">
 					<div class="col-xs-1"></div>
-					<div class="col-xs-2 fl-recipe-row fl-recipe-label">Pausen</div>
-					<div class="col-xs-8 fl-recipe-row content"></div>
+					<div class="col-xs-2 program-row program-row-label">Pausen</div>
+					<div class="col-xs-8 program-row content"></div>
 					<div class="col-xs-1"></div>
 				</div>
 			</div>-->
@@ -137,7 +162,10 @@
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Lizenzgebühr</p></div>
-				<div class="col-sm-8"><input type="text" style="width: 100%; height: 100px;"></div>
+				<div class="col-sm-8">
+					<select name="license-fee" id="license-fee">
+					</select>
+				</div>
 			</div>
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Verkaufsstatus</p></div>
@@ -148,34 +176,40 @@
 	</div>
 </div>
 <script>
-	var apfelsaft = new Ingredient("Apfelsaft", 1);
-	var bananensaft = new Ingredient("Bananensaft", 1);
-	var sprudel = new Ingredient("Sprudel", 1);
 
-	var ingredients = [
-		apfelsaft,
-		bananensaft,
-		sprudel,
-	];
+	// var apfelsaft = new Ingredient("Apfelsaft", 1);
+	// var bananensaft = new Ingredient("Bananensaft", 1);
+	// var sprudel = new Ingredient("Sprudel", 1);
 
-	var recipe = new Recipe("Apfel-/Bananenschorle");
-	// var sequence = new Sequence(apfelsaft);
+	// var ingredients = [
+	// 	apfelsaft,
+	// 	bananensaft,
+	// 	sprudel,
+	// ];
+
+	console.log("Setup Recipe");
+	var recipe = new Recipe();
+	recipe.title = "Apfel-/Bananenschorle";
+	recipe.recipe = new Recipe();
+
+	// var recipe = new Recipe("Apfel-/Bananenschorle");
+	// var sequence = new Sequence(ingredients[0]);
 	// sequence.addPhase(new Phase(0, 100, 100));
 	// sequence.addPhase(new Phase(110, 130, 100));
 	// recipe.addSequence(sequence);
 
-	sequence = new Sequence(bananensaft);
-	sequence.addPhase(new Phase(0, 80, 100));
-	sequence.addPhase(new Phase(100, 40, 80));
-	sequence.addPhase(new Phase(150, 100, 100));
-	recipe.addSequence(sequence);
+	// sequence = new Sequence(ingredients[1]);
+	// sequence.addPhase(new Phase(0, 80, 100));
+	// sequence.addPhase(new Phase(100, 40, 80));
+	// sequence.addPhase(new Phase(150, 100, 100));
+	// recipe.addSequence(sequence);
 
 	// sequence = new Sequence(sprudel);
 	// sequence.addPhase(new Phase(60, 200, 70));
 	// recipe.addSequence(sequence);
 
-	var recipeConfigurator = new RecipeConfigurator(recipe, "recipe");
-	recipeConfigurator.render();
+	var programConfigurator = new ProgramConfigurator(recipe.program, "program");
+	programConfigurator.render();
 
 		// var apfelsaft = new Ingredient("Apfelsaft");
 		// apfelsaft.phases.push(new Phase(apfelsaft, 0, 100, 100));
@@ -193,6 +227,36 @@
 		// recipe.addIngredient(sprudel);
 
 		// updateHtml(recipe);
+		$('#recipe-title').on("input", function() {
+			recipe.title = this.value;
+		});
+
+		$('#recipe-short-description').on("input", function() {
+			recipe.shortDescription = this.value;
+		});
+
+		$('#recipe-description').on("input", function() {
+			recipe.description = this.value;
+		});
+
+		$('#button-save').on("click", function() {
+			var json = recipe.toJSON();
+			var jsonString = JSON.stringify(json);
+			console.log("JSON = "+jsonString);
+		});
+
+		$( "#license-fee" ).selectmenu();
+
+		var formatter = new Intl.NumberFormat('de-DE', {
+			style: 'currency',
+			currency: 'EUR',
+			minimumFractionDigits: 2,
+		});
+		var licenseFeeTiers = [0.49, 0.99, 1.49, 1.99, 2.99, 3.99, 4.99, 5.99, 7.99, 9.99, 14.99, 19.99];
+		licenseFeeTiers.forEach(function(tier) {
+			var fee = formatter.format(tier);
+			$( "#license-fee" ).append($('<option></option>').val(tier).html(fee));
+		});
 
 </script>
 </body>
