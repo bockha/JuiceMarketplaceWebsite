@@ -66,6 +66,7 @@ router.post('/:id/recipes', function (req, res, next) {
 
     //TODO: Wrap program into core metadata
 
+    logger.log(req.body);
 
     var coreData = {};
 
