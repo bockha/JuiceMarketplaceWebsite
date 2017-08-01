@@ -2,8 +2,6 @@
 function ProgramConverter (program) {
     this.convert = function() {
         var sequences = {};
-        var phasesToProcess = {};
-        
         // copy sequences
         program.sequences.forEach(function(sequence) {
             var copySequence = jQuery.extend(true, {}, sequence);
@@ -11,83 +9,127 @@ function ProgramConverter (program) {
             console.log("Copied sequence: "+copySequence);
         });
 
-        while (true) {
+        var phasesAvailable = true;
+        while (phasesAvailable) {
+            console.log("");
+            console.log(" ############################## new run ##############################");
             // calculate phasesToProcess
-            phasesToProcess = {};
+            var phasesToProcess = {};
+            console.log(" # Phases to process: ")
             for (var key in sequences) {
                 var sequence = sequences[key];
                 if (sequence.phases.length > 0) {
                     var phase = sequence.phases[0];
                     if (phase.start == 0) {
                         phasesToProcess[key] = phase;
+                        console.log("   - id = '"+phase.id+", start = "+phase.start+", amount = "+phase.milliliter+", throughput = "+phase.throughput);
                         sequence.phases.shift();
                     }
                 }
             }
 
+            // log remaining phases
+            console.log(" # Remaining phases: ")
+            for (var key in sequences) {
+                var sequence = sequences[key];
+                sequence.phases.forEach(function(phase) {
+                    console.log("   - id = '"+phase.id+", start = "+phase.start+", amount = "+phase.milliliter+", throughput = "+phase.throughput);
+                });
+            }
             var phaseCount = Object.keys(phasesToProcess).length;
             if (phaseCount == 0) {
                 break;
             }
 
-            // calculate max throughput
-            var maxThroughput = 0;
+            // calculate min/max throughput
+            var maxThroughput = -1;
+            var minThroughput = -1;
             for (var key in phasesToProcess) {
                 var phase = phasesToProcess[key];
-                maxThroughput = Math.max(phase.throughput);
+                if (maxThroughput == -1) {
+                    maxThroughput = phase.throughput;
+                    minThroughput = phase.throughput;
+                } else {
+                    maxThroughput = Math.max(maxThroughput, phase.throughput);
+                    minThroughput = Math.min(minThroughput, phase.throughput);
+                }
             }
 
             // calculate targetMode
             var targetMode = 1;
-            if (maxThroughput < 100) {
+//            if (minThroughput < 100) {
+            if (minThroughput != maxThroughput) {
                 targetMode = 2;
             }
 
-            var multiplier = 1;
-            if (maxThroughput != 0) {
-                multiplier = 100 / maxThroughput;
-            }
+            console.log("targetMode = "+targetMode+", minThroughput = "+minThroughput+", maxThroughput = "+maxThroughput);
 
-            // move start of remaining phases by multiplier
-            for (var key in sequences) {
-                var sequence = sequences[key];
-                sequence.phases.forEach(function(phase) {
-                    phase.start /= multiplier;
-                })
-            }
+            // // move start of remaining phases by maxThroughput / 100
+            // for (var key in sequences) {
+            //     var sequence = sequences[key];
+            //     sequence.phases.forEach(function(phase) {
+            //         console.log("moving phase "+phase.id+" with start "+phase.start+" to "+Math.floor(phase.start * maxThroughput / 100));
+            //         phase.start = Math.floor(phase.start * maxThroughput / 100);
+            //     })
+            // }
             
             // calculate end of current run
             // calculate end of phases
-            var end = 0;
+            var end = -1;
             for (var key in phasesToProcess) {
                 var phase = phasesToProcess[key];
-                var phaseEnd = phase.getEnd();
-                end = Math.max(end, phaseEnd);
+                var effectiveThroughput = phase.throughput * 100 / maxThroughput;
+                console.log(" - phase = "+phase.id+", throughput = "+phase.throughput+", effectiveThroughput = "+effectiveThroughput);
+                var phaseEnd = phase.start + phase.milliliter * 100 / effectiveThroughput;
+                if (targetMode == 1 || end == -1) {
+                    end = Math.max(end, phaseEnd);
+                }
+                if (targetMode == 2) {
+                    end = Math.min(end, phaseEnd);
+                }
+            }
+            if (end == -1) { // this should not happen
+                end = 0;
             }
             console.log("natural end = " + end);
 
             // cut end with start of remaining phases
-            for (var key in sequences) {
-                var sequence = sequences[key];
-                if (sequence.phases.length > 0) {
-                    var phase = sequence.phases[0];
-                    end = Math.min(end, phase.start);
+            var endDidChange = true;
+            while (endDidChange) {
+                endDidChange = false;
+                var offset = end;// * 100 / maxThroughput - end;
+                for (var key in sequences) {
+                    var sequence = sequences[key];
+                    if (sequence.phases.length > 0) {
+                        var phase = sequence.phases[0];
+//                        var start = phase.start - offset;
+                        var start = phase.start * maxThroughput / 100;
+                        if (start < end) {
+                            console.log("end "+end+" -> "+start+" by phase "+phase.id+", phase.start = "+phase.start+", offset = "+offset);
+                            end = start;
+                            endDidChange = true;
+                            break;
+                        }
+                    }
                 }
             }
             console.log("cuted end = " + end);
 
             // cut phases
+            var offset = end * 100 / maxThroughput;
             for (var key in phasesToProcess) {
                 var sequence = sequences[key];
                 var phase = phasesToProcess[key];
                 var amount = Math.min(phase.milliliter, end);
                 if (targetMode == 2) {
-                    var effectiveThroughput = phase.throughput * multiplier;
+                    var effectiveThroughput = phase.throughput * 100 / maxThroughput;
                     amount = end * effectiveThroughput / 100;
                 }
                 var remainingAmount = phase.milliliter - amount;
+                console.log("phase = "+phase.id+", amount = "+phase.milliliter+", cutting = "+amount+", remaining = "+remainingAmount);
                 if (remainingAmount > 0) {
-                    var remainingPhase = new Phase(end, remainingAmount, phase.throughput);
+//                    var remainingPhase = new Phase(end, remainingAmount, phase.throughput);
+                    var remainingPhase = new Phase(offset, remainingAmount, phase.throughput);
                     // fixme: this is ugly
                     remainingPhase.sequence = sequence;
                     sequence.phases = [remainingPhase].concat(sequence.phases);
@@ -96,10 +138,12 @@ function ProgramConverter (program) {
             }
 
             // move remaining phases by end
+            console.log("moving offset = "+offset);
             for (var key in sequences) {
                 var sequence = sequences[key];
                 sequence.phases.forEach(function(phase) {
-                    phase.start -= end;
+                    console.log("finally moving phase "+phase.id+" with start "+phase.start+" to "+(phase.start - offset));
+                    phase.start -= offset;
                 })
             }
 
@@ -122,6 +166,7 @@ function ProgramConverter (program) {
                 for (var key in sequences) {
                     var sequence = sequences[key];
                     sequence.phases.forEach(function(phase) {
+                        console.log("moving phase by pause "+phase.id+" with start "+phase.start+" to "+(phase.start - pause));
                         phase.start -= pause;
                     })
                 }
@@ -139,6 +184,16 @@ function ProgramConverter (program) {
                 console.log(" - ingredient = "+ingredient+", amount = "+phase.milliliter);
                 var phaseEnd = phase.getEnd();
                 end = Math.max(end, phaseEnd);
+            }
+
+            // check if phases available
+            phasesAvailable = false;
+            for (var key in sequences) {
+                var sequence = sequences[key];
+                if (sequence.phases.length > 0) {
+                    phasesAvailable = true;
+                    break;
+                }
             }
         }
     }
