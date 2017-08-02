@@ -146,7 +146,7 @@ self.getUserInfoForToken = function (token, callback) {
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
         '/userinfo',
         {
-            accessToken: token
+            access_token: token
         }
     );
 
