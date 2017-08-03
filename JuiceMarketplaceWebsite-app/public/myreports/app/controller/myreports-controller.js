@@ -138,7 +138,7 @@ angular
                 data: {
                     columns: [],
                     types: {
-                        data: 'area'
+                        data: 'area-spline'
                     }
                 },
                 axis: {
@@ -178,6 +178,16 @@ angular
                 MyReportsDataService.getTopDrinksEver().then(function (data) {
                     var drinks = data.data;
                     $scope.topEver = drinks[0].technologydataname;
+                }, function (error) {
+                    console.log(error);
+                });
+            }
+
+            $scope.getTotalRevenueForUser = function () {
+                MyReportsDataService.getTotalRevenueForUser().then(function (data) {
+                    var drinks = data.data;
+                    var totalRev = drinks[0].revenue;
+                    $scope.totalRevenue = Number(totalRev).toFixed(2)
                 }, function (error) {
                     console.log(error);
                 });
@@ -326,6 +336,7 @@ angular
                 $scope.getRevenuePerHour();*/
                 $scope.getRevenuePerDay();
                 $scope.getTopDrinksEver();
+                $scope.getTotalRevenueForUser();
                 nextLoad();
             }
 

@@ -98,6 +98,19 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
         return defer.promise;
     }
 
+    function getTotalRevenueForUser() {
+        var defer = $q.defer();
+        $http({
+            method: 'GET',
+            url: '/myreports/revenue'
+        }).then(function(result) {
+            defer.resolve(result);
+        }, function(error) {
+            defer.reject(error);
+        });
+        return defer.promise;
+    }
+
 
     return {
         getDrinksByHours: getDrinksByHours,
@@ -106,6 +119,7 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
         getFavoriteJuicesSince: getFavoriteJuices,
         getWorkloadSince: getWorkload,
         getRevenuePerHour: getRevenuePerHour,
-        getRevenuePerDay: getRevenuePerDay
+        getRevenuePerDay: getRevenuePerDay,
+        getTotalRevenueForUser: getTotalRevenueForUser
     };
 }]);
