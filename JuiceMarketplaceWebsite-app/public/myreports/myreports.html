@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html ng-app='myreports'>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+
+    <link href="css/c3.css" rel="stylesheet" type="text/css"/>
+    <link href="css/main.css" rel="stylesheet">
+
+    <script src="js/jquery.min.js"></script>
+
+    <script src="js/underscore-min.js" charset="utf-8"></script>
+    <script src="js/d3.min.js" charset="utf-8"></script>
+    <script src="js/c3.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular_c3_simple.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/angular-moment.js"></script>
+    <meta charset="utf-8">
+    <link href="/console/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet">
+    <link href="/console/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/console/jquery-ui-1.12.1/external/jquery/jquery.js"></script>
+    <script src="/console/jquery-ui-1.12.1/jquery-ui.js"></script>
+    <script src="/console/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="/console/js/console.js"></script>
+    <link rel="stylesheet" href="/console/css/style.css">
+
+    <!-- angular init -->
+    <script src="app/app.js"></script>
+
+    <!-- servcies -->
+    <script src="app/services/myreports-data-service.js"></script>
+
+    <!-- controller -->
+    <script src="app/controller/myreports-controller.js"></script>
+
+    <!-- diectives -->
+
+    <!-- other -->
+    <meta http-equiv="refresh" content="720">
+    <style>
+        body {
+            font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+            font-size: 20px;
+            line-height: 1.0em;
+            font-weight: 400;
+            background: url("img/bg_blue.jpg");
+        }
+
+        p, span, a, ul, li, button {
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            line-height: inherit;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        h1 {
+            font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height: 1em;
+            font-size: 75px;
+            font-weight: 600;
+        }
+
+        h2, h3, h4, h5, h6 {
+            font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height: 0.5em;
+            font-weight: 300;
+        }
+
+        strong {
+            font-weight: 400;
+        }
+
+        .tile {
+            width: 25%;
+            display: inline-block;
+            box-sizing: border-box;
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .tile .title {
+            margin-top: 0px;
+        }
+
+        .tile.purple, .tile.blue, .tile.red, .tile.orange, .tile.green {
+            color: #fff;
+        }
+
+        .tile.purple {
+            background: #5133AB;
+        }
+
+        .tile.purple:hover {
+            background: #3e2784;
+        }
+
+        .tile.red {
+            background: #AC193D;
+        }
+
+        .tile.red:hover {
+            background: #7f132d;
+        }
+
+        .tile.green {
+            background: #52CCDB;
+            width: 95%;
+        }
+
+        .tile.green:hover {
+            background: #007300;
+        }
+
+        .tile.blue {
+            background: #386BFF;
+        }
+
+        .tile.blue:hover {
+            background: #125acd;
+        }
+
+        .tile.orange {
+            background: #DC572E;
+        }
+
+        .tile.orange:hover {
+            background: #b8431f;
+        }
+    </style>
+</head>
+<body>
+<div id="sidebar" class="sidenav">
+    <div class="title">TDM Console</div>
+    <a href="/myreports/myreports.html">Dashboard</a>
+    <a href="#">Statistiken</a>
+    <a href="/console/console.html">Neues Getränk anlegen</a>
+    <a href="#">Alle Getränke</a>
+</div>
+<div id="main" ng-controller='MyReportsController' style="padding-left: 1%; padding-top: 1%;">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle pull-left collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="javascript:toggleNav();">&#9776;</a>
+                <a class="navbar-brand" href="javascript:toggleNav();">Neues Getränk anlegen</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false"><span id="user-id">Max Mustermann</span><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Profil</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    <div id="page_content">
+        <div class="row">
+            <div class="col-sm-10">
+                <div class="tile blue">
+                    <h1 class="title"><strong>{{getactivatedlicensessince}}</strong></h1>
+                    <p>
+                    <h4> Drinks sold in the last <strong>24 </strong> hours</h4>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-star">
+            <div class="col-sm-9">
+
+                <div class="tile green">
+                    <h1 class="title">Your <strong>REVENUE</strong>:</h1>
+                    <p>
+                    <div c3-simple class="chart" id="revenuePerDay" config="revenuePerDay"></div>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
