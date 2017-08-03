@@ -145,10 +145,14 @@ angular
                     x: {
                         label: 'Day',
                         type: 'category',
-                        categories: []
+                        categories: [],
                     },
                     y: {
-                        label: 'Revenue'
+                        label: 'Revenue',
+                        padding: {
+                            top: 1,
+                            bottom: 1
+                        },
                     }
                 },
                 legend: {
@@ -170,31 +174,16 @@ angular
             }
 
 
-           /* $scope.getTopDrinksEver = function () {
+           $scope.getTopDrinksEver = function () {
                 MyReportsDataService.getTopDrinksEver().then(function (data) {
                     var drinks = data.data;
-                    drinks.sort(function (a, b) {
-                        return b.rank - a.rank;
-                    });
-                    $scope.topEver.data.columns = [];
-
-                    var keys = ['x'];
-                    var values = ['value'];
-
-                    drinks.forEach(function (drink) {
-                        keys.push(drink.technologydataname);
-                        values.push(drink.rank);
-                    }, this);
-
-                    $scope.topEver.data.columns.push(keys);
-                    $scope.topEver.data.columns.push(values);
-
+                    $scope.topEver = drinks[0].technologydataname;
                 }, function (error) {
                     console.log(error);
                 });
             }
 
-
+            /*
             $scope.getTopDrinksOfToday = function () {
                 MyReportsDataService.getTopDrinksOfToday().then(function (data) {
                     var drinks = data.data;
@@ -310,6 +299,8 @@ angular
 
                     $scope.revenuePerDay.data.columns = columns;
                     $scope.revenuePerDay.axis.x.categories = categories;
+                    var revenue = data.data[0].revenue;
+                    $scope.revenueToday = Number(revenue).toFixed(2);
                 });
             }
 /*
@@ -330,11 +321,11 @@ angular
             var getData = function () {
                 $scope.getDrinksByHours(5);
                 /*$scope.getTopDrinksOfToday();
-                $scope.getTopDrinksEver();
                 $scope.getFavoriteJuicesSince();
                 $scope.getWorkloadSince();
                 $scope.getRevenuePerHour();*/
                 $scope.getRevenuePerDay();
+                $scope.getTopDrinksEver();
                 nextLoad();
             }
 
