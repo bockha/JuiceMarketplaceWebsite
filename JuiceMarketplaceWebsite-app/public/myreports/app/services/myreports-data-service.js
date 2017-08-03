@@ -19,7 +19,7 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
         var defer = $q.defer();
         $http({
             method: 'GET',
-            url: '/myreports?sinceDate=' + moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&topValue=10'
+            url: '/myreports?sinceDate=' + moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&topValue=1'
         }).then(function(result) {
             defer.resolve(result);
         }, function(error) {
