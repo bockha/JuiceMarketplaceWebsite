@@ -62,13 +62,13 @@
         h1 {
             font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
             line-height: 1.5em;
-            font-size: 75px;
+            font-size: 50px;
             font-weight: 600;
         }
 
         h2, h3, h4, h5, h6 {
             font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
-            line-height: 1em;
+            line-height: 1.5em;
             font-weight: 300;
         }
 
@@ -86,6 +86,7 @@
 
         .tile .title {
             margin-top: 0px;
+            line-height: 1.0em;
         }
 
         .tile.purple, .tile.blue, .tile.red, .tile.orange, .tile.green {
@@ -93,8 +94,9 @@
         }
 
         .tile.purple {
-            background: #5133AB;
-        } 
+            background: #CC66FF;
+            width: 30%;
+        }
 
         .tile.red {
             background: #AC193D;
@@ -103,21 +105,21 @@
 
         .tile.green {
             background: #52CCDB;
-            width: 95%;
+            width: 100%;
         }
 
         .tile.blue {
             background: #386BFF;
-            width: 25%;
+            width: 30%;
         }
 
         .tile.orange {
             background: #DC572E;
-            width: 95%;
+            width: 30%;
         }
     </style>
 </head>
-<body>
+<body ng-controller='MyReportsController'>
 <div id="sidebar" class="sidenav">
     <div class="title">TDM Console</div>
     <a href="/myreports/myreports.html">Dashboard</a>
@@ -125,7 +127,7 @@
     <a href="/console/console.html">Neues Getränk anlegen</a>
     <a href="#">Alle Getränke</a>
 </div>
-<div id="main" ng-controller='MyReportsController' style="padding-left: 1%; padding-top: 1%;">
+<div id="main" style="padding-left: 1%; padding-top: 1%;">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -157,36 +159,55 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-    <div id="page_content">
-        <div class="row">
-            <div class="col-xs-6 col-md-8">
-                <div class="tile blue">
-                    <h1 class="title"><strong>{{getactivatedlicensessince}}</strong></h1>
-                    <p>
-                    <h4> deiner Drinks wurden innerhalb der letzten <strong>24</strong><br> Stunden verkauft</h4>
-                    </p>
-                </div>
-            </div>
-            <div class="col-xs-6 col-md-4">
-                <div class="tile green">
-                    <h2 class="title"> <strong>{{revenueToday}}</strong> IUNOs</h2>
-                    <p>ist dein Gesamtumsatz heute</p>
-                </div>
-                <div class="tile orange">
-                    <h2 class="title"> <strong>{{topEver}}</strong></h2>
-                    <p>ist dein meistverkaufter Drink allerzeiten</p>
-                </div>
-            </div>
-        </div>
+    <div id="page_content" class="container-fluid">
         <div class="row align-items-star">
-            <div class="col-sm-12">
+            <!--<div class="tile green">-->
+            <!--<div class="row">-->
+            <!--<div class="col-md-6">-->
 
-                <div class="tile green">
-                    <h1 class="title">dein Gesamtumsatz pro Drink</h1><br>
-                    <p>
-                    <div c3-simple class="chart" id="revenuePerDay" config="revenuePerDay"></div>
-                    </p>
+            <!--<div class="col-md-6">-->
+            <!--<div class="tile orange">-->
+            <!--<h2 class="title"><strong>{{revenueToday}}</strong> IUNOs</h2>-->
+            <!--<p>ist dein Gesamtumsatz heute</p>-->
+            <!--</div>-->
+            <!--<div class="tile blue">-->
+            <!--<h1 class="title"><strong>{{getactivatedlicensessince}}</strong></h1>-->
+            <!--<p>-->
+            <!--<h4> deiner Drinks wurden innerhalb der letzten <strong>24</strong><br> Stunden verkauft-->
+            <!--</h4>-->
+            <!--</p>-->
+            <!--</div>-->
+            <!--<div class="tile purple">-->
+            <!--<h2 class="title"><strong>{{topEver}}</strong></h2>-->
+            <!--<p>ist dein meistverkaufter Drink allerzeiten</p>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <div class="tile green">
+                <div class="row">
+                    <div class="col-md-6">
+                    dein<h1 class="title"> Gesamtumsatz </h1> <h1 class="title"><strong style="color: #CCFF66">{{totalRevenue}} IUNOs</strong> </h1><br>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="tile orange">
+                        <h2 class="title"><strong>{{revenueToday}}</strong> IUNOs</h2>
+                        <p>ist dein Umsatz heute</p>
+                    </div>
+                    <div class="tile blue">
+                        <h1 class="title"><strong>{{getactivatedlicensessince}}</strong></h1>
+                        <p>
+                        <h4> deiner Drinks wurden innerhalb der letzten <strong>24</strong><br> Stunden verkauft
+                        </h4>
+                        </p>
+                    </div>
+                    <div class="tile purple">
+                        <h2 class="title"><strong>{{topEver}}</strong></h2>
+                        <p>ist dein meistverkaufter Drink aller Zeiten</p>
+                    </div>
+                    </div>
                 </div>
+                <div c3-simple class="chart" id="revenuePerDay" config="revenuePerDay"></div>
             </div>
         </div>
     </div>
