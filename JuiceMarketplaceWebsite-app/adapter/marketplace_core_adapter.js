@@ -114,7 +114,7 @@ self.saveRecipeForUser = function (token, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata',
         {
-            userUUID: token.user.id
+            userUUID: token.user
         }
     );
     options.headers.authorization = 'Bearer ' + token.accessToken;
@@ -133,7 +133,7 @@ self.saveRecipeForUser = function (token, callback) {
 
 
 // --- REPORTS START ---
-self.getTopDrinksSince = function (sinceDate, topCount, callback) {
+self.getTopDrinksSince = function (token, sinceDate, topCount, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
@@ -143,9 +143,11 @@ self.getTopDrinksSince = function (sinceDate, topCount, callback) {
         '/reports',
         {
             sinceDate: sinceDate,
-            topValue: topCount
+            topValue: topCount,
+            userUUID: token.user
         }
     );
+    options.headers.authorization = 'Bearer ' + token.accessToken;
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
@@ -177,7 +179,7 @@ self.getTopDrinksSince = function (sinceDate, topCount, callback) {
     });
 };
 
-self.getFavoriteJuicesSince = function (sinceDate, callback) {
+self.getFavoriteJuicesSince = function (token, sinceDate, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
@@ -186,9 +188,11 @@ self.getFavoriteJuicesSince = function (sinceDate, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/reports/favorit',
         {
-            sinceDate: sinceDate
+            sinceDate: sinceDate,
+            userUUID: token.user
         }
     );
+    options.headers.authorization = 'Bearer ' + token.accessToken;
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
@@ -220,7 +224,7 @@ self.getFavoriteJuicesSince = function (sinceDate, callback) {
     });
 };
 
-self.getWorkloadSince = function (sinceDate, callback) {
+self.getWorkloadSince = function (token, sinceDate, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
@@ -229,9 +233,11 @@ self.getWorkloadSince = function (sinceDate, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/reports/workload',
         {
-            sinceDate: sinceDate
+            sinceDate: sinceDate,
+            userUUID: token.user
         }
     );
+    options.headers.authorization = 'Bearer ' + token.accessToken;
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
@@ -263,7 +269,7 @@ self.getWorkloadSince = function (sinceDate, callback) {
     });
 };
 
-self.getRevenueSince = function (sinceDate, time, callback) {
+self.getRevenueSince = function (token, sinceDate, time, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
@@ -273,9 +279,11 @@ self.getRevenueSince = function (sinceDate, time, callback) {
         '/reports/revenue',
         {
             sinceDate: sinceDate,
-            time: time
+            time: time,
+            userUUID: token.user
         }
     );
+    options.headers.authorization = 'Bearer ' + token.accessToken;
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
@@ -307,6 +315,187 @@ self.getRevenueSince = function (sinceDate, time, callback) {
     });
 };
 // --- REPORTS END ---
+self.getTopDrinksSinceForUser = function (token, sinceDate, topCount, callback) {
 
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/myreports',
+        {
+            sinceDate: sinceDate,
+            topValue: topCount,
+            userUUID: token.user
+        }
+    );
+    options.headers.authorization = 'Bearer ' + token.accessToken;
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
+        if (typeof(callback) !== 'function') {
+
+            callback = function (err, data) {
+                logger.warn('Callback not handled by caller');
+            };
+        }
+
+        if (e) {
+            logger.crit(e);
+
+            callback(e);
+        }
+
+        if (r && r.statusCode !== 200) {
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn('Call not successful: Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        callback(null, jsonData);
+    });
+};
+
+self.getFavoriteJuicesSinceForUser = function (token, sinceDate, callback) {
+
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/myreports/favorit',
+        {
+            sinceDate: sinceDate,
+            userUUID: token.user
+        }
+    );
+    options.headers.authorization = 'Bearer ' + token.accessToken;
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
+        if (typeof(callback) !== 'function') {
+
+            callback = function (err, data) {
+                logger.warn('Callback not handled by caller');
+            };
+        }
+
+        if (e) {
+            logger.crit(e);
+
+            callback(e);
+        }
+
+        if (r && r.statusCode !== 200) {
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn('Call not successful: Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        callback(null, jsonData);
+    });
+};
+
+self.getWorkloadSinceForUser = function (token, sinceDate, callback) {
+
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/myreports/workload',
+        {
+            sinceDate: sinceDate,
+            userUUID: token.user
+        }
+    );
+    options.headers.authorization = 'Bearer ' + token.accessToken;
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
+        if (typeof(callback) !== 'function') {
+
+            callback = function (err, data) {
+                logger.warn('Callback not handled by caller');
+            };
+        }
+
+        if (e) {
+            logger.crit(e);
+
+            callback(e);
+        }
+
+        if (r && r.statusCode !== 200) {
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn('Call not successful: Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        callback(null, jsonData);
+    });
+};
+
+self.getRevenueForUser = function (token, sinceDate, time, callback) {
+
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/myreports/revenue',
+        {
+            sinceDate: sinceDate,
+            time: time,
+            userUUID: token.user
+        }
+    );
+    options.headers.authorization = 'Bearer ' + token.accessToken;
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
+        if (typeof(callback) !== 'function') {
+
+            callback = function (err, data) {
+                logger.warn('Callback not handled by caller');
+            };
+        }
+
+        if (e) {
+            logger.crit(e);
+
+            callback(e);
+        }
+
+        if (r && r.statusCode !== 200) {
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn('Call not successful: Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        callback(null, jsonData);
+    });
+};
+// --- REPORTS END ---
 
 module.exports = self;
