@@ -82,7 +82,7 @@ if (app.get('env') === 'development') {
                 error: err
             });
         }
-        res.status(500).send('Something broke!');
+        res.sendStatus(500);
     });
 }
 
