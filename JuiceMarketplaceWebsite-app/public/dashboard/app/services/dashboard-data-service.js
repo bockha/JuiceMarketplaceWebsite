@@ -106,6 +106,6 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
         getFavoriteJuicesSince: getFavoriteJuices,
         getWorkloadSince: getWorkload,
         getRevenuePerHour: getRevenuePerHour,
-        getRevenuePerDay: getRevenuePerDay
+        getRevenueForToday: getRevenueForToday
     };
 }]);

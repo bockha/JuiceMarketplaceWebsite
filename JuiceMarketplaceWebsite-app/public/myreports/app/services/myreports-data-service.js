@@ -19,13 +19,13 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
         var defer = $q.defer();
         $http({
             method: 'GET',
-            url: '/myreports?sinceDate=' + moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&topValue=1'
+            url: '/myreports?sinceDate=' + moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&topValue=9999'
         }).then(function(result) {
             defer.resolve(result);
         }, function(error) {
             defer.reject(error);
         });
-        return defer.promise;    
+        return defer.promise;
     }
 
 
@@ -71,11 +71,11 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
     }
 
 
-    function getRevenuePerHour() {
+    function getRevenuePerDayForUser() {
         var defer = $q.defer();
         $http({
             method: 'GET',
-            url: '/myreports/revenue?sinceDate=' +  moment().startOf('day').format('YYYY-MM-DD HH:mm:ss') + '&time=hour'
+            url: '/myreports/revenue?sinceDate=' +  moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&time=day'
         }).then(function(result) {
             defer.resolve(result);
         }, function(error) {
@@ -85,11 +85,11 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
     }
 
 
-    function getRevenuePerDay() {
+    function getRevenueForToday() {
         var defer = $q.defer();
         $http({
             method: 'GET',
-            url: '/myreports/revenue?sinceDate=' +  moment().subtract(700, 'days').format('YYYY-MM-DD HH:mm:ss') + '&time=day'
+            url: '/myreports/revenue?sinceDate=' +  moment().startOf('day').format('YYYY-MM-DD HH:mm:ss') + '&time=day'
         }).then(function(result) {
             defer.resolve(result);
         }, function(error) {
@@ -118,8 +118,8 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
         getTopDrinksOfToday: getTopDrinksOfToday,
         getFavoriteJuicesSince: getFavoriteJuices,
         getWorkloadSince: getWorkload,
-        getRevenuePerHour: getRevenuePerHour,
-        getRevenuePerDay: getRevenuePerDay,
+        getRevenuePerDayForUser: getRevenuePerDayForUser,
+        getRevenueForToday: getRevenueForToday,
         getTotalRevenueForUser: getTotalRevenueForUser
     };
 }]);
