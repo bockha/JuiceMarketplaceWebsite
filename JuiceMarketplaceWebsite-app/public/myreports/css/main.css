@@ -17,7 +17,7 @@ body,
     background: #fff;
 }
 .header {
-    background-image: url('../img/bg_blue.jpg');
+    background-image: url('../../img/bg_blue.jpg');
     height: 120px;
     padding:2em;
 }
