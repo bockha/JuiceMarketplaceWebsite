@@ -1,0 +1,77 @@
+body {
+    font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 20px;
+    line-height: 1.5em;
+    font-weight: 400;
+    background: url("/../img/bg_blue.jpg");
+}
+
+p, span, a, ul, li, button {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+}
+
+strong {
+    font-weight: 600;
+}
+
+h1 {
+    font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5em;
+    font-size: 50px;
+    font-weight: 600;
+}
+
+h2, h3, h4, h5, h6 {
+    font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5em;
+    font-weight: 300;
+}
+
+strong {
+    font-weight: 400;
+}
+
+.tile {
+    display: inline-block;
+    box-sizing: border-box;
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.tile .title {
+    margin-top: 0px;
+    line-height: 1.0em;
+}
+
+.tile.purple, .tile.blue, .tile.red, .tile.orange, .tile.green {
+    color: #fff;
+}
+
+.tile.purple {
+    background: #CC66FF;
+    width: 30%;
+}
+
+.tile.red {
+    background: #AC193D;
+    width: 50%;
+}
+
+.tile.green {
+    background: #52CCDB;
+    width: 100%;
+}
+
+.tile.blue {
+    background: #386BFF;
+    width: 30%;
+}
+
+.tile.orange {
+    background: #DC572E;
+    width: 30%;
+}

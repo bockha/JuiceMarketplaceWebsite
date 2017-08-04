@@ -7,6 +7,7 @@
 
     <link href="css/c3.css" rel="stylesheet" type="text/css"/>
     <link href="css/main.css" rel="stylesheet">
+    <link href="css/tiles.css" rel="stylesheet">
 
     <script src="js/jquery.min.js"></script>
 
@@ -18,11 +19,11 @@
     <script src="js/moment.min.js"></script>
     <script src="js/angular-moment.js"></script>
     <meta charset="utf-8">
-    <link href="/console/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet">
-    <link href="/console/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/console/jquery-ui-1.12.1/external/jquery/jquery.js"></script>
-    <script src="/console/jquery-ui-1.12.1/jquery-ui.js"></script>
-    <script src="/console/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <link href="/lib/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet">
+    <link href="/lib/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/lib/jquery-ui-1.12.1/external/jquery/jquery.js"></script>
+    <script src="/lib/jquery-ui-1.12.1/jquery-ui.js"></script>
+    <script src="/lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <script src="/console/js/console.js"></script>
     <link rel="stylesheet" href="/console/css/style.css">
 
@@ -39,85 +40,6 @@
 
     <!-- other -->
     <meta http-equiv="refresh" content="720">
-    <style>
-        body {
-            font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
-            font-size: 20px;
-            line-height: 1.5em;
-            font-weight: 400;
-            background: url("img/bg_blue.jpg");
-        }
-
-        p, span, a, ul, li, button {
-            font-family: inherit;
-            font-size: inherit;
-            font-weight: inherit;
-            line-height: inherit;
-        }
-
-        strong {
-            font-weight: 600;
-        }
-
-        h1 {
-            font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.5em;
-            font-size: 50px;
-            font-weight: 600;
-        }
-
-        h2, h3, h4, h5, h6 {
-            font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.5em;
-            font-weight: 300;
-        }
-
-        strong {
-            font-weight: 400;
-        }
-
-        .tile {
-            display: inline-block;
-            box-sizing: border-box;
-            background: #fff;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-
-        .tile .title {
-            margin-top: 0px;
-            line-height: 1.0em;
-        }
-
-        .tile.purple, .tile.blue, .tile.red, .tile.orange, .tile.green {
-            color: #fff;
-        }
-
-        .tile.purple {
-            background: #CC66FF;
-            width: 30%;
-        }
-
-        .tile.red {
-            background: #AC193D;
-            width: 50%;
-        }
-
-        .tile.green {
-            background: #52CCDB;
-            width: 100%;
-        }
-
-        .tile.blue {
-            background: #386BFF;
-            width: 30%;
-        }
-
-        .tile.orange {
-            background: #DC572E;
-            width: 30%;
-        }
-    </style>
 </head>
 <body ng-controller='MyReportsController'>
 <div id="sidebar" class="sidenav">
@@ -161,29 +83,6 @@
     </nav>
     <div id="page_content" class="container-fluid">
         <div class="row align-items-star">
-            <!--<div class="tile green">-->
-            <!--<div class="row">-->
-            <!--<div class="col-md-6">-->
-
-            <!--<div class="col-md-6">-->
-            <!--<div class="tile orange">-->
-            <!--<h2 class="title"><strong>{{revenueToday}}</strong> IUNOs</h2>-->
-            <!--<p>ist dein Gesamtumsatz heute</p>-->
-            <!--</div>-->
-            <!--<div class="tile blue">-->
-            <!--<h1 class="title"><strong>{{getactivatedlicensessince}}</strong></h1>-->
-            <!--<p>-->
-            <!--<h4> deiner Drinks wurden innerhalb der letzten <strong>24</strong><br> Stunden verkauft-->
-            <!--</h4>-->
-            <!--</p>-->
-            <!--</div>-->
-            <!--<div class="tile purple">-->
-            <!--<h2 class="title"><strong>{{topEver}}</strong></h2>-->
-            <!--<p>ist dein meistverkaufter Drink allerzeiten</p>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
             <div class="tile green">
                 <div class="row">
                     <div class="col-md-6">
