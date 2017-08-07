@@ -12,6 +12,12 @@
      -moz-user-select: none;
           user-select: none;
 }
+.c3 .c3-axis-x path, .c3 .c3-axis-x line {
+  stroke: LightGray;
+}
+.c3 .c3-axis-y path, .c3 .c3-axis-y line {
+  stroke: LightGray;
+}
 
 .c3-legend-item-tile,
 .c3-xgrid-focus,

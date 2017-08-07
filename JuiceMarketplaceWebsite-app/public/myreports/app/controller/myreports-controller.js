@@ -6,27 +6,23 @@ angular
             $scope.revenuePerDay = {
                 size: {
                     height: 350,
-                    width: 1000
+                    width: 1150
                 },
                 data: {
                     columns: [],
-                    types: {
-                        data: 'area-spline'
-                        // 'line', 'spline', 'step', 'area', 'area-step' are also                        available to stack
-                    },
+                    type: 'area',
                     groups: []
-
                 },
                 axis: {
                     x: {
-                        label: 'Day',
+                        label: 'Date',
                         type: 'category',
-                        categories: [],
+                        categories: []
                     },
                     y: {
                         label: 'Revenue',
                         padding: {
-                            bottom: 2
+                            bottom: 0
                         }
                     }
                 },
@@ -49,7 +45,7 @@ angular
             }
 
 
-           $scope.getTopDrinkNameEver = function () {
+            $scope.getTopDrinkNameEver = function () {
                 MyReportsDataService.getTopDrinksEver().then(function (data) {
                     var drinks = data.data;
                     $scope.topEverName = drinks[0].technologydataname;
@@ -57,7 +53,6 @@ angular
                     console.log(error);
                 });
             }
-
 
 
             $scope.getTotalRevenueForUser = function () {
@@ -74,7 +69,7 @@ angular
                 MyReportsDataService.getRevenueForToday().then(function (data) {
 
                     var revenue = data.data.revenue;
-                    if(!revenue) {
+                    if (!revenue) {
                         revenue = 0;
                     }
                     $scope.revenueToday = Number(revenue).toFixed(2);
@@ -85,17 +80,66 @@ angular
                 MyReportsDataService.getRevenuePerDayForUser().then(function (data) {
                     var drinks = data.data;
                     console.info(drinks);
+                    var categories = [];
                     var columns = [];
-                    var revenue = [];
-
+                    var techName = [];
+                    var types = [];
                     var i = 0;
-                    drinks.forEach(function (revenueData) {
-                        columns[i] = revenueData.technologydataname + ',' + revenueData.revenue;
-                        i++;
-                    });
+                    var j = 0;
 
-                    console.info("Name: ", columns);
-                    console.info("Revenue: ", revenue);
+                    drinks.forEach(function (dataCategory) {
+                        if (!categories.includes(moment(dataCategory.date).format('YYYY-MM-DD'))) {
+                            categories[j] = moment(dataCategory.date).format('YYYY-MM-DD');
+                        }
+                        //delete undefined values from array
+                        if (!categories[j - 1]) {
+                            categories.splice(j - 1, 1);
+                        }
+                        j++;
+                    }, this);
+
+                    /*drinks.forEach(function (revenueData) {
+                        if(!techName.includes(revenueData.technologydataname)) {
+                            techName[i] = revenueData.technologydataname;
+                            columns[i] = new Array(revenueData.technologydataname);
+
+                        if(moment(revenueData.date).format('YYYY-MM-DD') == categories[i]) {
+                            columns[i].push(revenueData.revenue);
+                    }
+                        else {columns[i].push(0);}
+                        }
+                        i++;
+                    });*/
+
+
+                    drinks.forEach(function (revenueData) {
+                        if (!columns.includes(revenueData.technologydataname)) {
+                            if (!techName.includes(revenueData.technologydataname)) {
+                                techName[i] = revenueData.technologydataname;
+                                columns[i] = new Array(revenueData.technologydataname);
+                                categories.forEach(function (cat) {
+                                    if (techName[i] == revenueData.technologydataname && categories.includes(cat)) {
+                                        columns[i].push(revenueData.revenue);
+                                    }
+                                    else {
+                                        columns[i].push(0);
+                                    }
+                                }, this);
+                            }
+                        }
+                        i++;
+                    }, this);
+
+                    $scope.revenuePerDay.data.columns = columns;
+                    $scope.revenuePerDay.axis.x.categories = categories;
+                    $scope.revenuePerDay.data.groups = new Array(techName);
+                    $scope.revenuePerDay.data.types = types;
+
+
+                    console.info("Cat: ", categories);
+                    console.info("Columns: ", columns);
+                    console.info("Group: ", $scope.revenuePerDay.data.groups);
+
 
                 }, function (error) {
                     console.log(error);
@@ -105,8 +149,8 @@ angular
             var getData = function () {
                 $scope.getDrinksByHours(5);
                 /*$scope.getTopDrinksOfToday();
-                $scope.getFavoriteJuicesSince();
-                $scope.getWorkloadSince();*/
+                 $scope.getFavoriteJuicesSince();
+                 $scope.getWorkloadSince();*/
                 $scope.getRevenuePerDayForUser();
                 $scope.getTopDrinkNameEver();
                 $scope.getRevenueForToday();
