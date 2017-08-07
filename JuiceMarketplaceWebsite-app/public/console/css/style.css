@@ -132,12 +132,13 @@ textarea {
     /*background-color: #00f;*/
     z-index: 1; /* Stay on top */
     transition: 0.25s; /* 0.5 second transition effect to slide in the sidenav */
+    margin-left: 250px;
 }
 
 .sidenav {
     white-space: nowrap;
     height: 100%; /* 100% Full-height */
-    width: 0px;  /*0 width - change this with JavaScript */
+    width: 250px;  
     position: fixed; /* Stay in place */
     z-index: 2; /* Stay on top */
     top: 0;
@@ -173,7 +174,7 @@ textarea {
 
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover, .offcanvas a:focus{
-    color: #f1f1f1;
+    color: #AAC253;
 }
 
 /* Position and style the close button (top right corner) */

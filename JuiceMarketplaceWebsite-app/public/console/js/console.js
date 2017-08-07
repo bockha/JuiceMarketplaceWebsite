@@ -1,4 +1,29 @@
-		/* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+
+        var consolePages = {
+            configurator: {
+                title: "Neues Getränk anlegen",
+                url: "configurator.html"
+            },
+            dashboard: {
+                title: "Dashboard",
+                url: "dashboard.html"
+            }
+        }
+
+        function getUrlParameter(name) {
+            var value = null;
+            var query = window.location.search.substring(1);
+            var parametersAndValues = query.split("&");
+            for (var i = 0; i < parametersAndValues.length; i += 1) {
+                var split = parametersAndValues[i].split("=");
+                if (split[0] == name){
+                    value = split[1];
+                    break;
+                }
+            }
+            return value;
+        }
+        /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
 		function toggleNav() {
             if ($("#sidebar").hasClass("open")) {
                 closeNav();
@@ -21,8 +46,9 @@
 		}
 
         function loadConfigurator() {
-            $('body > div[role="dialog"]').remove();
-            $("#page_content").load("configurator.html");
+            window.href="console.html?configurator";
+            // $('body > div[role="dialog"]').remove();
+            // $("#page_content").load("configurator.html");
         }
 
         function getDisplayName(firstName, lastName) {
@@ -38,4 +64,12 @@
                 var displayName = getDisplayName(firstName, lastName);
             	$("#user-id").text(displayName);
             })
+
+            var urlPage = getUrlParameter("page");
+            if (urlPage == null) {
+                urlPage = 'dashboard';
+            }
+            var consolePage = consolePages[urlPage];
+            $(".navbar-brand").text(consolePage['title']);
+            $("#page_content").load(consolePage['url']);
         })

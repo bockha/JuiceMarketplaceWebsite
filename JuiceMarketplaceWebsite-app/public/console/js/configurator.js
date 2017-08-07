@@ -1,5 +1,6 @@
-function init() {
-    console.log("init");
+var recipeChanged = false;
+
+$(function() {
     $.getJSON('/components', function(data) {
         ingredients = [];
         data.forEach(function(element) {
@@ -8,7 +9,7 @@ function init() {
             var description = element['description'];
             var ingredient = new Ingredient(id, name, description);
             ingredients.push(ingredient);
-            console.log("Component: id = "+id+", name = '"+name+"', description = '"+description+"'.");
+            // console.log("Component: id = "+id+", name = '"+name+"', description = '"+description+"'.");
         });
         componentsLoaded(true);
     }).fail(function() {
@@ -16,7 +17,22 @@ function init() {
         componentsLoaded(false);
         console.log("Error");
     })
-};
+
+    
+    $(".user-input").change(function() {
+        setRecipeChanged();
+    });
+    
+    window.onbeforeunload = function () {
+        if (recipeChanged) {
+            return 'Sie haben Ihre Änderungen noch nicht gespeichert. Möchten Sie die Seite wirklich verlassen?';
+        }
+    }
+});
+
+function setRecipeChanged(changed) {
+    recipeChanged = changed;
+}
 
 function componentsLoaded(success) {
     console.log("components");
