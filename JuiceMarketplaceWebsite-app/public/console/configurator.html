@@ -146,6 +146,7 @@
 					<div class="col-xs-1"></div>
 				</div>
 			</div>-->
+			<!-- 
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Grafische Elemente</p></div>
 			</div>
@@ -159,10 +160,10 @@
 					</div>
 				</div>
 				<div class="col-xs-1"></div>
-			</div>
-			<div class="row config">
+			</div> -->
+			<!-- <div class="row config">
 				<div class="col-sm-3"><p class="label">Kategorisierung</p></div>
-			</div>
+			</div> -->
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Lizenzgebühr</p></div>
 				<div class="col-sm-8">
@@ -262,6 +263,10 @@
 			}
 			if (valid && recipe.licenseFee == -1) {
 				alert("Bitte wählen Sie eine Lizenzgebühr aus.");
+				valid = false;
+			}
+			if (valid && recipe.program.sequences.length == 0) {
+				alert("Bitte fügen Sie mindestens eine Zutat hinzu.");
 				valid = false;
 			}
 			if (valid) {
