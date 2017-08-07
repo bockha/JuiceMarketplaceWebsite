@@ -1,20 +1,21 @@
-<!DOCTYPE html>
 <html lang="de">
 <head>
 	<meta charset="utf-8">
-	<link href="jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet">
-	<link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/style.css">
+	<!-- <link href="jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet">
+	<link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
 	<script src="jquery-ui-1.12.1/external/jquery/jquery.js"></script>
 	<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
-	<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script> -->
+
 	<!-- Program Configurator -->
+	<!-- 
+	<script src="../../services/program_converter.js"></script> -->
 	<link rel="stylesheet" href="juice-configurator/css/program-configurator.css">
 	<link rel="stylesheet" href="css/configurator.css">
+	<script src="js/configurator.js"></script>
 	<script src="juice-configurator/js/recipe.js"></script>
 	<script src="juice-configurator/js/program-configurator.js"></script>
-	<script src="js/configurator.js"></script>
-	<script src="../../services/program_converter.js"></script>
 </head>
 <body>
 <div id="main2">
@@ -169,10 +170,10 @@
 					</select>
 				</div>
 			</div>
-			<div class="row config">
+			<!-- <div class="row config">
 				<div class="col-sm-3"><p class="label">Verkaufsstatus</p></div>
 				<div class="col-sm-8"><input type="text" style="width: 100%; height: 100px;"></div>
-			</div>
+			</div> -->
 
 		</div>
 	</div>
@@ -188,13 +189,13 @@
 	// 	bananensaft,
 	// 	sprudel,
 	// ];
+	init();
 
-	console.log("Setup Recipe");
 	var recipe = new Recipe();
-	recipe.title = "Apfel-/Bananenschorle";
-	recipe.shortDescription = "Short description";
-	recipe.description = "Long description";
-	recipe.licenseFee = 0.55;
+	// recipe.title = "Apfel-/Bananenschorle";
+	// recipe.shortDescription = "Short description";
+	// recipe.description = "Long description";
+	// recipe.licenseFee = 0.55;
 //	recipe.title = "Apfel-/Bananenschorle";
 
 	// var recipe = new Recipe("Apfel-/Bananenschorle");
@@ -265,14 +266,27 @@
 			}
 			if (valid) {
 				var json = recipe.toJSON();
-				console.log("JSON = "+jsonString);
 				var jsonString = JSON.stringify(json);
-				var recovery = JSON.parse(jsonString);
-				var rec = Recipe.fromJSON(recovery);
-				var converter = new ProgramConverter();
-				var machineCode = converter.convert(rec.program);
-				var machineCodeString = JSON.stringify(machineCode);
-				console.log("Machine-Code:\n\n"+machineCodeString);
+				console.log("JSON = "+jsonString);
+				// var jsonProgram = json['program'];
+				// var convertedProgram = convert(jsonProgram);
+
+				$.ajax({
+					url: '/users/me/recipes',
+					type: "POST",
+					data: jsonString,
+					contentType: "application/json",
+					complete: function() {
+						console.log(" ############### FERTIG ###############");
+					}
+				});
+
+				// var recovery = JSON.parse(jsonString);
+				// var rec = Recipe.fromJSON(recovery);
+				// var converter = new ProgramConverter();
+				// var machineCode = converter.convert(rec.program);
+				// var machineCodeString = JSON.stringify(machineCode);
+				// console.log("Machine-Code:\n\n"+machineCodeString);
 				// convertJSONRecipe(jsonString);
 				// convertProgramToMachinecode(recipe.program);
 			}
@@ -299,7 +313,6 @@
 			var converter = new ProgramConverter(program);
 			converter.convert();
 		}
-
 </script>
 </body>
 </html>

@@ -1,41 +1,65 @@
 var self = {};
+// ******************************************
+//   Conversion Utilities
+// ******************************************
+var milliliterPerMillisecond = 0.01;
 
-self.convert = function (program) {
+self.convertMilliliterToMilliseconds = function(milliliter) {
+	var milliseconds = parseInt(milliliter) / milliliterPerMillisecond;
+	return milliseconds;
+}
+
+self.convertMillisecondsToMilliliter = function(milliseconds) {
+	var milliliter = parseInt(milliseconds) * milliliterPerMillisecond;
+	return milliliter;
+}
+
+self.convertProgramToMachineProgram = function(program) {
+    function log(string) {
+        // console.log(string);
+    }
     var convertedJson = {};
     var sequences = {};
+
+	log("Converter started...");
+	log("Program: "+program);
+
     // copy sequences
-    program.sequences.forEach(function(sequence) {
-        var copySequence = jQuery.extend(true, {}, sequence);
-        sequences[copySequence.id] = copySequence
-        console.log("Copied sequence: "+copySequence);
+    program['sequences'].forEach(function(sequence) {
+		log("sequence: "+sequence['ingredient-id'])
+//        var copySequence = jQuery.extend(true, {}, sequence);
+        var copySequence = JSON.parse(JSON.stringify(sequence)); // ugly, there's something better for sure
+        sequences[sequence['ingredient-id']] = copySequence
     });
 
     var jsonLines = [];
     var phasesAvailable = true;
     while (phasesAvailable) {
-        console.log("");
-        console.log(" ############################## new run ##############################");
+        log("");
+        log(" ############################## new run ##############################");
         // calculate phasesToProcess
         var phasesToProcess = {};
-        console.log(" # Phases to process: ")
+        log(" # Phases to process: ")
         for (var key in sequences) {
-            var sequence = sequences[key];
-            if (sequence.phases.length > 0) {
-                var phase = sequence.phases[0];
-                if (phase.start == 0) {
+			var sequence = sequences[key];
+			var phases = sequence['phases'];
+            if (phases.length > 0) {
+                var phase = phases[0];
+                if (phase['start'] == 0) {
                     phasesToProcess[key] = phase;
-                    console.log("   - id = '"+phase.id+", start = "+phase.start+", amount = "+phase.milliliter+", throughput = "+phase.throughput);
+                    log("   - start = "+phase['start']+", amount = "+phase['amount']+", throughput = "+phase['throughput']);
                     sequence.phases.shift();
                 }
             }
-        }
+		}
 
         // log remaining phases
-        console.log(" # Remaining phases: ")
+        log(" # Remaining phases: ")
         for (var key in sequences) {
             var sequence = sequences[key];
-            sequence.phases.forEach(function(phase) {
-                console.log("   - id = '"+phase.id+", start = "+phase.start+", amount = "+phase.milliliter+", throughput = "+phase.throughput);
+			var phases = sequence['phases'];
+            phases.forEach(function(phase) {
+                    log("   - start = "+phase['start']+", amount = "+phase['amount']+", throughput = "+phase['throughput']);
             });
         }
         var phaseCount = Object.keys(phasesToProcess).length;
@@ -49,13 +73,13 @@ self.convert = function (program) {
         for (var key in phasesToProcess) {
             var phase = phasesToProcess[key];
             if (maxThroughput == -1) {
-                maxThroughput = phase.throughput;
-                minThroughput = phase.throughput;
+                maxThroughput = phase['throughput'];
+                minThroughput = phase['throughput'];
             } else {
-                maxThroughput = Math.max(maxThroughput, phase.throughput);
-                minThroughput = Math.min(minThroughput, phase.throughput);
+                maxThroughput = Math.max(maxThroughput, phase['throughput']);
+                minThroughput = Math.min(minThroughput, phase['throughput']);
             }
-        }
+		}
 
         // calculate targetMode
         var targetMode = 1;
@@ -64,16 +88,17 @@ self.convert = function (program) {
             targetMode = 2;
         }
 
-        console.log("targetMode = "+targetMode+", minThroughput = "+minThroughput+", maxThroughput = "+maxThroughput);
+        log("targetMode = "+targetMode+", minThroughput = "+minThroughput+", maxThroughput = "+maxThroughput);
+
 
         // calculate end of current run
         // calculate end of phases
         var end = -1;
         for (var key in phasesToProcess) {
             var phase = phasesToProcess[key];
-            var effectiveThroughput = phase.throughput * 100 / maxThroughput;
-            console.log(" - phase = "+phase.id+", throughput = "+phase.throughput+", effectiveThroughput = "+effectiveThroughput);
-            var phaseEnd = phase.start + phase.milliliter * 100 / effectiveThroughput;
+            var effectiveThroughput = phase['throughput'] * 100 / maxThroughput;
+            log(" - throughput = "+phase['throughput']+", effectiveThroughput = "+effectiveThroughput);
+            var phaseEnd = phase['start'] + phase['amount'] * 100 / effectiveThroughput;
             if (targetMode == 1 || end == -1) {
                 end = Math.max(end, phaseEnd);
             }
@@ -84,7 +109,7 @@ self.convert = function (program) {
         if (end == -1) { // this should not happen
             end = 0;
         }
-        console.log("natural end = " + end);
+        log("natural end = " + end);
 
         // cut end with start of remaining phases
         var endDidChange = true;
@@ -92,13 +117,14 @@ self.convert = function (program) {
             endDidChange = false;
             var offset = end;// * 100 / maxThroughput - end;
             for (var key in sequences) {
-                var sequence = sequences[key];
-                if (sequence.phases.length > 0) {
-                    var phase = sequence.phases[0];
+				var sequence = sequences[key];
+				var phases = sequence['phases'];
+                if (phases.length > 0) {
+                    var phase = phases[0];
 //                        var start = phase.start - offset;
-                    var start = phase.start * maxThroughput / 100;
+                    var start = phase['start'] * maxThroughput / 100;
                     if (start < end) {
-                        console.log("end "+end+" -> "+start+" by phase "+phase.id+", phase.start = "+phase.start+", offset = "+offset);
+                        log("end "+end+" -> "+start+", phase.start = "+phase['start']+", offset = "+offset);
                         end = start;
                         endDidChange = true;
                         break;
@@ -106,50 +132,57 @@ self.convert = function (program) {
                 }
             }
         }
-        console.log("cuted end = " + end);
+        log("cuted end = " + end);
 
         // cut phases
         var offset = end * 100 / maxThroughput;
         for (var key in phasesToProcess) {
             var sequence = sequences[key];
             var phase = phasesToProcess[key];
-            var amount = Math.min(phase.milliliter, end);
+            var amount = Math.min(phase['amount'], end);
             if (targetMode == 2) {
-                var effectiveThroughput = phase.throughput * 100 / maxThroughput;
+                var effectiveThroughput = phase['throughput'] * 100 / maxThroughput;
                 amount = end * effectiveThroughput / 100;
             }
-            var remainingAmount = phase.milliliter - amount;
-            console.log("phase = "+phase.id+", amount = "+phase.milliliter+", cutting = "+amount+", remaining = "+remainingAmount);
+            var remainingAmount = phase['amount'] - amount;
+            log("amount = "+phase['amount']+", cutting = "+amount+", remaining = "+remainingAmount);
             if (remainingAmount > 0) {
 //                    var remainingPhase = new Phase(end, remainingAmount, phase.throughput);
-                var remainingPhase = new Phase(offset, remainingAmount, phase.throughput);
+				var remainingPhase = {
+					start: offset,
+					amount: remainingAmount,
+					throughput: phase['throughput']
+				}
+                // var remainingPhase = new Phase(offset, remainingAmount, phase.throughput);
                 // fixme: this is ugly
-                remainingPhase.sequence = sequence;
-                sequence.phases = [remainingPhase].concat(sequence.phases);
+                // remainingPhase.sequence = sequence;
+                sequence['phases'] = [remainingPhase].concat(sequence['phases']);
             }
-            phase.milliliter = Math.min(phase.milliliter, amount);
+            phase['amount'] = Math.min(phase['amount'], amount);
         }
 
         // move remaining phases by end
-        console.log("moving offset = "+offset);
+        log("moving offset = "+offset);
         for (var key in sequences) {
-            var sequence = sequences[key];
-            sequence.phases.forEach(function(phase) {
-                console.log("finally moving phase "+phase.id+" with start "+phase.start+" to "+(phase.start - offset));
-                phase.start -= offset;
+			var sequence = sequences[key];
+			var phases = sequence['phases'];
+            phases.forEach(function(phase) {
+                log("finally moving phase with start "+phase['start']+" to "+(phase['start'] - offset));
+                phase['start'] -= offset;
             })
         }
 
         // handle pauses
         var pause = -1;
         for (var key in sequences) {
-            var sequence = sequences[key];
-            if (sequence.phases.length > 0) {
-                var phase = sequence.phases[0];
+			var sequence = sequences[key];
+			var phases = sequence['phases'];
+            if (phases.length > 0) {
+                var phase = phases[0];
                 if (pause == -1) {
-                    pause = phase.start;
+                    pause = phase['start'];
                 } else {
-                    pause = Math.min(pause, phase.start);
+                    pause = Math.min(pause, phase['start']);
                 }
             }
         }
@@ -157,9 +190,10 @@ self.convert = function (program) {
         // move remaining phases by pause
         if (pause > 0) {
             for (var key in sequences) {
-                var sequence = sequences[key];
-                sequence.phases.forEach(function(phase) {
-                    console.log("moving phase by pause "+phase.id+" with start "+phase.start+" to "+(phase.start - pause));
+				var sequence = sequences[key];
+				var phases = sequence['phases'];
+                phases.forEach(function(phase) {
+                    log("moving phase by pause with start "+phase['start']+" to "+(phase['start'] - pause));
                     phase.start -= pause;
                 })
             }
@@ -170,20 +204,20 @@ self.convert = function (program) {
         // setup line
         var jsonLine = {};
         var jsonComponents = [];
-        var pauseMs = convertMilliliterToMilliseconds(pause);
-        console.log("line timing = "+targetMode+", sleep = "+pauseMs);
+        var pauseMs = this.convertMilliliterToMilliseconds(pause);
+        log("line timing = "+targetMode+", sleep = "+pauseMs);
         jsonLine['timing'] = targetMode;
         jsonLine['sleep'] = pauseMs;
         for (var key in phasesToProcess) {
             var sequence = sequences[key];
-            var ingredientId = sequence.ingredientId;
+            var ingredientId = sequence["ingredient-id"];
             var phase = phasesToProcess[key];
             var jsonComponent = {};
             jsonComponent['ingredient'] = ingredientId;
-            jsonComponent['amount'] = phase.milliliter;
+            jsonComponent['amount'] = phase['amount'];
             jsonComponents.push(jsonComponent);
-            console.log(" - ingredient = "+ingredientId+", amount = "+phase.milliliter);
-            var phaseEnd = phase.getEnd();
+            log(" - ingredient = "+ingredientId+", amount = "+phase['amount']);
+            var phaseEnd = phase['start'] + phase['amount'] * 100 / phase['throughput'];
             end = Math.max(end, phaseEnd);
         }
         jsonLine['components'] = jsonComponents;
@@ -191,8 +225,9 @@ self.convert = function (program) {
         // check if phases available
         phasesAvailable = false;
         for (var key in sequences) {
-            var sequence = sequences[key];
-            if (sequence.phases.length > 0) {
+			var sequence = sequences[key];
+			var phases = sequence['phases'];
+            if (phases.length > 0) {
                 phasesAvailable = true;
                 break;
             }

@@ -1,4 +1,5 @@
-$(function() {
+function init() {
+    console.log("init");
     $.getJSON('/components', function(data) {
         ingredients = [];
         data.forEach(function(element) {
@@ -15,9 +16,10 @@ $(function() {
         componentsLoaded(false);
         console.log("Error");
     })
-});
+};
 
 function componentsLoaded(success) {
+    console.log("components");
     if (success) {
         var table = $("#ingredientTable");
         var template = $("#ingredientTable .ingredient")[0];
@@ -80,18 +82,18 @@ function componentsLoaded(success) {
 
 
 
-        sequence = new Sequence(ingredients[1].id);
-        sequence.addPhase(new Phase(150, 80, 100));
-        sequence.addPhase(new Phase(250, 40, 80));
-        sequence.addPhase(new Phase(300, 100, 100));
-        recipe.program.addSequence(sequence);
+        // sequence = new Sequence(ingredients[1].id);
+        // sequence.addPhase(new Phase(150, 80, 100));
+        // sequence.addPhase(new Phase(250, 40, 80));
+        // sequence.addPhase(new Phase(300, 100, 100));
+        // recipe.program.addSequence(sequence);
 
-        sequence = new Sequence(ingredients[2].id);
-        sequence.addPhase(new Phase(260, 200, 70));
-        recipe.program.addSequence(sequence);
+        // sequence = new Sequence(ingredients[2].id);
+        // sequence.addPhase(new Phase(260, 200, 70));
+        // recipe.program.addSequence(sequence);
 
-        // var recipeConfigurator = new RecipeConfigurator(recipe, "recipe");
-        programConfigurator.render();
+        // // var recipeConfigurator = new RecipeConfigurator(recipe, "recipe");
+        // programConfigurator.render();
     } else {
 
     }
