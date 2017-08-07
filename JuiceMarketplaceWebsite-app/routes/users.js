@@ -72,9 +72,9 @@ router.post('/:id/recipes', function (req, res, next) {
     var licenseFee = recipe['license-fee'];
     var machineProgram = programConverter.convertProgramToMachineProgram(program);
     var machineProgramString = JSON.stringify(machineProgram);
-    var ingredientIds = [];
+    var componentsIds = [];
     program['sequences'].forEach(function(sequence) {
-        ingredientIds.push(sequence['ingredient-id']);
+        componentsIds.push(sequence['ingredient-id']);
     })
 
 
