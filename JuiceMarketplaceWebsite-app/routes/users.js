@@ -8,7 +8,7 @@ var marketplaceCore = require('../adapter/marketplace_core_adapter');
 var authService = require('../adapter/auth_service_adapter');
 var programConverter = require('../services/program_converter');
 var logger = require('../global/logger');
-
+var helper = require('../services/helper_service');
 
 /**
  * Retrieves the user information for the logged in user
@@ -73,27 +73,28 @@ router.post('/:id/recipes', function (req, res, next) {
     var machineProgram = programConverter.convertProgramToMachineProgram(program);
     var machineProgramString = JSON.stringify(machineProgram);
     var componentsIds = [];
-    program['sequences'].forEach(function(sequence) {
+    program['sequences'].forEach(function (sequence) {
         componentsIds.push(sequence['ingredient-id']);
-    })
-
-
-    //TODO: Encrypt program
-
-    //TODO: Wrap program into core metadata
-
-    // logger.log(req.body);
+    });
 
     var coreData = {};
 
-    return res.sendStatus(200);
-    marketplaceCore.saveRecipeForUser(req.user.token, coreData, function(err, recipe) {
-       if (err) {
-           return next(err);
-       }
+    coreData.technologydataname = title;
+    coreData.technologydata = JSON.stringify(machineProgram);
+    coreData.technologydatadescription = description;
+    coreData.technologyid = '';
+    coreData.licensefee = licenseFee;
+    coreData.retailprice = licenseFee * 3;
+    coreData.componentlist = componentsIds;
 
-       //TODO: return recipe id
-       res.sendStatus(201);
+    marketplaceCore.saveRecipeForUser(req.user.token, coreData, function (err, recipeId) {
+        if (err) {
+            return next(err);
+        }
+
+        const fullUrl = helper.buildFullUrlFromRequest(req);
+        res.set('Location', fullUrl + recipeId);
+        res.sendStatus(201);
     });
 });
 

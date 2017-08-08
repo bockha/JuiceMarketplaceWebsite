@@ -123,11 +123,11 @@ self.saveRecipeForUser = function (token, callback) {
         var err = logger.logRequestAndResponse(e, options, r, jsonData);
         var recipe = null;
 
-        if (jsonData) {
-            Recipe.CreateRecipeFromJSON(jsonData)
-        }
+        logger.debug(r.header('Location'));
 
-        callback(err, recipe);
+        //TODO: return technologyDataUUID
+
+        callback(err, null);
     });
 };
 
