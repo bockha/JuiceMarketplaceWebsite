@@ -44,7 +44,8 @@ function componentsLoaded(success) {
             var row = $(template).clone();
 
 			row.find('.name').html(element.name);
-			row.find('.description').html(element.description);
+            row.find('.description').html(element.description);
+            row.attr("id", 'ingredient-'+element.id);
             row.click(function() {
                 openAddIngredientAmountDialog(element.id);
             });
@@ -122,12 +123,23 @@ function ingredientSearch() {
   filter = input.value.toUpperCase();
   table = document.getElementById("ingredientTable");
   tr = table.getElementsByTagName("tr");
-
   // Loop through all table rows, and hide those who don't match the search query
+  // also hide those already used
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[0];
+    var showIt = true;
+    console.log("TR: "+tr[i].id);
     if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        recipe.program.sequences.forEach(function(sequence) {
+            if (tr[i].id == "ingredient-" + sequence.ingredientId) {
+                showIt = false;
+            }
+        });
+
+      if (td.innerHTML.toUpperCase().indexOf(filter) == -1) {
+          showIt = false;
+      }
+    if (showIt) {
         tr[i].style.display = "";
       } else {
         tr[i].style.display = "none";
