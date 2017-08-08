@@ -61,12 +61,28 @@ router.post('/:id/recipes', function (req, res, next) {
 
     //TODO: Parse recipe from req.body
     //TODO: Convert program
-    var convertedProgram = programConverter.convert({});
+    console.log(req.body);
+    var recipe = req.body;
+    var program = recipe['program'];
+
+    // recipe information for further processing
+    var title = recipe['title'];
+    var shortDescription = recipe['short-description'];
+    var description = recipe['description'];
+    var licenseFee = recipe['license-fee'];
+    var machineProgram = programConverter.convertProgramToMachineProgram(program);
+    var machineProgramString = JSON.stringify(machineProgram);
+    var componentsIds = [];
+    program['sequences'].forEach(function(sequence) {
+        componentsIds.push(sequence['ingredient-id']);
+    })
+
+
     //TODO: Encrypt program
 
     //TODO: Wrap program into core metadata
 
-    logger.log(req.body);
+    // logger.log(req.body);
 
     var coreData = {};
 

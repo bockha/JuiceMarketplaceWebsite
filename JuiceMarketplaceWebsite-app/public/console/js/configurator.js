@@ -1,3 +1,5 @@
+var recipeChanged = false;
+
 $(function() {
     $.getJSON('/components', function(data) {
         ingredients = [];
@@ -7,7 +9,7 @@ $(function() {
             var description = element['description'];
             var ingredient = new Ingredient(id, name, description);
             ingredients.push(ingredient);
-            console.log("Component: id = "+id+", name = '"+name+"', description = '"+description+"'.");
+            // console.log("Component: id = "+id+", name = '"+name+"', description = '"+description+"'.");
         });
         componentsLoaded(true);
     }).fail(function() {
@@ -15,9 +17,25 @@ $(function() {
         componentsLoaded(false);
         console.log("Error");
     })
+
+    
+    $(".user-input").change(function() {
+        setRecipeChanged();
+    });
+    
+    window.onbeforeunload = function () {
+        if (recipeChanged) {
+            return 'Sie haben Ihre Änderungen noch nicht gespeichert. Möchten Sie die Seite wirklich verlassen?';
+        }
+    }
 });
 
+function setRecipeChanged(changed) {
+    recipeChanged = changed;
+}
+
 function componentsLoaded(success) {
+    console.log("components");
     if (success) {
         var table = $("#ingredientTable");
         var template = $("#ingredientTable .ingredient")[0];
@@ -80,18 +98,18 @@ function componentsLoaded(success) {
 
 
 
-        sequence = new Sequence(ingredients[1].id);
-        sequence.addPhase(new Phase(150, 80, 100));
-        sequence.addPhase(new Phase(250, 40, 80));
-        sequence.addPhase(new Phase(300, 100, 100));
-        recipe.program.addSequence(sequence);
+        // sequence = new Sequence(ingredients[1].id);
+        // sequence.addPhase(new Phase(150, 80, 100));
+        // sequence.addPhase(new Phase(250, 40, 80));
+        // sequence.addPhase(new Phase(300, 100, 100));
+        // recipe.program.addSequence(sequence);
 
-        sequence = new Sequence(ingredients[2].id);
-        sequence.addPhase(new Phase(260, 200, 70));
-        recipe.program.addSequence(sequence);
+        // sequence = new Sequence(ingredients[2].id);
+        // sequence.addPhase(new Phase(260, 200, 70));
+        // recipe.program.addSequence(sequence);
 
-        // var recipeConfigurator = new RecipeConfigurator(recipe, "recipe");
-        programConfigurator.render();
+        // // var recipeConfigurator = new RecipeConfigurator(recipe, "recipe");
+        // programConfigurator.render();
     } else {
 
     }
