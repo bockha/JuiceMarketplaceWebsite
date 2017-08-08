@@ -6,7 +6,7 @@
             },
             dashboard: {
                 title: "Dashboard",
-                url: "dashboard.html"
+                url: "myreports.html"
             }
         }
 
