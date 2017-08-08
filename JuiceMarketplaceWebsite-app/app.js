@@ -30,9 +30,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
 app.use('/console', isLoggedIn);
+app.use('/myreports', isLoggedIn);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/reports', require('./routes/reports'));
+app.use('/myreports', require('./routes/myreports'));
 app.use('/auth', require('./routes/auth')(passport));
 app.use('/users', isLoggedIn, require('./routes/users'));
 app.use('/components', isLoggedIn, require('./routes/components'));
