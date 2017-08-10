@@ -36,13 +36,16 @@ module.exports = function (passport) {
                 //     oAuthConnector.linkProfileToExistingAccount(strategyName, token, profile);
                 // }
 
-                oAuthConnector.login(strategyName, token, profile, function (err, tokenInfo) {
+                oAuthConnector.login(strategyName, profile.id, token, function (err, tokenInfo) {
                     if (err) {
                         return done(err);
                     }
 
                     profile.token = tokenInfo;
-                    done(err, profile);
+                    done(err, {
+                        id: profile.emails[0].value,
+                        token: tokenInfo
+                    });
                 });
             });
 

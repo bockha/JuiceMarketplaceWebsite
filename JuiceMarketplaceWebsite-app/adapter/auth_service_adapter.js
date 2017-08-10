@@ -33,7 +33,7 @@ self.linkProfileToExistingAccount = function (strategy, token, profile, callback
     throw {name: "NotImplementedError", message: "Function not implemented yet"}; //TODO: Implement this function if needed
 };
 
-self.login = function (strategy, token, profile, callback) {
+self.login = function (strategy, username, password, callback) {
     if (typeof(callback) !== 'function') {
         callback = function (err, data) {
             logger.warn('Callback not handled by caller');
@@ -52,35 +52,59 @@ self.login = function (strategy, token, profile, callback) {
 
     options.form = {
         grant_type: 'password',
-        username: profile.id,
-        password: token,
+        username: username,
+        password: password,
         oauth_provider: strategy
     };
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from OAUTH Server: ' + JSON.stringify(jsonData));
-        if (e) {
-            logger.crit(e);
+        const err = logger.logRequestAndResponse(e, options, r, jsonData);
 
-            callback(e);
-            return;
-        }
-
-        if (r && r.statusCode !== 200) {
-            var err = {
-                status: r.statusCode,
-                message: jsonData
-            };
-            logger.warn(err);
-            callback(err);
-
-            return;
-        }
-
-        callback(null, jsonData);
+        callback(err, jsonData);
     });
 
 };
+
+
+self.signUp = function (firstName, lastName, email, password, callback) {
+    if (typeof(callback) !== 'function') {
+        callback = function (err, data) {
+            logger.warn('Callback not handled by caller');
+        };
+    }
+
+    var options = buildOptionsForRequest(
+        'POST',
+        'http',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        '/users',
+        {}
+    );
+
+
+    options.body = {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: password
+    };
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response from OAUTH Server: ' + JSON.stringify(jsonData));
+        const err = logger.logRequestAndResponse(e, options, r, jsonData);
+
+
+        var userId = null;
+        if (r && r.headers['location']) {
+            userId = r.headers['location'].substr(r.headers['location'].lastIndexOf('/') + 1);
+        }
+        callback(err, userId);
+    });
+
+};
+
 
 self.refreshTokenForUser = function (user, callback) {
     if (new Date(user.token.accessTokenExpiresAt) > new Date()) {
@@ -111,24 +135,9 @@ self.refreshTokenForUser = function (user, callback) {
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from OAUTH Server: ' + JSON.stringify(jsonData));
-        if (e) {
-            logger.crit(e);
+        const err = logger.logRequestAndResponse(e, options, r, jsonData);
 
-            callback(e);
-        }
-
-        if (r && r.statusCode !== 200) {
-            var err = {
-                status: r.statusCode,
-                message: jsonData
-            };
-            logger.warn(err);
-            callback(err);
-
-            return;
-        }
-
-        callback(null, jsonData);
+        callback(err, jsonData);
     });
 };
 
@@ -152,25 +161,9 @@ self.getUserInfoForToken = function (token, callback) {
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from OAUTH Server: ' + JSON.stringify(jsonData));
-        if (e) {
-            logger.crit(e);
+        const err = logger.logRequestAndResponse(e, options, r, jsonData);
 
-            callback(e);
-            return;
-        }
-
-        if (r && r.statusCode !== 200) {
-            var err = {
-                status: r.statusCode,
-                message: jsonData
-            };
-            logger.warn(err);
-            callback(err);
-
-            return;
-        }
-
-        callback(null, jsonData);
+        callback(err, jsonData);
     });
 
 };

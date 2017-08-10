@@ -23,7 +23,7 @@ module.exports = function (passport) {
 
 
     // =============================================================================
-    // AUTHENTICATE (FIRST LOGIN) ==================================================
+    // AUTHENTICATE (GOOGLE) ==================================================
     // =============================================================================
 
     router.get('/google', function (req, res, next) {
@@ -41,22 +41,33 @@ module.exports = function (passport) {
         passport.authenticate('google', {
             successRedirect: '/console/console.html',
             failureRedirect: '/login.html',
-            failureFlash: true,
-            successFlash: 'Success!'
+            failureFlash: true
         })(req, res, next);
     });
 
 
     // =============================================================================
-    // UNLINK ACCOUNTS =============================================================
+    // AUTHENTICATE (IUNO) ==================================================
     // =============================================================================
 
-    // google ---------------------------------
-    router.get('/unlink/google', isLoggedIn, function (req, res, next) {
-        logger.debug('unlink google');
-        logger.debug('AccessToken: ' + req.user.token);
-        //TODO: Remove google account from user profile
-        res.send(200);
+// process the login form
+    router.post('/login', function (req, res, next) {
+        logger.info('iuno login');
+
+        passport.authenticate('local-login', {
+            successRedirect: '/console/console.html',
+            failureRedirect: '/login.html',
+            failureFlash: true
+        })(req, res, next);
+    });
+    router.post('/signup', function (req, res, next) {
+        logger.info('iuno signup');
+
+        passport.authenticate('local-signup', {
+            successRedirect: '/console/console.html',
+            failureRedirect: '/login.html',
+            failureFlash: true
+        })(req, res, next);
     });
 
     return router;
