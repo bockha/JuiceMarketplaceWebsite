@@ -29,7 +29,7 @@ module.exports = function (passport) {
             process.nextTick(function () {
                 oAuthConnector.login(strategyName, email, password, function (err, tokenInfo) {
                     if (err) {
-                        return done(err);
+                        logger.warn(err);
                     }
 
                     if (!tokenInfo) {
