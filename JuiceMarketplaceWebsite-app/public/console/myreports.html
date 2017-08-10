@@ -1,0 +1,54 @@
+<!--css-->
+<link href="css/c3.css" rel="stylesheet" type="text/css"/>
+<link href="css/tiles.css" rel="stylesheet">
+<!-- angular init -->
+<script src="app/app.js"></script>
+
+<!-- servcies -->
+<script src="app/services/myreports-data-service.js"></script>
+
+<!-- controller -->
+<script src="app/controller/myreports-controller.js"></script>
+<script>
+    $(function () {
+            angular.element(document).ready(function () {
+                console.log("3");
+                angular.bootstrap(document, ['myreports']);
+            })
+
+        }
+    )
+</script>
+<div ng-controller='MyReportsController' class="row align-items-star">
+    <div class="container">
+
+
+        <div class="row">
+            <div class="col-md-6">
+                dein<h1 class="title"> Gesamtumsatz </h1>
+                <h1 class="title"><strong style="color: #223b5b">{{totalRevenue}} IUNOs</strong></h1><br>
+            </div>
+            <div class="col-md-6">
+                <div class="tile orange">
+                    <h2 class="title"><strong>{{revenueToday}}</strong> IUNOs</h2>
+                    <p>ist dein Umsatz heute</p>
+                </div>
+                <div class="tile blue">
+                    <h1 class="title"><strong>{{getactivatedlicensessince}}</strong></h1>
+                    <p>
+                    <h4> deiner Drinks wurden innerhalb der letzten <strong>24</strong><br> Stunden verkauft
+                    </h4>
+                    </p>
+                </div>
+                <div class="tile purple">
+                    <h2 class="title"><strong>{{topEverName}}</strong></h2>
+                    <p>ist dein meistverkaufter Drink aller Zeiten</p>
+                </div>
+            </div>
+        </div>
+        <!---->
+        <div class="chart">
+            <div c3-simple class="chart" id="revenuePerDay" config="revenuePerDay"></div>
+        </div>
+    </div>
+</div>

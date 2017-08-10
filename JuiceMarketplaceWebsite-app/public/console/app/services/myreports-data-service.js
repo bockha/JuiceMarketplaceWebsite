@@ -1,11 +1,11 @@
-angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'moment', function($q, $http, moment) {
-    
+angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'moment', function($q, $http, moment) {
+
     function getDrinksByHours(hours) {
         var defer = $q.defer();
         var sinceDate = moment().subtract(hours, 'hours').format('YYYY-MM-DD HH:mm:ss');
         $http({
             method: 'GET',
-            url: '/reports?sinceDate=' + sinceDate
+            url: '/myreports?sinceDate=' + sinceDate
         }).then(function(result) {
             defer.resolve(result);
         }, function(error) {
@@ -16,16 +16,20 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
 
 
     function getTopDrinksEver() {
+        console.log('/myreports?sinceDate=' + moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&topValue=9999');
         var defer = $q.defer();
         $http({
             method: 'GET',
-            url: '/reports?sinceDate=' + moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&topValue=10'
+            url: '/myreports?sinceDate=' + moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&topValue=9999'
         }).then(function(result) {
+            console.log("TEST1 " + result );
             defer.resolve(result);
         }, function(error) {
+            console.log("TEST2");
             defer.reject(error);
+
         });
-        return defer.promise;    
+        return defer.promise;
     }
 
 
@@ -33,13 +37,13 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
         var defer = $q.defer();
         $http({
             method: 'GET',
-            url: '/reports?sinceDate=' +  moment().subtract(24, 'hours').format('YYYY-MM-DD HH:mm:ss') + '&topValue=10'
+            url: '/myreports?sinceDate=' +  moment().subtract(24, 'hours').format('YYYY-MM-DD HH:mm:ss') + '&topValue=10'
         }).then(function(result) {
             defer.resolve(result);
         }, function(error) {
             defer.reject(error);
         });
-        return defer.promise;    
+        return defer.promise;
     }
 
 
@@ -47,7 +51,7 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
         var defer = $q.defer();
         $http({
             method: 'GET',
-            url: '/reports/favorit?sinceDate=' +  moment().subtract(24, 'hours').format('YYYY-MM-DD HH:mm:ss')
+            url: '/myreports/favorit?sinceDate=' +  moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&topValue=10'
         }).then(function(result) {
             defer.resolve(result);
         }, function(error) {
@@ -71,11 +75,11 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
     }
 
 
-    function getRevenuePerHour() {
+    function getRevenuePerDayForUser() {
         var defer = $q.defer();
         $http({
             method: 'GET',
-            url: '/reports/revenue?sinceDate=' +  moment().startOf('day').format('YYYY-MM-DD HH:mm:ss') + '&time=hour'
+            url: '/myreports/revenue?sinceDate=' +  moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&time=day'
         }).then(function(result) {
             defer.resolve(result);
         }, function(error) {
@@ -85,11 +89,24 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
     }
 
 
-    function getRevenuePerDay() {
+    function getRevenueForToday() {
         var defer = $q.defer();
         $http({
             method: 'GET',
-            url: '/reports/revenue?sinceDate=' +  moment().subtract(7, 'days').format('YYYY-MM-DD HH:mm:ss') + '&time=day'
+            url: '/myreports/revenue?sinceDate=' +  moment().startOf('day').format('YYYY-MM-DD HH:mm:ss') + '&time=day'
+        }).then(function(result) {
+            defer.resolve(result);
+        }, function(error) {
+            defer.reject(error);
+        });
+        return defer.promise;
+    }
+
+    function getTotalRevenueForUser() {
+        var defer = $q.defer();
+        $http({
+            method: 'GET',
+            url: '/myreports/revenue'
         }).then(function(result) {
             defer.resolve(result);
         }, function(error) {
@@ -105,7 +122,8 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
         getTopDrinksOfToday: getTopDrinksOfToday,
         getFavoriteJuicesSince: getFavoriteJuices,
         getWorkloadSince: getWorkload,
-        getRevenuePerHour: getRevenuePerHour,
-        getRevenuePerDay: getRevenuePerDay
+        getRevenuePerDayForUser: getRevenuePerDayForUser,
+        getRevenueForToday: getRevenueForToday,
+        getTotalRevenueForUser: getTotalRevenueForUser
     };
 }]);

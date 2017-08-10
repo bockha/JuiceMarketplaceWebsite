@@ -8,9 +8,18 @@
 	<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 	<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 	<script src="js/console.js"></script>
+    <script src="js/underscore-min.js" charset="utf-8"></script>
+    <script src="js/d3.min.js" charset="utf-8"></script>
+    <script src="js/c3.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular_c3_simple.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/angular-moment.js"></script>
+
   <link rel="stylesheet" href="css/style.css">
+
 </head>
-<body>
+<body >
 <div id="sidebar" class="sidenav">
 	<div class="title">TDM Console</div>
    <a href="console.html?page=dashboard">Dashboard</a> 
@@ -31,14 +40,14 @@
         <span class="icon-bar"></span>
       </button>
       <!-- <a href="javascript:toggleNav();">&#9776;</a> -->
-      <a class="navbar-brand" href="javascript:toggleNav();">dsdasdsad</a>
+      <a class="navbar-brand" href="javascript:toggleNav();"></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="user-id">Max Mustermann</span><span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="user-id"></span><span class="caret"></span></a>
           <ul class="dropdown-menu">
             <!-- <li><a href="#">Profil</a></li>
             <li role="separator" class="divider"></li> -->
@@ -49,7 +58,7 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-	<div id="page_content">
+	<div id="page_content" >
 	</div>
 </div>
 </body>
