@@ -88,58 +88,38 @@ angular
                     var techName = [];
                     var types = [];
                     var i = 0;
-                    var j = 0;
+                    var count = 0;
 
-                    drinks.forEach(function (dataCategory) {
-                        if (!categories.includes(moment(dataCategory.date).format('YYYY-MM-DD'))) {
-                            categories[j] = moment(dataCategory.date).format('YYYY-MM-DD');
-                        }
-                        //delete undefined values from array
-                        if (!categories[j - 1]) {
-                            categories.splice(j - 1, 1);
-                        }
-                        j++;
-                    }, this);
-
-                    /*drinks.forEach(function (revenueData) {
-                     if(!techName.includes(revenueData.technologydataname)) {
-                     techName[i] = revenueData.technologydataname;
-                     columns[i] = new Array(revenueData.technologydataname);
-
-                     if(moment(revenueData.date).format('YYYY-MM-DD') == categories[i]) {
-                     columns[i].push(revenueData.revenue);
-                     }
-                     else {columns[i].push(0);}
-                     }
-                     i++;
-                     });*/
-
-
-                    drinks.forEach(function (revenueData) {
-                        if (!columns.includes(revenueData.technologydataname)) {
-                            if (!techName.includes(revenueData.technologydataname)) {
-                                techName[i] = revenueData.technologydataname;
-                                columns[i] = new Array(revenueData.technologydataname);
-                                categories.forEach(function (cat) {
-                                    if (techName[i] == revenueData.technologydataname && categories.includes(cat)) {
-                                        columns[i].push(revenueData.revenue);
-                                    }
-                                    else {
-                                        columns[i].push(0);
-                                    }
-                                }, this);
-                            }
+                    drinks.forEach(function(catData){
+                        //Create Categories
+                        if(!categories.includes(catData.date)) {
+                            //count different categories
+                            categories[count] = catData.date;
+                            count++;
                         }
                         i++;
                     }, this);
 
-                    $scope.revenuePerDay.data.columns = columns;
+                    //Reset i and count
+                    i = 0;
+                    count = 0;
+                    drinks.forEach(function(colData){
+                        //Create Columns Head;
+                        if(!techName.includes(colData.technologydataname)) {
+                            techName[count] = new Array(colData.technologydataname);
+                            count++;
+                        }
+                        i++
+                    }, this);
+
+                    /*$scope.revenuePerDay.data.columns = columns;
                     $scope.revenuePerDay.axis.x.categories = categories;
                     $scope.revenuePerDay.data.groups = new Array(techName);
-                    $scope.revenuePerDay.data.types = types;
+                    $scope.revenuePerDay.data.types = types;*/
 
 
                     console.info("Cat: ", categories);
+                    console.info
                     console.info("Columns: ", columns);
                     console.info("Group: ", $scope.revenuePerDay.data.groups);
 
