@@ -41,7 +41,6 @@ module.exports = function (passport) {
                         return done(err);
                     }
 
-                    profile.token = tokenInfo;
                     done(err, {
                         id: profile.emails[0].value,
                         token: tokenInfo
