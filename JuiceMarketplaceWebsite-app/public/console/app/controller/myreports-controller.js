@@ -6,11 +6,11 @@ angular
             $scope.revenuePerDay = {
                 size: {
                     height: 250,
-                    width: 1150
+                    width: 750
                 },
                 data: {
                     columns: [],
-                    type: 'area',
+                    types: {},
                     groups: []
 
                 },
@@ -131,13 +131,26 @@ angular
                    //Get TechnologyDataName
                    i = 0;
                    drinks.forEach(function (revData) {
-
                        if(!techName.includes(revData.technologydataname)) {
-                           techName[i] = revData.technologydataname;
-                           columns[i] = new Array(revData.technologydataname);
+                           techName.push(revData.technologydataname);
+                           columns.push(new Array(revData.technologydataname));
+                           types.push(new Array(revData.technologydataname));
                        }
                        i++;
                    }, this);
+
+                   //Create types
+                   i = 0;
+                   var test = new Object();
+                   techName.forEach(function (name) {
+                       if(name == "Benchmark") {
+                            test[name] = "line";
+                       }
+                       else {
+                           test[name] = "area";
+                       }
+                       i++;
+                   },this);
 
                    // Get Revenue
                    drinks.forEach(function (revData) {
@@ -150,11 +163,20 @@ angular
                        }, this);
                    }, this);
 
+                   var index;
+                   //Create Groups without Benchmark
+                    techName.forEach(function (name) {
+                        if(name == "Benchmark") {
+                            index = techName.indexOf(name)
+                            techName.splice(index,1);
+                        }
+                    }, this);
 
                     $scope.revenuePerDay.data.columns = columns;
                     $scope.revenuePerDay.axis.x.categories = categories;
                     $scope.revenuePerDay.data.groups = new Array(techName);
-                    $scope.revenuePerDay.data.types = types;
+                    $scope.revenuePerDay.data.types =  test;
+
 
                 }, function (error) {
                     console.log(error);
