@@ -12,7 +12,6 @@
 <script>
     $(function () {
             angular.element(document).ready(function () {
-                console.log("3");
                 angular.bootstrap(document, ['myreports']);
             })
 
@@ -21,12 +20,28 @@
 </script>
 <div ng-controller='MyReportsController' class="row align-items-star">
     <div class="container">
+        <h2>Gesamtumsatz <strong>{{totalRevenue}}</strong> IUNOs</h2>
+        <hr>
+        <!-- <hr>
+         <nav class="navbar">
+             <div class="container-fluid">
+                 <div class="navbar-header">
+                     <a class="navbar-brand" href="#">WebSiteName</a>
+                 </div>
+                 <ul class="nav navbar-nav">
+                     <li class="active"><a href="#">Home</a></li>
+                     <li><a href="#">Page 1</a></li>
+                     <li><a href="#">Page 2</a></li>
+                     <li><a href="#">Page 3</a></li>
+                 </ul>
+             </div>
+         </nav>-->
 
 
-        <div class="row">
+        <!--<div class="row">
             <div class="col-md-6">
-                dein<h1 class="title"> Gesamtumsatz </h1>
-                <h1 class="title"><strong style="color: #223b5b">{{totalRevenue}} IUNOs</strong></h1><br>
+                <h2> dein Gesamtumsatz </h2>
+                <h1 class="title"><strong>{{totalRevenue}} IUNOs</strong></h1><br>
             </div>
             <div class="col-md-6">
                 <div class="tile orange">
@@ -47,8 +62,32 @@
             </div>
         </div>
         <!---->
-        <div class="chart">
-            <div c3-simple class="chart" id="revenuePerDay" config="revenuePerDay"></div>
+        <div class="row"><h3>Umsatz pro Drink</h3>
+                <div class="chart">
+                    <div c3-simple class="chart" id="revenuePerDay" config="revenuePerDay"></div>
+                </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-7">
+                <button type="button" class="btn btn-default btn-circle btn-xl">Top 5 Drinks aller Hersteller
+                    <div class="diagram">
+                        <div c3-simple class="chart" id="topEver" config="topEver"></div>
+                    </div>
+                </button>
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-default btn-circle btn-xl">dein meistverkaufter Drink
+                    <p>
+                    <h2>{{topEverName}}</h2>
+                    </p>
+                    <hr>
+                    dein Umsatz heute (IUNOs)
+                    <p>
+                    <h2>{{revenueToday}}</h2>
+                    </p>
+                </button>
+            </div>
         </div>
     </div>
 </div>

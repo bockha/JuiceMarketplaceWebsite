@@ -5,13 +5,14 @@ angular
 
             $scope.revenuePerDay = {
                 size: {
-                    height: 350,
+                    height: 250,
                     width: 1150
                 },
                 data: {
                     columns: [],
                     type: 'area',
                     groups: []
+
                 },
                 axis: {
                     x: {
@@ -23,11 +24,41 @@ angular
                         label: 'Revenue',
                         padding: {
                             bottom: 0
-                        }
+                        },
+                        inner: true
                     }
                 },
                 legend: {
                     show: true
+                }
+            };
+
+            $scope.topEver = {
+                size: {
+                    height: 100,
+                    width: 600
+                },
+                padding: {
+                    top: 0,
+                    right: 50,
+                    bottom: 40,
+                    left: 180
+                },
+                data: {
+                    x: 'x',
+                    columns: [],
+                    type: 'bar'
+                },
+                axis: {
+                    rotated: true,
+                    x: {
+                        type: 'category'
+                    },
+                    y: {show:false}
+
+                },
+                legend: {
+                    show: false
                 }
             };
 
@@ -58,7 +89,6 @@ angular
 
 
             $scope.getTotalRevenueForUser = function () {
-                console.log("START-Controller 2");
                 MyReportsDataService.getTotalRevenueForUser().then(function (data) {
                     var drinks = data.data;
                     var totalRev = drinks[0].revenue;
@@ -82,7 +112,6 @@ angular
             $scope.getRevenuePerDayForUser = function () {
                MyReportsDataService.getRevenuePerDayForUser().then(function (data) {
                     var drinks = data.data;
-                    console.info(drinks);
                     var categories = [];
                     var columns = [];
                     var techName = [];
@@ -90,39 +119,66 @@ angular
                     var i = 0;
                     var count = 0;
 
-                    drinks.forEach(function(catData){
-                        //Create Categories
-                        if(!categories.includes(catData.date)) {
-                            //count different categories
-                            categories[count] = catData.date;
-                            count++;
-                        }
-                        i++;
-                    }, this);
+                    //Get Categories
+                   drinks.forEach(function (revenueData) {
+                       //Get Categories for X-Axis
+                       if(!categories.includes(moment(revenueData.date).format('YYYY-MM-DD'))) {
+                           categories.push(moment(revenueData.date).format('YYYY-MM-DD'));
+                       }
+                       i++;
+                   }, this);
 
-                    //Reset i and count
-                    i = 0;
-                    count = 0;
-                    drinks.forEach(function(colData){
-                        //Create Columns Head;
-                        if(!techName.includes(colData.technologydataname)) {
-                            techName[count] = new Array(colData.technologydataname);
-                            count++;
-                        }
-                        i++
-                    }, this);
+                   //Get TechnologyDataName
+                   i = 0;
+                   drinks.forEach(function (revData) {
 
-                    /*$scope.revenuePerDay.data.columns = columns;
+                       if(!techName.includes(revData.technologydataname)) {
+                           techName[i] = revData.technologydataname;
+                           columns[i] = new Array(revData.technologydataname);
+                       }
+                       i++;
+                   }, this);
+
+                   // Get Revenue
+                   drinks.forEach(function (revData) {
+                       count=0;
+                       techName.forEach(function (tName) {
+                           if(tName == revData.technologydataname) {
+                               columns[count].push(revData.revenue);
+                           }
+                           count++;
+                       }, this);
+                   }, this);
+
+
+                    $scope.revenuePerDay.data.columns = columns;
                     $scope.revenuePerDay.axis.x.categories = categories;
                     $scope.revenuePerDay.data.groups = new Array(techName);
-                    $scope.revenuePerDay.data.types = types;*/
+                    $scope.revenuePerDay.data.types = types;
 
+                }, function (error) {
+                    console.log(error);
+                });
+            }
 
-                    console.info("Cat: ", categories);
-                    console.info
-                    console.info("Columns: ", columns);
-                    console.info("Group: ", $scope.revenuePerDay.data.groups);
+            $scope.getTopDrinksEver = function () {
+                MyReportsDataService.getTopDrinksEver().then(function (data) {
+                    var drinks = data.data;
+                    drinks.sort(function (a, b) {
+                        return b.rank - a.rank;
+                    });
+                    $scope.topEver.data.columns = [];
 
+                    var keys = ['x'];
+                    var values = ['value'];
+
+                    drinks.forEach(function (drink) {
+                        keys.push(drink.technologydataname);
+                        values.push(drink.rank);
+                    }, this);
+
+                    $scope.topEver.data.columns.push(keys);
+                    $scope.topEver.data.columns.push(values);
 
                 }, function (error) {
                     console.log(error);
@@ -130,11 +186,11 @@ angular
             }
 
             var getData = function () {
-                console.log("START-Controller 2");
                 $scope.getDrinksByHours(5);
                 /*$scope.getTopDrinksOfToday();
                  $scope.getFavoriteJuicesSince();
                  $scope.getWorkloadSince();*/
+                $scope.getTopDrinksEver();
                 $scope.getRevenuePerDayForUser();
                 $scope.getTopDrinkNameEver();
                 $scope.getRevenueForToday();
@@ -156,7 +212,6 @@ angular
             };
 
             //Start polling the data from the server
-            console.log("START-Controller 2");
             getData();
 
             //Always clear the timeout when the view is destroyed, otherwise it will keep polling

@@ -16,16 +16,13 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
 
 
     function getTopDrinksEver() {
-        console.log('/myreports?sinceDate=' + moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&topValue=9999');
         var defer = $q.defer();
         $http({
             method: 'GET',
-            url: '/myreports?sinceDate=' + moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&topValue=9999'
+            url: '/myreports?sinceDate=' + moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&topValue=5'
         }).then(function(result) {
-            console.log("TEST1 " + result );
             defer.resolve(result);
         }, function(error) {
-            console.log("TEST2");
             defer.reject(error);
 
         });

@@ -19,14 +19,14 @@ strong {
 
 h1 {
     font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
-    line-height: 1.5em;
+    line-height: 1.0em;
     font-size: 50px;
     font-weight: 600;
 }
 
 h2, h3, h4, h5, h6 {
     font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
-    line-height: 1.5em;
+    line-height: 1.0em;
     font-weight: 300;
 }
 
@@ -57,12 +57,12 @@ strong {
 }
 
 .tile.red {
-    background: #AC193D;
+    background: #AC693D;
     width: 50%;
 }
 
 .tile.green {
-    background: #223b5b;
+    background: white;
     width: 100%;
 }
 
@@ -72,6 +72,6 @@ strong {
 }
 
 .tile.orange {
-    background: #DC572E;
+    background: #D1D1D1;
     width: 30%;
 }
