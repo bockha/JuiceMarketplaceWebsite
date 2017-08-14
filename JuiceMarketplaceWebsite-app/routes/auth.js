@@ -45,6 +45,28 @@ module.exports = function (passport) {
         })(req, res, next);
     });
 
+    // =============================================================================
+    // AUTHENTICATE (TWITTER) ==================================================
+    // =============================================================================
+
+    router.get('/twitter', function (req, res, next) {
+        logger.info('twitter login');
+
+        passport.authenticate('twitter', {
+            scope: 'email',
+            approvalPrompt: 'force'
+        })(req, res, next);
+    });
+
+    router.get('/twitter/callback', function (req, res, next) {
+        logger.info('twitter callback');
+
+        passport.authenticate('twitter', {
+            successRedirect: '/console/console.html',
+            failureRedirect: '/login.html',
+            failureFlash: true
+        })(req, res, next);
+    });
 
     // =============================================================================
     // AUTHENTICATE (IUNO) ==================================================
