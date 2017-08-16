@@ -2,92 +2,48 @@
  * Created by beuttlerma on 01.06.17.
  */
 
-var LocalStrategy = require('passport-local').Strategy;
-var oAuthConnector = require('../../adapter/auth_service_adapter');
-var logger = require('../../global/logger');
-var strategyName = 'iuno';
+const OAuthStrategy = require('passport-oauth2');
+const oAuthConnector = require('../../adapter/auth_service_adapter');
+const logger = require('../../global/logger');
+const strategyName = 'iuno';
+const CONFIG = require('../../config/config_loader');
 
+String.prototype.format = function () {
+    var args = [].slice.call(arguments);
+    return this.replace(/(\{\d+\})/g, function (a) {
+        return args[+(a.substr(1, a.length - 2)) || 0];
+    });
+};
 
 module.exports = function (passport) {
-    logger.debug('Configure user/pwd auth');
+    logger.debug('Configure iuno auth');
 
-    // =========================================================================
-    // LOCAL LOGIN =============================================================
-    // =========================================================================
-    passport.use('local-login', new LocalStrategy({
-            // by default, local strategy uses username and password, we will override with email
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
+    const authServerUrl = '{0}://{1}:{2}'.format(
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT);
+
+    passport.use('iuno', new OAuthStrategy({
+            authorizationURL: authServerUrl + '/oauth/authorise',
+            tokenURL: authServerUrl + '/oauth/token',
+            clientID: CONFIG.OAUTH_CREDENTIALS.CLIENT_ID,
+            clientSecret: CONFIG.OAUTH_CREDENTIALS.CLIENT_SECRET,
+            callbackURL: CONFIG.OAUTH_CREDENTIALS.CALLBACK_URL,
+            passReqToCallback: true
         },
-        function (req, email, password, done) {
-            if (email) {
-                email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
-            }
+        function (req, token, refreshToken, profile, done) {
+            oAuthConnector.getUserInfoForToken(token.accessToken, function(err, userInfo) {
+                if (err) {
+                    return done(err);
+                }
 
-            // asynchronous
-            process.nextTick(function () {
-                oAuthConnector.login(strategyName, email, password, function (err, tokenInfo) {
-                    if (err) {
-                        return done(err);
-                    }
-
-                    if (!tokenInfo) {
-                        return done(null, false, {message: 'login failed: wrong user or password'});
-                    }
-
-                    done(err, {
-                        id: email,
-                        token: tokenInfo
-                    });
+                done(null, {
+                    id: userInfo.useremail,
+                    token: token
                 });
             });
 
-        }));
+        }
+    ));
 
-    passport.use('local-signup', new LocalStrategy({
-            // by default, local strategy uses username and password, we will override with email
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
-        },
-        function (req, email, password, done) {
-            if (email) {
-                email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
-            }
-
-            // asynchronous
-            process.nextTick(function () {
-                oAuthConnector.signUp(
-                    req.body.first_name,
-                    req.body.last_name,
-                    email,
-                    password,
-                    function (err, userId) {
-                        if (err) {
-                            return done(err);
-                        }
-
-                        if (!userId) {
-                            return done(null, false, {message: 'Registration failed. Username maybe already used.'});
-                        }
-
-                        oAuthConnector.login(strategyName, email, password, function (err, tokenInfo) {
-                            if (err) {
-                                return done(err);
-                            }
-
-                            if (!tokenInfo) {
-                                return done(null, false, {message: 'login failed: wrong user or password'});
-                            }
-
-                            done(err, {
-                                id: email,
-                                token: tokenInfo
-                            });
-                        });
-                    });
-            });
-
-        }));
 };

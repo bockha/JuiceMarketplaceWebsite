@@ -24,7 +24,7 @@ function configurePassportForStragiesInPath(dirPath, passport) {
                 }
 
                 if (stat.isFile()) {
-                    if(filePath === __filename) {
+                    if (filePath === __filename) {
                         return;
                     }
 
@@ -37,7 +37,7 @@ function configurePassportForStragiesInPath(dirPath, passport) {
     });
 }
 
-module.exports = function(passport) {
+module.exports = function (passport) {
 
     // =========================================================================
     // basic passport setup   ==================================================
@@ -46,19 +46,19 @@ module.exports = function(passport) {
     // required for persistent login sessions
     // passport needs ability to serialize and unserialize users out of session
     // used to serialize the user for the session
-    passport.serializeUser(function(user, done) {
-        logger.debug('Serialize User: '+ JSON.stringify(user));
+    passport.serializeUser(function (user, done) {
+        logger.debug('Serialize User: ' + JSON.stringify(user));
         userStore[user.id] = user;
 
         done(null, user.id);
     });
 
     // used to deserialize the user
-    passport.deserializeUser(function(id, done) {
+    passport.deserializeUser(function (id, done) {
         logger.debug('Deserialize User: ' + JSON.stringify(id));
         var user = userStore[id];
 
-        authServer.refreshTokenForUser(user, function(err, updatedUser) {
+        authServer.refreshTokenForUser(user, function (err, updatedUser) {
             if (err) {
                 logger.warn('Error while refreshing access token: ' + JSON.stringify(err));
                 logger.info('Forcing log out user.');
@@ -69,7 +69,6 @@ module.exports = function(passport) {
                 done(err, updatedUser);
             }
         });
-
     });
 
 
