@@ -39,7 +39,8 @@ app.use('/auth', require('./routes/auth')(passport));
 app.use('/users', isLoggedIn, require('./routes/users'));
 app.use('/components', isLoggedIn, require('./routes/components'));
 
-app.use('/', isLoggedIn, function(req, res, next) {res.redirect('/console/console.html')});
+app.use('/console', isLoggedIn, function(req, res, next) {res.redirect('/console.html')});
+app.use('/', function(req, res, next) {res.redirect('/landingpage/iuno.html')});
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
