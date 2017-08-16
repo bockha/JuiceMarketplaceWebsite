@@ -22,125 +22,6 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
     }
 }
 
-self.linkProfileToExistingAccount = function (strategy, token, profile, callback) {
-    if (typeof(callback) !== 'function') {
-        callback = function (err, data) {
-            logger.warn('Callback not handled by caller');
-        };
-    }
-
-    return;
-    throw {name: "NotImplementedError", message: "Function not implemented yet"}; //TODO: Implement this function if needed
-};
-
-self.login = function (strategy, username, password, callback) {
-    if (typeof(callback) !== 'function') {
-        callback = function (err, data) {
-            logger.warn('Callback not handled by caller');
-        };
-    }
-
-    var options = buildOptionsForRequest(
-        'POST',
-        'http',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
-        '/oauth/token',
-        {}
-    );
-
-
-    options.form = {
-        grant_type: 'password',
-        username: username,
-        password: password,
-        oauth_provider: strategy
-    };
-
-    request(options, function (e, r, jsonData) {
-        logger.debug('Response from OAUTH Server: ' + JSON.stringify(jsonData));
-        const err = logger.logRequestAndResponse(e, options, r, jsonData);
-
-        callback(err, jsonData);
-    });
-
-};
-
-
-self.signUp = function (firstName, lastName, email, password, callback) {
-    if (typeof(callback) !== 'function') {
-        callback = function (err, data) {
-            logger.warn('Callback not handled by caller');
-        };
-    }
-
-    var options = buildOptionsForRequest(
-        'POST',
-        'http',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
-        '/users',
-        {}
-    );
-
-
-    options.body = {
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        password: password
-    };
-
-    request(options, function (e, r, jsonData) {
-        logger.debug('Response from OAUTH Server: ' + JSON.stringify(jsonData));
-        const err = logger.logRequestAndResponse(e, options, r, jsonData);
-
-
-        var userId = null;
-        if (r && r.headers['location']) {
-            userId = r.headers['location'].substr(r.headers['location'].lastIndexOf('/') + 1);
-        }
-        callback(err, userId);
-    });
-
-};
-
-
-self.refreshTokenForUser = function (user, callback) {
-    if (new Date(user.token.accessTokenExpiresAt) > new Date()) {
-        callback(null, user);
-        return;
-    }
-
-    if (new Date(user.token.refreshTokenExpiresAt) > new Date()) {
-        callback(new Error('RefreshTokenExpired'));
-        return;
-    }
-
-    // Refresh access token
-    var options = buildOptionsForRequest(
-        'POST',
-        'http',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
-        '/oauth/token',
-        {}
-    );
-
-
-    options.form = {
-        grant_type: 'refresh_token',
-        refresh_token: user.token.refreshToken
-    };
-
-    request(options, function (e, r, jsonData) {
-        logger.debug('Response from OAUTH Server: ' + JSON.stringify(jsonData));
-        const err = logger.logRequestAndResponse(e, options, r, jsonData);
-
-        callback(err, jsonData);
-    });
-};
-
 self.getUserInfoForToken = function (token, callback) {
     if (typeof(callback) !== 'function') {
         callback = function (err, data) {
@@ -151,8 +32,8 @@ self.getUserInfoForToken = function (token, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.PORT,
         '/userinfo',
         {
             access_token: token
@@ -193,6 +74,43 @@ self.getImageForUser = function (user, callback) {
         callback(err, {
             imageBuffer: imageBuffer,
             contentType: r ? r.headers['content-type'] : null
+        });
+    });
+};
+
+self.refreshTokenForUser = function (user, callback) {
+    if (new Date(user.token.accessTokenExpiresAt) > new Date()) {
+        callback(null, user);
+        return;
+    }
+
+    if (new Date(user.token.refreshTokenExpiresAt) > new Date()) {
+        callback(new Error('RefreshTokenExpired'));
+        return;
+    }
+
+    // Refresh access token
+    var options = buildOptionsForRequest(
+        'POST',
+        'http',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        '/oauth/token',
+        {}
+    );
+
+
+    options.form = {
+        grant_type: 'refresh_token',
+        refresh_token: user.token.refreshToken
+    };
+
+    request(options, function (e, r, data) {
+        var err = logger.logRequestAndResponse(e, options, r, data);
+
+        callback(err, {
+            id: user.id,
+            token: data
         });
     });
 };
