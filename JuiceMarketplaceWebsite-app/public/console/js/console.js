@@ -7,6 +7,10 @@
             dashboard: {
                 title: "Dashboard",
                 url: "myreports.html"
+            },
+            administration: {
+                title: "Getränke verwalten",
+                url: "administration.html"
             }
         }
 
