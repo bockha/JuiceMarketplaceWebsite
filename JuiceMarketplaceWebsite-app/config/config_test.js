@@ -16,35 +16,19 @@ self.HOST_SETTINGS = {
     },
     OAUTH_SERVER: {
         HOST: 'test-tdm.fritz.box',
+        PORT: 3005
+    },
+    OAUTH_SERVER_SECURE: {
+        PROTOCOL: 'HTTP',
+        HOST: 'localhost',
         PORT: 3006
     }
 };
 
-self.OAUTH_PROVIDER = {
-    facebookAuth: {
-        'clientID': '', // your App ID
-        'clientSecret': '', // your App Secret
-        'callbackURL': 'http://localhost:8080/auth/facebook/callback',
-        'profileURL': 'https://graph.facebook.com/v2.5/me?fields=first_name,last_name,email',
-        'profileFields': ['id', 'name', 'photos']
-    },
-
-    twitterAuth: {
-        'consumerKey': '',
-        'consumerSecret': '',
-        'callbackURL': 'http://127.0.0.1:3004/auth/twitter/callback'
-    },
-
-    googleAuth: {
-        'clientID': '{CLIENT_ID}.apps.googleusercontent.com',
-        'clientSecret': '{CLIENT_SECRET}',
-        'callbackURL': 'http://127.0.0.1:3004/auth/google/callback'
-    }
-};
-
 self.OAUTH_CREDENTIALS = {
-    CLIENT_ID: '43d9bfb5-cdf4-4a00-9658-175397a69efc',
-    CLIENT_SECRET: 'is secret ;-)'
+    CLIENT_ID: 'adb4c297-45bd-437e-ac90-9179eea41744',
+    CLIENT_SECRET: 'IsSecret',
+    CALLBACK_URL: 'http://localhost:3004/auth/iuno/callback'
 };
 
 
