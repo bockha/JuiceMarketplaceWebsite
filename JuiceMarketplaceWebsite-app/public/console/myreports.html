@@ -12,7 +12,6 @@
 <script>
     $(function () {
             angular.element(document).ready(function () {
-                console.log("3");
                 angular.bootstrap(document, ['myreports']);
             })
 
@@ -21,34 +20,52 @@
 </script>
 <div ng-controller='MyReportsController' class="row align-items-star">
     <div class="container">
-
-
+        <h2>Gesamtumsatz <strong style="color: #AAC253">{{totalRevenue}}</strong> IUNOs</h2>
+        <hr>
         <div class="row">
-            <div class="col-md-6">
-                dein<h1 class="title"> Gesamtumsatz </h1>
-                <h1 class="title"><strong style="color: #223b5b">{{totalRevenue}} IUNOs</strong></h1><br>
+            <h3><strong style="color: #AAC253">Umsatz pro Drink</strong></h3>
+            <div>
+            <div class="col-md-8">
+                <div class="chart">
+                    <div c3-simple class="chart" id="revenuePerDay" config="revenuePerDay"></div>
+                </div>
             </div>
-            <div class="col-md-6">
-                <div class="tile orange">
-                    <h2 class="title"><strong>{{revenueToday}}</strong> IUNOs</h2>
-                    <p>ist dein Umsatz heute</p>
-                </div>
-                <div class="tile blue">
-                    <h1 class="title"><strong>{{getactivatedlicensessince}}</strong></h1>
+            <div class="col-md-4">
+               <button type="button" class="btn btn-default btn-circle btn-xl">
+                dein meistverkaufter Drink
                     <p>
-                    <h4> deiner Drinks wurden innerhalb der letzten <strong>24</strong><br> Stunden verkauft
-                    </h4>
+                    <h2><strong style="color: #AAC253">{{topEverName}}</strong></h2>
                     </p>
-                </div>
-                <div class="tile purple">
-                    <h2 class="title"><strong>{{topEverName}}</strong></h2>
-                    <p>ist dein meistverkaufter Drink aller Zeiten</p>
-                </div>
+                    <hr>
+                    dein Umsatz heute (IUNOs)
+                    <p>
+                    <h2><strong style="color: #AAC253">{{revenueToday}}</strong></h2>
+                    </p>
+                </button>
             </div>
         </div>
-        <!---->
-        <div class="chart">
-            <div c3-simple class="chart" id="revenuePerDay" config="revenuePerDay"></div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <h3><strong style="color: #AAC253"> Top 5 Drinks aller Hersteller</strong></h3>
+                <button type="button" class="btn btn-default btn-circle btn-xl"> <br>
+                    <div class="diagram">
+                        <div c3-simple class="chart" id="topEver" config="topEver"></div>
+                    </div>
+                </button>
+            </div>
+            <!--<div class="col-md-4">
+                <button type="button" class="btn btn-default btn-circle btn-xl">dein meistverkaufter Drink
+                    <p>
+                    <h2>{{topEverName}}</h2>
+                    </p>
+                    <hr>
+                    dein Umsatz heute (IUNOs)
+                    <p>
+                    <h2>{{revenueToday}}</h2>
+                    </p>
+                </button>
+            </div>-->
         </div>
     </div>
 </div>
