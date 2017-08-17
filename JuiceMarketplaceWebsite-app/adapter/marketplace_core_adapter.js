@@ -99,7 +99,7 @@ self.getRecipesForUser = function (userId, accessToken, callback) {
     });
 };
 
-self.saveRecipeForUser = function (token, callback) {
+self.saveRecipeForUser = function (token, recipeData, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -119,15 +119,21 @@ self.saveRecipeForUser = function (token, callback) {
     );
     options.headers.authorization = 'Bearer ' + token.accessToken;
 
+    options.body = recipeData;
+
     request(options, function (e, r, jsonData) {
         var err = logger.logRequestAndResponse(e, options, r, jsonData);
-        var recipe = null;
 
-        logger.debug(r.header('Location'));
+        if (err) {
+            return callback(err);
+        }
+        var recipeId = null;
 
-        //TODO: return technologyDataUUID
+        if (r.headers['location']) {
+            recipeId = r.headers['location'].substr(r.headers['location'].lastIndexOf('/') + 1)
+        }
 
-        callback(err, null);
+        callback(err, recipeId);
     });
 };
 

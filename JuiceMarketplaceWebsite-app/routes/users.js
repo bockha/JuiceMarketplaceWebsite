@@ -10,6 +10,8 @@ var programConverter = require('../services/program_converter');
 var logger = require('../global/logger');
 var helper = require('../services/helper_service');
 
+const CONFIG = require('../config/config_loader');
+
 /**
  * Retrieves the user information for the logged in user
  */
@@ -79,13 +81,13 @@ router.post('/:id/recipes', function (req, res, next) {
 
     var coreData = {};
 
-    coreData.technologydataname = title;
-    coreData.technologydata = JSON.stringify(machineProgram);
-    coreData.technologydatadescription = description;
-    coreData.technologyid = '';
-    coreData.licensefee = licenseFee;
-    coreData.retailprice = licenseFee * 3;
-    coreData.componentlist = componentsIds;
+    coreData.technologyDataName = title;
+    coreData.technologyData = JSON.stringify(machineProgram);
+    coreData.technologyDataDescription = description;
+    coreData.technologyUUID = CONFIG.TECHNOLOGY_UUID;
+    coreData.licenseFee = licenseFee;
+    coreData.retailPrice = licenseFee * 3;
+    coreData.componentList = componentsIds;
 
     marketplaceCore.saveRecipeForUser(req.user.token, coreData, function (err, recipeId) {
         if (err) {
@@ -93,9 +95,18 @@ router.post('/:id/recipes', function (req, res, next) {
         }
 
         const fullUrl = helper.buildFullUrlFromRequest(req);
-        res.set('Location', fullUrl + recipeId);
+        res.set('Location', fullUrl + 'recipes/' + recipeId);
         res.sendStatus(201);
     });
+});
+
+
+/**
+ * Get a specific recipe for a user
+ */
+router.get('/:id/recipes/:recipe_id', function (req, res, next) {
+
+    res.send('Not implemented yet');
 });
 
 
