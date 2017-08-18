@@ -33,5 +33,7 @@ self.OAUTH_CREDENTIALS = {
     CALLBACK_URL: 'http://localhost:3004/auth/iuno/callback'
 };
 
+self.TECHNOLOGY_UUID = 'da17a8fc-a5b3-40a4-b6a5-276667db027a';
+
 
 module.exports = self;

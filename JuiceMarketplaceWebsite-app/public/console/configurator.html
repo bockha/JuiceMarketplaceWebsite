@@ -280,6 +280,7 @@
 					complete: function() {
 						console.log(" ############### FERTIG ###############");
 						setRecipeChanged(false);
+                        window.location.replace("/console/console.html");
 					}
 				});
 
@@ -296,20 +297,14 @@
 
 		$( "#license-fee" ).selectmenu()
 			.on("selectmenuchange", function (event, ui) {
-				var value = parseFloat(ui.item.value);
+				var value = parseInt(ui.item.value);
 				recipe.licenseFee = value;
 			}
 		);
 
-		var formatter = new Intl.NumberFormat('de-DE', {
-			style: 'currency',
-			currency: 'EUR',
-			minimumFractionDigits: 2,
-		});
-
-		var licenseFeeTiers = [0.49, 0.99, 1.49, 1.99, 2.99, 3.99, 4.99, 5.99, 7.99, 9.99, 14.99, 19.99];
+		var licenseFeeTiers = [1, 2, 3, 4, 5];
 		licenseFeeTiers.forEach(function(tier) {
-			var fee = formatter.format(tier);
+			var fee = tier + ',- IUNO';
 			$( "#license-fee" ).append($('<option></option>').val(tier).html(fee));
 		});
 </script>
