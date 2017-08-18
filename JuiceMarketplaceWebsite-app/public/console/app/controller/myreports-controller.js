@@ -11,9 +11,10 @@ angular
                 data: {
                     columns: [],
                     types: {},
-                    groups: []
+                    groups: [],
+                    empty: { label: { text: "No Data Available" }}
 
-                },
+                    },
                 axis: {
                     x: {
                         label: 'Date',
@@ -47,7 +48,8 @@ angular
                 data: {
                     x: 'x',
                     columns: [],
-                    type: 'bar'
+                    type: 'bar',
+                    empty: { label: { text: "No Data Available" }}
                 },
                 axis: {
                     rotated: true,
@@ -66,21 +68,17 @@ angular
                 $scope.chart.data.hide.push(datum.id);
             };
 
-            $scope.getDrinksByHours = function (hours) {
-
-                MyReportsDataService.getDrinksByHours(hours).then(function (data) {
-                    var drinks = data.data;
-                    $scope.getactivatedlicensessince = drinks[0].getactivatedlicensessinceforuser;
-                }, function (error) {
-                    console.log(error);
-                });
-            }
-
 
             $scope.getTopDrinkNameEver = function () {
                 MyReportsDataService.getTopDrinksEver().then(function (data) {
                     var drinks = data.data;
-                    $scope.topEverName = drinks[0].technologydataname;
+
+                    if(!drinks) {
+                        $scope.topEverName = drinks[0].technologydataname;
+                    }
+                    else {
+                        $scope.topEverName = 'No Data';
+                    }
 
                 }, function (error) {
                     console.log(error);
@@ -92,6 +90,10 @@ angular
                 MyReportsDataService.getTotalRevenueForUser().then(function (data) {
                     var drinks = data.data;
                     var totalRev = drinks[0].revenue;
+
+                    if (!totalRev) {
+                        totalRevenue = 0;
+                    }
                     $scope.totalRevenue = Number(totalRev).toFixed(2)
                 }, function (error) {
                     console.log(error);
@@ -208,10 +210,6 @@ angular
             }
 
             var getData = function () {
-                $scope.getDrinksByHours(5);
-                /*$scope.getTopDrinksOfToday();
-                 $scope.getFavoriteJuicesSince();
-                 $scope.getWorkloadSince();*/
                 $scope.getTopDrinksEver();
                 $scope.getRevenuePerDayForUser();
                 $scope.getTopDrinkNameEver();
@@ -220,7 +218,7 @@ angular
                 nextLoad();
             }
 
-            var loadTime = 6000000;
+            var loadTime = 30000;
             var loadPromise; //Pointer to the promise created by the Angular $timout service
 
             var cancelNextLoad = function () {
