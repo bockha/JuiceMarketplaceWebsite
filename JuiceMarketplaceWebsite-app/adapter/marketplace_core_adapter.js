@@ -63,6 +63,7 @@ self.getAllComponents = function (userId, accessToken, callback) {
 };
 
 self.getRecipesForUser = function (userId, accessToken, callback) {
+    console.info("ADAPTER");
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -77,9 +78,11 @@ self.getRecipesForUser = function (userId, accessToken, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata',
         {
-            userUUID: userId
+            userUUID: userId,
+            ownerUUID: userId
         }
     );
+
     options.headers.authorization = 'Bearer ' + accessToken;
 
     request(options, function (e, r, jsonData) {
@@ -88,14 +91,14 @@ self.getRecipesForUser = function (userId, accessToken, callback) {
 
         if (helper.isArray(jsonData)) {
             jsonData.forEach(function (entry) {
-                components.push(Recipe.CreateRecipeFromJSON(entry));
+                components.push(Component.CreateComponentFromJSON(entry));
             });
         }
         else {
             logger.warn('Unexpected response when retrieving components from market place core:');
         }
 
-        callback(err, components);
+        callback(e, jsonData);
     });
 };
 
@@ -541,5 +544,50 @@ self.getTotalRevenueForUser = function (token, sinceDate, time, callback) {
     });
 };
 // --- REPORTS END ---
+
+// Delete Recipes
+self.deleteRecipe = function (token, recipeID, time, callback) {
+
+    var options = buildOptionsForRequest(
+        'DELETE',
+        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/technologydata/' + recipeID + '/delete',
+        {
+            userUUID: token.user
+        }
+    );
+    options.headers.authorization = 'Bearer ' + token.accessToken;
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
+        if (typeof(callback) !== 'function') {
+
+            callback = function (err, data) {
+                logger.warn('Callback not handled by caller');
+            };
+        }
+
+        if (e) {
+            logger.crit(e);
+
+            callback(e);
+        }
+
+        if (r && r.statusCode !== 200) {
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn('Call not successful: Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        callback(null, jsonData);
+    });
+};
 
 module.exports = self;

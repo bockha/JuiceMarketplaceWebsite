@@ -1,0 +1,62 @@
+<!--css-->
+<link href="css/c3.css" rel="stylesheet" type="text/css"/>
+<link href="css/tiles.css" rel="stylesheet">
+<!-- angular init -->
+<script src="app/app.js"></script>
+
+<!-- servcies -->
+<script src="app/services/myrecipes-data-service.js"></script>
+
+<!-- controller -->
+<script src="app/controller/myrecipes-controller.js"></script>
+<script>
+    $(function () {
+            angular.element(document).ready(function () {
+                angular.bootstrap(document, ['myrecipes']);
+            })
+
+        }
+    )
+</script>
+<div  ng-controller="MyRecipesController" class="container" ng-init="getRecipesForUser()">
+    <h2>Deine Drinks</h2>
+    <table>
+        <tr >
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" >
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Getränkename</th>
+                <th>Lizenzgebühr <small>(IUNOs)</small></th>
+                <th>Gesamtumsatz <small>(IUNOs)</small></th>
+                <th>Components</th>
+                <th>Description</th>
+                <th>Aktion</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="x in technologydataForUser | orderBy: '-licensefee'">
+                <td>{{$index + 1}}</td>
+                <td>{{ x.technologydataname }}</td>
+                <td>{{ x.licensefee / 100000}}</td>
+                <td>{{ x.licensefee}}</td>
+                <td>
+                     <ul >
+                        <li ng-repeat="y in x.componentlist">{{y.componentname}} </li>
+                    </ul>
+                </td>
+                <td>{{ x.technologydatadescription}}</td>
+                <td><div class="btn-group">
+                    <button type="button" class="btn btn-primary" ng-click="deleteRecipe(x.technologydatauuid)">Löschen</button>
+                </div></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

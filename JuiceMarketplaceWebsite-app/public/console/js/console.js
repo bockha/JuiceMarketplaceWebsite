@@ -8,9 +8,9 @@
                 title: "Dashboard",
                 url: "myreports.html"
             },
-            administration: {
+            myrecipes: {
                 title: "Getränke verwalten",
-                url: "administration.html"
+                url: "myrecipes.html"
             }
         }
 

@@ -30,16 +30,19 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
 app.use('/console', isLoggedIn);
-app.use('/myreports', isLoggedIn);
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/reports', require('./routes/reports'));
-app.use('/myreports', require('./routes/myreports'));
 app.use('/auth', require('./routes/auth')(passport));
+
+app.use('/myreports', isLoggedIn, require('./routes/myreports'));
+
+//app.use('/administration', isLoggedIn, require('./routes/administration'));
 app.use('/users', isLoggedIn, require('./routes/users'));
 app.use('/components', isLoggedIn, require('./routes/components'));
 
-app.use('/console', isLoggedIn, function(req, res, next) {res.redirect('/console.html')});
+app.use('/console', isLoggedIn, function(req, res, next) {res.redirect('/console/console.html')});
 app.use('/', function(req, res, next) {res.redirect('/landingpage/iuno.html')});
 
 function isLoggedIn(req, res, next) {

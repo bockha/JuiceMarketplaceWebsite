@@ -43,35 +43,6 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
         return defer.promise;
     }
 
-
-    function getFavoriteJuices() {
-        var defer = $q.defer();
-        $http({
-            method: 'GET',
-            url: '/myreports/favorit?sinceDate=' +  moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&topValue=10'
-        }).then(function(result) {
-            defer.resolve(result);
-        }, function(error) {
-            defer.reject(error);
-        });
-        return defer.promise;
-    }
-
-
-    function getWorkload() {
-        var defer = $q.defer();
-        $http({
-            method: 'GET',
-            url: '/reports/workload?sinceDate=' +  moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
-        }).then(function(result) {
-            defer.resolve(result);
-        }, function(error) {
-            defer.reject(error);
-        });
-        return defer.promise;
-    }
-
-
     function getRevenuePerDayForUser() {
         var defer = $q.defer();
         $http({
@@ -117,8 +88,6 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
         getDrinksByHours: getDrinksByHours,
         getTopDrinksEver: getTopDrinksEver,
         getTopDrinksOfToday: getTopDrinksOfToday,
-        getFavoriteJuicesSince: getFavoriteJuices,
-        getWorkloadSince: getWorkload,
         getRevenuePerDayForUser: getRevenuePerDayForUser,
         getRevenueForToday: getRevenueForToday,
         getTotalRevenueForUser: getTotalRevenueForUser

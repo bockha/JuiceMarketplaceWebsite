@@ -45,11 +45,10 @@ router.get('/:id', function (req, res, next) {
  * Retrieves all recipes for the user
  */
 router.get('/:id/recipes', function (req, res, next) {
-    marketplaceCore.getRecipesForUser(req.query['id'], req.user.token.accessToken, function (err, recipes) {
+    marketplaceCore.getRecipesForUser(req.params['id'], req.user.token.accessToken, function (err, recipes) {
         if (err) {
             return next(err);
         }
-
         res.send(recipes);
     });
 });
@@ -111,8 +110,15 @@ router.put('/:id/recipes/:recipe_id', function (req, res, next) {
  * Deletes a specific recipe for a specific user
  */
 router.delete('/:id/recipes/:recipe_id', function (req, res, next) {
+    marketplaceCore.deleteRecipe(req.user.token, req.params['recipe_id'], function (err, data) {
+        if (err) {
+            return next(err);
+        }
 
-    res.send('Not implemented yet');
+        const fullUrl = helper.buildFullUrlFromRequest(req);
+        res.set('Location', fullUrl + recipeId);
+        res.sendStatus(201);
+    });
 });
 
 
