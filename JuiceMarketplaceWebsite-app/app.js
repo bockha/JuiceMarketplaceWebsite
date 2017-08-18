@@ -46,6 +46,7 @@ function isLoggedIn(req, res, next) {
         return next();
     }
     req.session.redirectTo = req.originalUrl;
+    req.session.save();
 
     res.redirect('/auth/iuno');
 }
