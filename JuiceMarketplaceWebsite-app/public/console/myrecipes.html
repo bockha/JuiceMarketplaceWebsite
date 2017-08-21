@@ -33,22 +33,22 @@
             <tr>
                 <th>#</th>
                 <th>Getränkename</th>
-                <th>Lizenzgebühr <small>(IUNOs)</small></th>
                 <th>Gesamtumsatz <small>(IUNOs)</small></th>
+                <th>Lizenzgebühr <small>(IUNOs)</small></th>
                 <th>Components</th>
                 <th>Description</th>
                 <th>Aktion</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="x in technologydataForUser | orderBy: '-licensefee'">
+            <tr ng-repeat="x in technologydataForUser | orderBy: '-revenue'">
                 <td>{{$index + 1}}</td>
                 <td>{{ x.technologydataname }}</td>
+                <td>{{ x.revenue }}</td>
                 <td>{{(x.licensefee / 100000).toFixed(2)}}</td>
-                <td>{{ x.licensefee.toFixed(2)}}</td>
                 <td>
                      <ul >
-                        <li ng-repeat="y in x.componentlist">{{y.componentname}} </li>
+                        <li ng-repeat="y in x.componentlist">{{y}} </li>
                     </ul>
                 </td>
                 <td>{{ x.technologydatadescription}}</td>

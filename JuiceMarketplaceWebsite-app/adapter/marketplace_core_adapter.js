@@ -76,10 +76,9 @@ self.getRecipesForUser = function (userId, accessToken, callback) {
         'http',
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
-        '/technologydata',
+        '/myreports/technologydata',
         {
-            userUUID: userId,
-            ownerUUID: userId
+            userUUID: userId
         }
     );
 

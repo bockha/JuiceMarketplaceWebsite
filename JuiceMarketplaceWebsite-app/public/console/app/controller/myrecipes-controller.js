@@ -4,8 +4,10 @@ angular
         function ($scope, $timeout, MyRecipesDataService) {
             $scope.getRecipesForUser = function () {
                 MyRecipesDataService.getRecipesForUser().then(function (data) {
-                    $scope.technologydataForUser = data.data;
-                    $scope.componentlist = data.data.componentlist;
+                    console.info("Data: ", data);
+                    var drinks = data.data;
+                    $scope.technologydataForUser = drinks;
+                    $scope.componentlist = drinks.componentlist;
                 }, function (error) {
                     console.log(error);
                 });
