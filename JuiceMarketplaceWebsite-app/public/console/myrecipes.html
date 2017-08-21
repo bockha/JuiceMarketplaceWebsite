@@ -44,7 +44,7 @@
             <tr ng-repeat="x in technologydataForUser | orderBy: '-licensefee'">
                 <td>{{$index + 1}}</td>
                 <td>{{ x.technologydataname }}</td>
-                <td>{{ x.licensefee.toFixed(2) / 100000}}</td>
+                <td>{{ (x.licensefee / 100000).toFixed(2) }}</td>
                 <td>{{ x.licensefee.toFixed(2)}}</td>
                 <td>
                      <ul >
