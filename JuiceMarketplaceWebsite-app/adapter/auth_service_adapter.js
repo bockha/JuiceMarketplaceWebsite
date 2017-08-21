@@ -7,7 +7,9 @@ var logger = require('../global/logger');
 const CONFIG = require('../config/config_loader');
 var request = require('request');
 
-var self = {};
+var self = {
+    publicToken: null
+};
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
@@ -31,7 +33,7 @@ self.getUserInfoForToken = function (token, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.HOST,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.PORT,
         '/userinfo',
@@ -59,7 +61,7 @@ self.getImageForUser = function (user, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
         '/users/' + user.token.user + '/image',
@@ -92,7 +94,7 @@ self.refreshTokenForUser = function (user, callback) {
     // Refresh access token
     var options = buildOptionsForRequest(
         'POST',
-        'http',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
         '/oauth/token',
@@ -112,6 +114,43 @@ self.refreshTokenForUser = function (user, callback) {
             id: user.id,
             token: data
         });
+    });
+};
+
+
+self.getPublicToken = function (callback) {
+
+    if (self.publicToken && new Date(self.publicToken.accessTokenExpiresAt) > new Date()) {
+        logger.info('[auth_service_adapter] refreshing public token');
+        return callback(null, self.publicToken);
+    }
+
+    var options = buildOptionsForRequest(
+        'POST',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        '/oauth/token',
+        {}
+    );
+
+
+    options.form = {
+        grant_type: 'password',
+        username: CONFIG.PUBLIC_USER.username,
+        password: CONFIG.PUBLIC_USER.password
+    };
+
+    request(options, function (e, r, data) {
+        var err = logger.logRequestAndResponse(e, options, r, data);
+
+        const _token = data.access_token;
+
+        if (_token) {
+            self.publicToken = _token;
+        }
+
+        callback(err, self.publicToken);
     });
 };
 

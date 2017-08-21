@@ -63,7 +63,7 @@ self.getAllComponents = function (userId, accessToken, callback) {
 };
 
 self.getRecipesForUser = function (userId, accessToken, callback) {
-    console.info("ADAPTER");
+
     if (typeof(callback) !== 'function') {
 
         callback = function () {

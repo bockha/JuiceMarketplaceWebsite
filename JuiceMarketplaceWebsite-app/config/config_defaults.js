@@ -35,5 +35,9 @@ self.OAUTH_CREDENTIALS = {
 
 self.TECHNOLOGY_UUID = 'da17a8fc-a5b3-40a4-b6a5-276667db027a';
 
+self.PUBLIC_USER = {
+    username: 'public@iuno.com',
+    password: 'IsSecret'
+};
 
 module.exports = self;

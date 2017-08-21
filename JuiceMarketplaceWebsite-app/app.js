@@ -37,8 +37,6 @@ app.use('/reports', require('./routes/reports'));
 app.use('/auth', require('./routes/auth')(passport));
 
 app.use('/myreports', isLoggedIn, require('./routes/myreports'));
-
-//app.use('/administration', isLoggedIn, require('./routes/administration'));
 app.use('/users', isLoggedIn, require('./routes/users'));
 app.use('/components', isLoggedIn, require('./routes/components'));
 
