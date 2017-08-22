@@ -61,7 +61,7 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
         var defer = $q.defer();
         $http({
             method: 'GET',
-            url: '/myreports/revenue?sinceDate=' +  moment().startOf('day').format('YYYY-MM-DD HH:mm:ss') + '&time=day'
+            url: '/myreports/revenue?sinceDate=' +  moment().startOf('day').format('YYYY-MM-DD HH:mm:ss') + '&time=today'
         }).then(function(result) {
             defer.resolve(result);
         }, function(error) {

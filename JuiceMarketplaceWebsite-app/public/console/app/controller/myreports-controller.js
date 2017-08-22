@@ -36,7 +36,7 @@ angular
 
             $scope.topEver = {
                 size: {
-                    height: 100,
+                    height: 150,
                     width: 600
                 },
                 padding: {
@@ -73,7 +73,7 @@ angular
                 MyReportsDataService.getTopDrinksEver().then(function (data) {
                     var drinks = data.data;
 
-                    if(!drinks) {
+                    if(drinks) {
                         $scope.topEverName = drinks[0].technologydataname;
                     }
                     else {
@@ -102,8 +102,8 @@ angular
 
             $scope.getRevenueForToday = function () {
                 MyReportsDataService.getRevenueForToday().then(function (data) {
-
-                    var revenue = data.data.revenue;
+                    console.info("RevenueToday: ", data);
+                    var revenue = data.data[0].revenue;
                     if (!revenue) {
                         revenue = 0;
                     }
@@ -143,13 +143,13 @@ angular
 
                    //Create types
                    i = 0;
-                   var test = new Object();
+                   var type = new Object();
                    techName.forEach(function (name) {
                        if(name == "Benchmark") {
-                            test[name] = "line";
+                           type[name] = "line";
                        }
                        else {
-                           test[name] = "area";
+                           type[name] = "area";
                        }
                        i++;
                    },this);
@@ -177,7 +177,7 @@ angular
                     $scope.revenuePerDay.data.columns = columns;
                     $scope.revenuePerDay.axis.x.categories = categories;
                     $scope.revenuePerDay.data.groups = new Array(techName);
-                    $scope.revenuePerDay.data.types =  test;
+                    $scope.revenuePerDay.data.types =  type;
 
 
                 }, function (error) {
