@@ -4,30 +4,71 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var session = require('express-session');
 
-var reports = require('./routes/reports');
+const config = require('./config/config_loader');
 
 var app = express();
+
+
+//Configure Passport
+require('./oauth/passport')(passport); // pass passport for configuration
+app.use(session({
+    secret: 'lbfifiou23bgofr2g18f12345121421pokdfsjga302lbfl2hbfdskb2o78gf324ougf232vksjhdvfakfviy3263972i', // session secret
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
+
+app.use('/console', isLoggedIn);
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/reports', reports);
+app.use('/reports', require('./routes/reports'));
+app.use('/auth', require('./routes/auth')(passport));
+
+app.use('/myreports', isLoggedIn, require('./routes/myreports'));
+app.use('/users', isLoggedIn, require('./routes/users'));
+app.use('/components', isLoggedIn, require('./routes/components'));
+
+app.use('/console', isLoggedIn, function(req, res, next) {res.redirect('/console/console.html')});
+app.use('/', function(req, res, next) {res.redirect('/landingpage/iuno.html')});
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    req.session.redirectTo = req.originalUrl;
+    req.session.save();
+
+    res.redirect('/auth/iuno');
+}
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+app.use(function (req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
+        try {
+            err.message = JSON.parse(err.message)
+        }
+        catch (err) {
+
+        }
+
         console.error(err.stack);
         res.status(err.status || 500);
         res.json({
@@ -46,7 +87,7 @@ if (app.get('env') === 'development') {
                 error: err
             });
         }
-        res.status(500).send('Something broke!');
+        res.sendStatus(500);
     });
 }
 

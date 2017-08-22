@@ -1,0 +1,71 @@
+<!--css-->
+<link href="css/c3.css" rel="stylesheet" type="text/css"/>
+<link href="css/tiles.css" rel="stylesheet">
+<!-- angular init -->
+<script src="app/app.js"></script>
+
+<!-- servcies -->
+<script src="app/services/myreports-data-service.js"></script>
+
+<!-- controller -->
+<script src="app/controller/myreports-controller.js"></script>
+<script>
+    $(function () {
+            angular.element(document).ready(function () {
+                angular.bootstrap(document, ['myreports']);
+            })
+
+        }
+    )
+</script>
+<div ng-controller='MyReportsController' class="row align-items-star">
+    <div class="container">
+        <h2>Gesamtumsatz <strong style="color: #AAC253">{{totalRevenue}}</strong> IUNOs</h2>
+        <hr>
+        <div class="row">
+            <h3><strong style="color: #AAC253">Umsatz pro Drink</strong></h3>
+            <div>
+            <div class="col-md-8">
+                <div class="chart">
+                    <div c3-simple class="chart" id="revenuePerDay" config="revenuePerDay"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+               <button type="button" class="btn btn-default btn-circle btn-xl">
+                dein meistverkaufter Drink
+                    <p>
+                    <h2><strong style="color: #AAC253">{{topEverName}}</strong></h2>
+                    </p>
+                    <hr>
+                    dein Umsatz heute (IUNOs)
+                    <p>
+                    <h2><strong style="color: #AAC253">{{revenueToday}}</strong></h2>
+                    </p>
+                </button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <h3><strong style="color: #AAC253"> Top 5 Drinks aller Hersteller</strong></h3>
+                <button type="button" class="btn btn-default btn-circle btn-xl"> <br>
+                    <div class="diagram">
+                        <div c3-simple class="chart" id="topEver" config="topEver"></div>
+                    </div>
+                </button>
+            </div>
+            <!--<div class="col-md-4">
+                <button type="button" class="btn btn-default btn-circle btn-xl">dein meistverkaufter Drink
+                    <p>
+                    <h2>{{topEverName}}</h2>
+                    </p>
+                    <hr>
+                    dein Umsatz heute (IUNOs)
+                    <p>
+                    <h2>{{revenueToday}}</h2>
+                    </p>
+                </button>
+            </div>-->
+        </div>
+    </div>
+</div>
