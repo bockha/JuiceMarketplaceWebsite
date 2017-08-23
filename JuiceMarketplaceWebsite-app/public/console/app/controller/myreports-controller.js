@@ -70,14 +70,13 @@ angular
 
 
             $scope.getTopDrinkNameEver = function () {
-                MyReportsDataService.getTopDrinksEver().then(function (data) {
-                    var drinks = data.data;
+                MyReportsDataService.getTopDrinkForUser().then(function (data) {
 
-                    if(drinks) {
-                        $scope.topEverName = drinks[0].technologydataname;
+                    if(!data || !data.data[0]) {
+                        $scope.topEverName = 'No Data';
                     }
                     else {
-                        $scope.topEverName = 'No Data';
+                        $scope.topEverName = data.data[0].technologydataname;
                     }
 
                 }, function (error) {
