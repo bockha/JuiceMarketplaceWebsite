@@ -84,7 +84,7 @@ router.post('/:id/recipes', function (req, res, next) {
     coreData.technologyData = JSON.stringify(machineProgram);
     coreData.technologyDataDescription = description;
     coreData.technologyUUID = CONFIG.TECHNOLOGY_UUID;
-    coreData.licenseFee = licenseFee;
+    coreData.licenseFee = licenseFee * 100000;
     coreData.retailPrice = licenseFee * 3;
     coreData.componentList = componentsIds;
 
