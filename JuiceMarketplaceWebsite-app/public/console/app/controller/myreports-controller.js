@@ -102,11 +102,16 @@ angular
 
             $scope.getRevenueForToday = function () {
                 MyReportsDataService.getRevenueForToday().then(function (data) {
-                    console.info("RevenueToday: ", data);
-                    var revenue = data.data[0].revenue;
-                    if (!revenue) {
+
+                    var revenue;
+
+                    if(!data || !data.data[0]) {
                         revenue = 0;
                     }
+                    else {
+                        revenue = data.data[0].revenue;
+                    }
+
                     $scope.revenueToday = Number(revenue).toFixed(2);
                 });
             }
