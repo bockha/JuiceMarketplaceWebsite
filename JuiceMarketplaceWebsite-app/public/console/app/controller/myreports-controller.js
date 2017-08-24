@@ -36,7 +36,7 @@ angular
 
             $scope.topEver = {
                 size: {
-                    height: 100,
+                    height: 150,
                     width: 600
                 },
                 padding: {
@@ -70,14 +70,13 @@ angular
 
 
             $scope.getTopDrinkNameEver = function () {
-                MyReportsDataService.getTopDrinksEver().then(function (data) {
-                    var drinks = data.data;
+                MyReportsDataService.getTopDrinkForUser().then(function (data) {
 
-                    if(!drinks) {
-                        $scope.topEverName = drinks[0].technologydataname;
+                    if(!data || !data.data[0]) {
+                        $scope.topEverName = 'No Data';
                     }
                     else {
-                        $scope.topEverName = 'No Data';
+                        $scope.topEverName = data.data[0].technologydataname;
                     }
 
                 }, function (error) {
@@ -103,10 +102,15 @@ angular
             $scope.getRevenueForToday = function () {
                 MyReportsDataService.getRevenueForToday().then(function (data) {
 
-                    var revenue = data.data.revenue;
-                    if (!revenue) {
+                    var revenue;
+
+                    if(!data || !data.data[0]) {
                         revenue = 0;
                     }
+                    else {
+                        revenue = data.data[0].revenue;
+                    }
+
                     $scope.revenueToday = Number(revenue).toFixed(2);
                 });
             }
@@ -143,13 +147,13 @@ angular
 
                    //Create types
                    i = 0;
-                   var test = new Object();
+                   var type = new Object();
                    techName.forEach(function (name) {
                        if(name == "Benchmark") {
-                            test[name] = "line";
+                           type[name] = "line";
                        }
                        else {
-                           test[name] = "area";
+                           type[name] = "area";
                        }
                        i++;
                    },this);
@@ -177,7 +181,7 @@ angular
                     $scope.revenuePerDay.data.columns = columns;
                     $scope.revenuePerDay.axis.x.categories = categories;
                     $scope.revenuePerDay.data.groups = new Array(techName);
-                    $scope.revenuePerDay.data.types =  test;
+                    $scope.revenuePerDay.data.types =  type;
 
 
                 }, function (error) {

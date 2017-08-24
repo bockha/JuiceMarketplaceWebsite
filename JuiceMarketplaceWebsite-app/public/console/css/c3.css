@@ -82,6 +82,11 @@
 .c3-line {
   stroke-width: 1px;
 }
+
+.c3-chart-lines .c3-target-Benchmark  {
+  stroke-width: 1px;
+  stroke-dasharray: 3, 3;
+}
 /*-- Point --*/
 
 .c3-circle._expanded_ {

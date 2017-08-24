@@ -109,9 +109,6 @@
 	<div class="tdmc-page">
 		<div class="container-fluid">
 			<div class="row">
-				<button id="button-save" class="ui-button ui-widget ui-corner-all" style="float: right;">Speichern</button>
-			</div>
-			<div class="row">
 				 <h3>Produktdetails</h3> 
 			</div>
 			<div class="row config">
@@ -158,9 +155,12 @@
 			</div> -->
 			<div class="row config">
 				<div class="col-sm-3"><p class="label">Lizenzgebühr</p></div>
-				<div class="col-sm-8">
+				<div class="col-sm-3">
 					<select name="license-fee" id="license-fee" class="user-input">
 					</select>
+				</div>
+				<div class="col-sm-3">
+				<button id="button-save" class="ui-button ui-widget ui-corner-all" style="float: right;">Speichern</button>
 				</div>
 			</div>
 			<!-- <div class="row config">
@@ -238,10 +238,6 @@
 			recipe.description = this.value;
 		});
 
-		$('#license-fee').on("change", function() {
-			alert("Aha!");
-		});
-
 		$('#button-save').on("click", function() {
 			// validate recipe
 			var valid = true;
@@ -300,18 +296,24 @@
 			}
 		});
 
-		$( "#license-fee" ).selectmenu()
-			.on("selectmenuchange", function (event, ui) {
-				var value = parseInt(ui.item.value);
+		$( '#license-fee' ).selectmenu()
+			.on("selectmenuchange", function (event, ui ) {
+				var value = parseFloat(ui.item.value);
 				recipe.licenseFee = value;
-			}
-		);
+			});
 
-		var licenseFeeTiers = [1, 2, 3, 4, 5];
-		licenseFeeTiers.forEach(function(tier) {
-			var fee = tier + ',- IUNO';
+   		 var licenseFeeTiers = [0.25, 0.5, 0.75, 1.00];
+			licenseFeeTiers.forEach(function(tier) {
+			var fee = tier.toFixed(2) + ' IUNO';
 			$( "#license-fee" ).append($('<option></option>').val(tier).html(fee));
 		});
+
+    	$("#license-fee").val(this.first);
+
+
+
+
+
 </script>
 </body>
 </html>
