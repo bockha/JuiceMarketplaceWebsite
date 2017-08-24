@@ -2,13 +2,14 @@
  * Created by beuttlerma on 05.07.17.
  */
 
-var express = require('express');
-var router = express.Router();
-var marketplaceCore = require('../adapter/marketplace_core_adapter');
-var authService = require('../adapter/auth_service_adapter');
-var programConverter = require('../services/program_converter');
-var logger = require('../global/logger');
-var helper = require('../services/helper_service');
+const express = require('express');
+const router = express.Router();
+const marketplaceCore = require('../adapter/marketplace_core_adapter');
+const authService = require('../adapter/auth_service_adapter');
+const programConverter = require('../services/program_converter');
+const logger = require('../global/logger');
+const helper = require('../services/helper_service');
+const encryption = require('../services/encryption_service');
 
 const CONFIG = require('../config/config_loader');
 
@@ -60,25 +61,35 @@ router.get('/:id/recipes', function (req, res, next) {
  */
 router.post('/:id/recipes', function (req, res, next) {
 
-    console.log(req.body);
-    var recipe = req.body;
-    var program = recipe['program'];
+    const recipe = req.body;
+    const program = recipe['program'];
 
     // recipe information for further processing
-    var title = recipe['title'];
-    var shortDescription = recipe['short-description'];
-    var description = recipe['description'];
-    var licenseFee = recipe['license-fee'];
-    var machineProgram = programConverter.convertProgramToMachineProgram(program);
-    var componentsIds = [];
+    const title = recipe['title'];
+    const description = recipe['description'];
+    const licenseFee = recipe['license-fee'];
+    const machineProgram = programConverter.convertProgramToMachineProgram(program);
+    const machineProgramString = JSON.stringify(machineProgram);
+
+    const componentsIds = [];
     program['sequences'].forEach(function (sequence) {
         componentsIds.push(sequence['ingredient-id']);
     });
 
-    var coreData = {};
+
+    var encryptedProgram;
+    // Encrypt the recipe using our own encryption before passing it to the marketplace core
+    try {
+        encryptedProgram = encryption.encryptData(machineProgramString);
+    }
+    catch (err) {
+        return res.sendStatus(500);
+    }
+
+    const coreData = {};
 
     coreData.technologyDataName = title;
-    coreData.technologyData = JSON.stringify(machineProgram);
+    coreData.technologyData = encryptedProgram;
     coreData.technologyDataDescription = description;
     coreData.technologyUUID = CONFIG.TECHNOLOGY_UUID;
     coreData.licenseFee = licenseFee * 100000;

@@ -40,4 +40,6 @@ self.PUBLIC_USER = {
     password: 'IsSecret'
 };
 
+self.PUBLIC_KEY_FILE_FOR_ENCRYPTION = 'resources/public_key_encryption.pem';
+
 module.exports = self;

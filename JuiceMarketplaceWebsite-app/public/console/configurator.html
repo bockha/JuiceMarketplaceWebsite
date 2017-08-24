@@ -277,11 +277,16 @@
 					type: "POST",
 					data: jsonString,
 					contentType: "application/json",
-					complete: function() {
+					success: function() {
 						console.log(" ############### FERTIG ###############");
 						setRecipeChanged(false);
-                        window.location.replace("/console/console.html");
-					}
+                        window.location.replace("/console/myrecipes.html");
+					},
+                    error: function() {
+                        console.log(" ############### FEHLER ###############");
+                        setRecipeChanged(false);
+                        window.alert('Beim erstellen Ihres Rezepts ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.');
+                    }
 				});
 
 				// var recovery = JSON.parse(jsonString);
