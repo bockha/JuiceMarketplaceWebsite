@@ -55,9 +55,24 @@
             // $("#page_content").load("configurator.html");
         }
 
-        function getDisplayName(firstName, lastName) {
-            var displayName = firstName + " " + lastName;
-            return displayName;
+        function getDisplayName(userName, firstName, lastName) {
+            if (firstName && lastName) {
+                return firstName + " " + lastName;
+            }
+
+		    if (userName) {
+		        return userName;
+            }
+
+            if (firstName) {
+		        return firstName
+            }
+
+            if (lastName) {
+		        return lastName
+            }
+
+            return 'Anonymous';
         }
 
 		$( function() {
@@ -65,7 +80,8 @@
             $.getJSON('/users/me', function(data) {
                 var firstName = data['firstname'];
                 var lastName = data['lastname'];
-                var displayName = getDisplayName(firstName, lastName);
+                var userName = data['username'];
+                var displayName = getDisplayName(userName, firstName, lastName);
             	$("#user-id").text(displayName);
             })
 
