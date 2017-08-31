@@ -5,19 +5,19 @@ var marketplaceCore = require('../adapter/marketplace_core_adapter');
 router.get('/', function (req, res, next) {
 
     var token = req.user.token;
-    if(req.query['topValue'] > 1) {
-    marketplaceCore.getTopDrinksSinceForUser(token, req.query['sinceDate'], req.query['topValue'], function (err, data) {
-        if (err) {
-            res.status(500);
-            res.send('Error when requesting data from the marketplace core');
+    if (req.query['topValue'] > 1) {
+        marketplaceCore.getTopDrinksSinceForUser(token, req.query['sinceDate'], req.query['topValue'], function (err, data) {
+            if (err) {
+                res.status(500);
+                res.send('Error when requesting data from the marketplace core');
 
-            return;
-        }
+                return;
+            }
 
-        res.json(data);
-    });
+            res.json(data);
+        });
     }
-    else if(req.query['topValue'] == 1){
+    else if (req.query['topValue'] == 1) {
         marketplaceCore.getTopDrinkForUser(token, req.query['topValue'], function (err, data) {
             if (err) {
                 res.status(500);

@@ -60,6 +60,12 @@ app.use(function (req, res, next) {
     next(err);
 });
 
+app.use(function(err, req, res, next) {
+    //Always logout user on failure
+    req.logout();
+    next(err, req, res)
+});
+
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         try {
