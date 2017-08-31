@@ -46,7 +46,13 @@ function componentsLoaded(success) {
             row.find('.description').html(element.description);
             row.attr("id", 'ingredient-'+element.id);
             row.click(function() {
-                openAddIngredientAmountDialog(element.id);
+            	var configurator = $( "#dialog-add-ingredient" ).data('configurator');
+                // var configurator = $(this).data('configurator');
+                var ingredientId = element.id;
+                var amount = 50;
+                configurator.addIngredient(ingredientId, amount);
+                $( "#dialog-add-ingredient" ).dialog('close');
+                // openAddIngredientAmountDialog(element.id);
             });
             table.append(row);
             // table.crea

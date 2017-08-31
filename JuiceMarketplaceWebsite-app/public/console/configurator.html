@@ -21,11 +21,15 @@
 <div id="main2">
 	<!-- Templates start -->
 	<div id="dialog-phase" title="Phase unterteilen" style="display: none">
-		<p class="validateTips">Wieviel Milliliter sollen abgespalten werden?</p>		
+		<p class="validateTips">Wieviel Milliliter sollen abgetrennt werden?</p>
 		<fieldset>
 			<label for="splitml">Milliliter: </label>
 			<input type="text" name="splitml" id="splitml" value="50" class="text ui-widget-content ui-corner-all">
 		</fieldset>
+		<br>
+		<div class="alert alert-danger hidden">
+  			<strong>Fehler!</strong> Die Mindestmenge beträgt 10 ml, die maximale Menge beträgt 120 ml.
+		</div>
 	</div>
 
 	<div id="dialog-change-amount" title="Menge einstellen" style="display: none">
@@ -34,6 +38,10 @@
 			<label for="changeml">Milliliter: </label>
 			<input type="text" name="changeml" id="changeml" value="0" class="text ui-widget-content ui-corner-all">
 		</fieldset>
+		<br>
+		<div class="alert alert-danger hidden">
+  			<strong>Fehler!</strong> Die Mindestmenge beträgt 10 ml, die maximale Menge beträgt 120 ml.
+		</div>
 	</div>
 
 	<div id="dialog-add-ingredient" title="Zutat hinzufügen" style="display: none">
@@ -81,35 +89,43 @@
 		</div>
 		<div id="program-sequence" class="row sequence">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-2 program-row program-row-label"><span class="label"></span></div>
+			<div class="col-xs-2 program-row program-row-label"><div class="ingredient-label valign"></div></div>
 			<div class="col-xs-7 program-row content">
 				<div id="program-phase" class="phase">
-					<div class="phase-ml"></div>
-					<span class="phase-label"></span>
-					<div class="phase-controls" style="display: none;">
-						<div class="phase-controls-center"></div>
-						<div class="phase-controls-right"></div>
+					<div class="phase-content">
+						<div class="phase-content-throughput"/>
+						<div class="phase-content-label valign"/>
+					</div>
+					<div class="phase-throughput-handle">
+						<div class="phase-throughput-caret valign"></div>
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-1 program-row-total"><a href="javascript:void(0);" class="total-label change-amount"></a></div>
+			<div class="col-xs-1 program-row program-row-total"><div class="valign"><a href="javascript:void(0);" class="total-label change-amount"></a></div></div>
 			<div class="col-xs-1"></div>
 		</div>
 		<div id="program-pause" class="row">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-2 program-row-label program-row"><span class="label"></span></div>
+			<div class="col-xs-2 program-row-label program-row"><div class="ingredient-label valign"></div></div>
 			<div class="col-xs-7 program-row content">
 				<div id="program-pause-phase" class="pause-phase">
-					<span class="phase-label"></span>
+					<div class="pause-phase-content">
+						<div class="phase-content-label valign"/>
+					</div>
 				</div>				
 			</div>
-			<div class="col-xs-1 program-row-total">150 ml</div>
+			<div class="col-xs-1 program-row program-row-total"><div class="valign"><div class="label">-</div></div></div>
 			<div class="col-xs-1"></div>
 		</div>
-		<div id="program-footer" class="row">
+		<div id="program-footer" class="row footer">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-2 program-row program-row-label"><a href="javascript:void(0);" class="add-ingredient">Zutat hinzufügen</a></div>
-			<div class="col-xs-8 program-row content"></div>
+			<div class="col-xs-2 program-row-footer program-row-label"><div class="ingredient-label valign"><a href="javascript:void(0);" class="add-ingredient">Zutat hinzufügen</a></div></div>
+			<div class="col-xs-7 program-row-footer content">
+				<div class="error-minimum-total error valign hidden">Mindestmenge (100 ml) unterschritten.</div>
+				<div class="error-maximum-total error valign hidden">Höchstmenge (120 ml) überschritten.</div>
+				<div class="error-maximum-pause error valign hidden">Zulässige Summe der Pausenzeiten (5 s) überschritten.</div>
+			</div>
+			<div class="col-xs-1 program-row-footer program-row-total"><div class="total-label valign">-</div></div>
 			<div class="col-xs-1"></div>
 		</div>
 	</div>
@@ -133,9 +149,16 @@
 				<div class="col-sm-8"><textarea id="recipe-description" style="width: 100%; height: 100px;" class="user-input"></textarea></div>
 			</div>
 			<div class="row config">
-				<div class="col-sm-3"><p class="label">Rezeptur</p></div>
+				<div class="col-sm-3">
+					<p class="label">Rezeptur</p>
+				</div>
 			</div>
-			<div id="program"></div>
+			 <!-- <div class="recipe-error alert alert-danger"><strong>Fehler:</strong><br>
+				<div class="error-minimum-total">Mindestmenge (100 ml) unterschritten.<br></div>
+				<div class="error-maximum-total">Höchstmenge (120 ml) überschritten.<br></div>
+				<div class="error-maximum-pause">Zulässige Summe der Pausenzeiten (5 s) überschritten.<br></div>
+			</div>  -->
+			<div id="program-1"></div>
 			<!--<div id="recipe-pauses" class="">
 				<div class="row">
 					<div class="col-xs-1"></div>
@@ -216,7 +239,7 @@
 	// sequence.addPhase(new Phase(60, 200, 70));
 	// recipe.addSequence(sequence);
 
-	var programConfigurator = new ProgramConfigurator(recipe.program, "program");
+	var programConfigurator = new ProgramConfigurator(recipe.program, "program-1");
 	programConfigurator.render();
 
 		// var apfelsaft = new Ingredient("Apfelsaft");
@@ -250,6 +273,18 @@
 		$('#button-save').on("click", function() {
 			// validate recipe
 			var valid = true;
+			if (valid && recipe.program.getTotalAmount() < minTotalAmount) {
+				alert("Die Mindestmenge von "+minTotalAmount+" ml wurde unterschritten.");
+				valid = false;
+			}
+			if (valid && recipe.program.getTotalAmount() > maxTotalAmount) {
+				alert("Die Höchstmenge von "+maxTotalAmount+" ml wurde überschritten.");
+				valid = false;
+			}
+			if (valid && convertMilliliterToMilliseconds(recipe.program.pauseSequence.getTotalAmount()) > maxTotalPause) {
+				alert("Die zulässige Gesamtdauer der Pausen von "+maxTotalPause+" ms wurde überschritten.");
+				valid = false;
+			}
 			if (valid && recipe.title == "") {
 				alert("Bitte geben Sie einen Titel ein.");
 				valid = false;
