@@ -28,11 +28,11 @@ router.get('/me', function (req, res, next) {
 
 });
 
-router.get('/me/*', function (req, res, next) {
+router.all('/me/*', function (req, res, next) {
 
     var redirectPath = req.originalUrl.replace('/me/', '/' + req.user.token.user + '/');
 
-    res.redirect(redirectPath);
+    res.redirect(307, redirectPath);
 });
 
 /**
@@ -57,52 +57,77 @@ router.get('/:id/recipes', function (req, res, next) {
 });
 
 /**
+ * Returns the amount of recipes the user can still publish on the marketplace
+ */
+router.get('/:id/recipes/limit', function (req, res, next) {
+    //TODO: Implement algorithm as discussed in #78
+    marketplaceCore.getRecipesForUser(req.params['id'], req.user.token.accessToken, function (err, recipes) {
+        if (err) {
+            return next(err);
+        }
+        return res.json({limit: CONFIG.RECIPE_LIMIT_PER_USER - recipes.length});
+    });
+});
+
+/**
  * Saves a recipe for a specific user
  */
 router.post('/:id/recipes', function (req, res, next) {
 
-    const recipe = req.body;
-    const program = recipe['program'];
-
-    // recipe information for further processing
-    const title = recipe['title'];
-    const description = recipe['description'];
-    const licenseFee = recipe['license-fee'];
-    const machineProgram = programConverter.convertProgramToMachineProgram(program);
-    const machineProgramString = JSON.stringify(machineProgram);
-
-    const componentsIds = [];
-    program['sequences'].forEach(function (sequence) {
-        componentsIds.push(sequence['ingredient-id']);
-    });
-
-
-    var encryptedProgram;
-    // Encrypt the recipe using our own encryption before passing it to the marketplace core
-    try {
-        encryptedProgram = encryption.encryptData(machineProgramString);
-    }
-    catch (err) {
-        return res.sendStatus(500);
-    }
-
-    const coreData = {};
-
-    coreData.technologyDataName = title;
-    coreData.technologyData = encryptedProgram;
-    coreData.technologyDataDescription = description;
-    coreData.technologyUUID = CONFIG.TECHNOLOGY_UUID;
-    coreData.licenseFee = licenseFee * 100000;
-    coreData.componentList = componentsIds;
-
-    marketplaceCore.saveRecipeForUser(req.user.token, coreData, function (err, recipeId) {
+    // Check if user can still publish recipes or if his limit is reached.
+    marketplaceCore.getRecipesForUser(req.params['id'], req.user.token.accessToken, function (err, recipes) {
         if (err) {
             return next(err);
         }
+        if (recipes.length >= CONFIG.RECIPE_LIMIT_PER_USER){
+            return res.status(400).send('Recipe limit reached. Only a maximum of ' + CONFIG.RECIPE_LIMIT_PER_USER + ' recipes is allowed per user.');
+        }
 
-        const fullUrl = helper.buildFullUrlFromRequest(req);
-        res.set('Location', fullUrl + 'recipes/' + recipeId);
-        res.sendStatus(201);
+        // Save recipe for user
+
+        const recipe = req.body;
+        const program = recipe['program'];
+
+        // recipe information for further processing
+        const title = recipe['title'];
+        const description = recipe['description'];
+        const licenseFee = recipe['license-fee'];
+        const machineProgram = programConverter.convertProgramToMachineProgram(program);
+        const machineProgramString = JSON.stringify(machineProgram);
+
+        const componentsIds = [];
+        program['sequences'].forEach(function (sequence) {
+            componentsIds.push(sequence['ingredient-id']);
+        });
+
+
+        var encryptedProgram;
+        // Encrypt the recipe using our own encryption before passing it to the marketplace core
+        try {
+            encryptedProgram = encryption.encryptData(machineProgramString);
+        }
+        catch (err) {
+            return res.sendStatus(500);
+        }
+
+        const coreData = {};
+
+        coreData.technologyDataName = title;
+        coreData.technologyData = encryptedProgram;
+        coreData.technologyDataDescription = description;
+        coreData.technologyUUID = CONFIG.TECHNOLOGY_UUID;
+        coreData.licenseFee = licenseFee * 100000;
+        coreData.componentList = componentsIds;
+
+        marketplaceCore.saveRecipeForUser(req.user.token, coreData, function (err, recipeId) {
+            if (err) {
+                return next(err);
+            }
+
+            const fullUrl = helper.buildFullUrlFromRequest(req);
+            res.set('Location', fullUrl + 'recipes/' + recipeId);
+            res.sendStatus(201);
+        });
     });
 });
 

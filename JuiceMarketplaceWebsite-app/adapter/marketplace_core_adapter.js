@@ -86,6 +86,11 @@ self.getRecipesForUser = function (userId, accessToken, callback) {
 
     request(options, function (e, r, jsonData) {
         var err = logger.logRequestAndResponse(e, options, r, jsonData);
+
+        if (err) {
+            return callback(err, null);
+        }
+
         var components = [];
 
         if (helper.isArray(jsonData)) {
@@ -97,7 +102,7 @@ self.getRecipesForUser = function (userId, accessToken, callback) {
             logger.warn('Unexpected response when retrieving components from market place core:');
         }
 
-        callback(e, jsonData);
+        callback(err, jsonData);
     });
 };
 

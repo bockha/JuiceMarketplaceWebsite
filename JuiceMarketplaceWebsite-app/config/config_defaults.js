@@ -42,4 +42,6 @@ self.PUBLIC_USER = {
 
 self.PUBLIC_KEY_FILE_FOR_ENCRYPTION = 'resources/public_key_encryption.pem';
 
+self.RECIPE_LIMIT_PER_USER = 2;
+
 module.exports = self;

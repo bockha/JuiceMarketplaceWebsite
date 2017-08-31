@@ -7,6 +7,15 @@
 	<script src="js/configurator.js"></script>
 	<script src="juice-configurator/js/recipe.js"></script>
 	<script src="juice-configurator/js/program-configurator.js"></script>
+	<script>
+        $.getJSON('/users/me/recipes/limit', function(data) {
+            if (!(data && data.limit > 0)) {
+                window.location.href = "console.html?page=myrecipes&limit_reached=true";
+            }
+        }).fail(function() {
+            window.location.href = "console.html?page=myrecipes";
+        })
+	</script>
 </head>
 <body>
 <div id="main2">
@@ -276,7 +285,7 @@
 					success: function() {
 						console.log(" ############### FERTIG ###############");
 						setRecipeChanged(false);
-                        window.location.replace("/console/myrecipes.html");
+                        window.location.href = "console.html?page=myrecipes";
 					},
                     error: function() {
                         console.log(" ############### FEHLER ###############");
