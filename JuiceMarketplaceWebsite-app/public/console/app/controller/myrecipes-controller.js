@@ -20,6 +20,6 @@ angular
                     console.log(error);
                 });
 
-                window.location.reload();
+                window.location = window.location.href.replace('limit_reached=true','');
             };
         }]);

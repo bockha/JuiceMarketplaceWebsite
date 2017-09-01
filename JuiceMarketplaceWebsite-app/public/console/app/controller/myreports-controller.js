@@ -12,17 +12,17 @@ angular
                     columns: [],
                     types: {},
                     groups: [],
-                    empty: { label: { text: "No Data Available" }}
+                    empty: { label: { text: "Keine Daten vorhanden" }}
 
                     },
                 axis: {
                     x: {
-                        label: 'Date',
+                        label: 'Datum',
                         type: 'category',
                         categories: []
                     },
                     y: {
-                        label: 'Revenue',
+                        label: 'Umsatz',
                         padding: {
                             bottom: 0
                         },
@@ -49,7 +49,7 @@ angular
                     x: 'x',
                     columns: [],
                     type: 'bar',
-                    empty: { label: { text: "No Data Available" }}
+                    empty: { label: { text: "Keine Daten vorhanden" }}
                 },
                 axis: {
                     rotated: true,
@@ -73,7 +73,7 @@ angular
                 MyReportsDataService.getTopDrinkForUser().then(function (data) {
 
                     if(!data || !data.data[0]) {
-                        $scope.topEverName = 'No Data';
+                        $scope.topEverName = 'Keine Daten';
                     }
                     else {
                         $scope.topEverName = data.data[0].technologydataname;
