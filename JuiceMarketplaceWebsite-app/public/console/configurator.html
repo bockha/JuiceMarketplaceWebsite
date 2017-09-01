@@ -285,16 +285,16 @@
 				alert("Die zulässige Gesamtdauer der Pausen von "+maxTotalPause+" ms wurde überschritten.");
 				valid = false;
 			}
-			if (valid && recipe.title == "") {
-				alert("Bitte geben Sie einen Titel ein.");
+			if (valid && recipe.title.trim().length < 10) {
+				alert("Bitte geben Sie einen Titel mit mindestens 10 Zeichen ein.");
 				valid = false;
 			}
 			// if (valid && recipe.shortDescription == "") {
 			// 	alert("Bitte geben Sie eine Kurzbeschreibung ein.");
 			// 	valid = false;
 			// }
-			if (valid && recipe.description == "") {
-				alert("Bitte geben Sie eine Beschreibung ein.");
+			if (valid && recipe.description.trim().length < 10) {
+				alert("Bitte geben Sie eine Beschreibung mit mindestens 10 Zeichen ein.");
 				valid = false;
 			}
 			if (valid && recipe.licenseFee == -1) {

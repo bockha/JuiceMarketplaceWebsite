@@ -2,7 +2,7 @@ var self = {};
 // ******************************************
 //   Conversion Utilities
 // ******************************************
-var milliliterPerMillisecond = 0.01;
+var milliliterPerMillisecond = 0.05;
 
 self.convertMilliliterToMilliseconds = function(milliliter) {
 	var milliseconds = parseInt(milliliter) / milliliterPerMillisecond;

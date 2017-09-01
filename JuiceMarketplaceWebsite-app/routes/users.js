@@ -83,23 +83,72 @@ router.post('/:id/recipes', function (req, res, next) {
             return res.status(400).send('Recipe limit reached. Only a maximum of ' + CONFIG.RECIPE_LIMIT_PER_USER + ' recipes is allowed per user.');
         }
 
-        // Save recipe for user
+        const minPhaseAmount = 10;
+        const minTotalAmount = 100;
+        const maxTotalAmount = 120;
+        const maxTotalPause = 5000;
 
+        // Save recipe for user
         const recipe = req.body;
         const program = recipe['program'];
 
         // recipe information for further processing
-        const title = recipe['title'];
-        const description = recipe['description'];
+        const title = recipe['title'].trim();
+        const description = recipe['description'].trim();
         const licenseFee = recipe['license-fee'];
         const machineProgram = programConverter.convertProgramToMachineProgram(program);
         const machineProgramString = JSON.stringify(machineProgram);
+
+        // check metadata
+        var valid = true;
+        if (!title || title.length < 10) {
+            valid = false;
+        }
+        if (!description || description.length < 10) {
+            valid = false;
+        }
+        if (!licenseFee) {
+            valid = false;
+        }
+
+        if (!valid) {
+            return res.status(400).send('invalid metadata.');
+        }
+
+        // check total amount
+        var totalAmount = 0;
+        var totalPause = 0;
+
+        var lines = machineProgram['recipe']['lines'];
+        lines.forEach(function(line) {
+            var components = line['components'];
+            totalPause += line['sleep'];
+            components.forEach(function(component) {
+                var amount = component['amount'];
+                totalAmount += amount;
+            });
+        });
+
+        if (totalAmount > maxTotalAmount) {
+            valid = false;
+        }
+
+        if (totalAmount < minTotalAmount) {
+            valid = false;
+        }
+
+        if (totalPause > maxTotalPause) {
+            valid = false;
+        }
+
+        if (!valid) {
+            return res.status(400).send('invalid program.');
+        }
 
         const componentsIds = [];
         program['sequences'].forEach(function (sequence) {
             componentsIds.push(sequence['ingredient-id']);
         });
-
 
         var encryptedProgram;
         // Encrypt the recipe using our own encryption before passing it to the marketplace core
