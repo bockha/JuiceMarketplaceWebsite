@@ -29,7 +29,7 @@
 		<br>
 		<div class="alert alert-danger hidden">
   			<strong>Fehler!</strong> Die Mindestmenge beträgt 10 ml, die maximale Menge beträgt 120 ml.
-		</div>
+	</div>
 	</div>
 
 	<div id="dialog-change-amount" title="Menge einstellen" style="display: none">
@@ -41,7 +41,7 @@
 		<br>
 		<div class="alert alert-danger hidden">
   			<strong>Fehler!</strong> Die Mindestmenge beträgt 10 ml, die maximale Menge beträgt 120 ml.
-		</div>
+	</div>
 	</div>
 
 	<div id="dialog-add-ingredient" title="Zutat hinzufügen" style="display: none">
@@ -111,8 +111,8 @@
 				<div id="program-pause-phase" class="pause-phase">
 					<div class="pause-phase-content">
 						<div class="phase-content-label valign"/>
-					</div>
 				</div>				
+			</div>
 			</div>
 			<div class="col-xs-1 program-row program-row-total"><div class="valign"><div class="label">-</div></div></div>
 			<div class="col-xs-1"></div>
@@ -151,7 +151,7 @@
 			<div class="row config">
 				<div class="col-sm-3">
 					<p class="label">Rezeptur</p>
-				</div>
+			</div>
 			</div>
 			 <!-- <div class="recipe-error alert alert-danger"><strong>Fehler:</strong><br>
 				<div class="error-minimum-total">Mindestmenge (100 ml) unterschritten.<br></div>
@@ -285,16 +285,16 @@
 				alert("Die zulässige Gesamtdauer der Pausen von "+maxTotalPause+" ms wurde überschritten.");
 				valid = false;
 			}
-			if (valid && recipe.title == "") {
-				alert("Bitte geben Sie einen Titel ein.");
+			if (valid && recipe.title.trim().length < 10) {
+				alert("Bitte geben Sie einen Titel mit mindestens 10 Zeichen ein.");
 				valid = false;
 			}
 			// if (valid && recipe.shortDescription == "") {
 			// 	alert("Bitte geben Sie eine Kurzbeschreibung ein.");
 			// 	valid = false;
 			// }
-			if (valid && recipe.description == "") {
-				alert("Bitte geben Sie eine Beschreibung ein.");
+			if (valid && recipe.description.trim().length < 10) {
+				alert("Bitte geben Sie eine Beschreibung mit mindestens 10 Zeichen ein.");
 				valid = false;
 			}
 			if (valid && recipe.licenseFee == -1) {
