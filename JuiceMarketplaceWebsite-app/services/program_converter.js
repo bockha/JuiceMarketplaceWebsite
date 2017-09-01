@@ -4,16 +4,6 @@ var self = {};
 // ******************************************
 var milliliterPerMillisecond = 0.05;
 
-self.convertMilliliterToMilliseconds = function(milliliter) {
-	var milliseconds = parseInt(milliliter) / milliliterPerMillisecond;
-	return milliseconds;
-}
-
-self.convertMillisecondsToMilliliter = function(milliseconds) {
-	var milliliter = parseInt(milliseconds) * milliliterPerMillisecond;
-	return milliliter;
-}
-
 self.convertProgramToMachineProgram = function(program) {
     function log(string) {
         // console.log(string);
@@ -21,8 +11,10 @@ self.convertProgramToMachineProgram = function(program) {
     var convertedJson = {};
     var sequences = {};
 
+    var milliliterPerMillisecond = program['milliliter-per-millisecond'];
+    log("milliliterPerMillisecond = " + milliliterPerMillisecond);
 	log("Converter started...");
-	log("Program: "+program);
+    log("Program: "+program);
 
     // copy sequences
     program['sequences'].forEach(function(sequence) {
@@ -204,7 +196,7 @@ self.convertProgramToMachineProgram = function(program) {
         // setup line
         var jsonLine = {};
         var jsonComponents = [];
-        var pauseMs = this.convertMilliliterToMilliseconds(pause);
+        var pauseMs = pause / milliliterPerMillisecond;
         log("line timing = "+targetMode+", sleep = "+pauseMs);
         jsonLine['timing'] = targetMode;
         jsonLine['sleep'] = pauseMs;
