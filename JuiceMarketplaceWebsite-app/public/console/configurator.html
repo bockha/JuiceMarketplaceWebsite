@@ -20,8 +20,13 @@
 <body>
 <div id="main2">
 	<!-- Templates start -->
+	<div id="dialog-delete-ingredient" title="Zutat entfernen" style="display: none">
+		<p class="validateTips">Soll die Zutat wirklich entfernt werden?</p>
+	</div>
+
 	<div id="dialog-phase" title="Phase bearbeiten" style="display: none">
-		<p class="validateTips">Wieviel Milliliter sollen abgetrennt werden?</p>
+		<br>
+		<!-- <p class="validateTips">Wieviel Milliliter sollen abgetrennt werden?</p> -->
 		<fieldset>
 			<label for="splitml">Milliliter: </label>
 			<input type="text" name="splitml" id="splitml" value="50" class="text ui-widget-content ui-corner-all">
@@ -89,7 +94,12 @@
 		</div>
 		<div id="program-sequence" class="row sequence">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-2 program-row program-row-label"><div class="ingredient-label valign"></div></div>
+			<div class="col-xs-2 program-row program-row-label">
+				<div class="valign">
+					<a href="javascript:void(0);" class="ingredient-delete"><img src="/img/delete-icon.png" width="16px" height="16px"></a>
+					<div class="ingredient-label"></div>
+				</div>
+			</div>
 			<div class="col-xs-7 program-row content">
 				<div id="program-phase" class="phase">
 					<div class="phase-content">
@@ -101,12 +111,16 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-1 program-row program-row-total"><div class="valign"><a href="javascript:void(0);" class="total-label change-amount"></a></div></div>
+			<div class="col-xs-1 program-row program-row-total"><div class="valign total-label change-amount"></div></div> 
 			<div class="col-xs-1"></div>
 		</div>
 		<div id="program-pause" class="row">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-2 program-row-label program-row"><div class="ingredient-label valign"></div></div>
+			<div class="col-xs-2 program-pause-label program-row">
+				<div class="valign">
+					<div class="ingredient-label"></div>
+				</div>
+			</div>
 			<div class="col-xs-7 program-row content">
 				<div id="program-pause-phase" class="pause-phase">
 					<div class="pause-phase-content">
@@ -119,7 +133,12 @@
 		</div>
 		<div id="program-footer" class="row footer">
 			<div class="col-xs-1"></div>
-			<div class="col-xs-2 program-row-footer program-row-label"><div class="ingredient-label valign"><a href="javascript:void(0);" class="add-ingredient">Zutat hinzufügen</a></div></div>
+			<div class="col-xs-2 program-row-footer program-footer-label">
+				<div class="valign">
+				<!-- <div class="ingredient-label valign"> -->
+					<a href="javascript:void(0);" class="add-ingredient">Zutat hinzufügen</a>
+				 </div> 
+				</div>
 			<div class="col-xs-7 program-row-footer content">
 				<div class="error-minimum-total error valign hidden">Mindestmenge (100 ml) unterschritten.</div>
 				<div class="error-maximum-total error valign hidden">Höchstmenge (120 ml) überschritten.</div>
