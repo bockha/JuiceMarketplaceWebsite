@@ -40,6 +40,22 @@ app.use('/myreports', isLoggedIn, require('./routes/myreports'));
 app.use('/users', isLoggedIn, require('./routes/users'));
 app.use('/components', isLoggedIn, require('./routes/components'));
 app.use('/console', isLoggedIn, require('./routes/console'));
+
+app.get('/terms-of-service', function(req, res) {
+    res.render('terms-of-service');
+});
+
+app.get('/privacy', function(req, res) {
+    res.render('privacy');
+});
+
+app.get('/contact', function(req, res) {
+    res.render('contact');
+});
+
+app.get('/imprint', function(req, res) {
+    res.render('imprint');
+});
 // app.use('/console', require('./routes/console'));
 
 // app.use('/console', isLoggedIn, function(req, res) {
