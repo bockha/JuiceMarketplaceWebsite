@@ -97,12 +97,12 @@ $(function () {
 function checkRecipeLimit() {
     $.getJSON('/users/me/recipes/limit', function(data) {
         if (data && data.limit > 0) {
-            window.location.href = "console.html?page=configurator";
+            window.location.href = "/console/configurator";
         }
         else {
-            window.location.href = "console.html?page=myrecipes&limit_reached=true";
+            window.location.href = "/console/myrecipes&limit_reached=true";
         }
     }).fail(function() {
-        window.location.href = "console.html?page=myrecipes";
+        window.location.href = "/console/myrecipes";
     })
 }
