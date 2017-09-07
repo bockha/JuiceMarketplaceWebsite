@@ -99,9 +99,8 @@ app.use(function (req, res, next) {
 
 if (app.get('env') !== 'development') {
     app.use(function(err, req, res, next) {
-        if (err.status === 401) {
-            req.logout();
-        }
+        //Always logout user on failure
+        // req.logout();
         next(err, req, res)
     });
 }
