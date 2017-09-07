@@ -100,7 +100,7 @@ app.use(function (req, res, next) {
 if (app.get('env') !== 'development') {
     app.use(function(err, req, res, next) {
         //Always logout user on failure
-        // req.logout();
+        req.logout();
         next(err, req, res)
     });
 }
