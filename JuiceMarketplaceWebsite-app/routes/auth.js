@@ -27,7 +27,7 @@ module.exports = function (passport) {
 
         passport.authenticate('iuno', {
             // TODO: fix the redirect workflow. Don't use a redirect url here.
-            successRedirect: '/console/console.html',
+            successRedirect: '/console',
             failureRedirect: '/',
             failureFlash: true
         })(req, res, next);

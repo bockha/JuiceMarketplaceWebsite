@@ -10,6 +10,14 @@ h3 {
     color: #000;
 }
 
+a.ingredient-delete {
+    margin-right: 4px; 
+}
+
+.ingredient-label {
+    display: inline;
+}
+
 #dialog-add-ingredient-table .table {
     height: 250px;
     overflow-y: auto;    

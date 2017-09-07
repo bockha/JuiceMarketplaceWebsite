@@ -28,6 +28,31 @@ $(function() {
             return 'Sie haben Ihre Änderungen noch nicht gespeichert. Möchten Sie die Seite wirklich verlassen?';
         }
     }
+
+    $( "#dialog-delete-ingredient" ).dialog({
+		autoOpen: false,
+		resizable: false,
+		height: "auto",
+		width: 400,
+		modal: true,
+		buttons: {
+			"Abbrechen": function() {
+				$(this).dialog('close');
+			},
+			"Zutat entfernen": function() {
+				var configurator = $(this).data('configurator');
+				var sequence = $(this).data('sequence');
+				configurator.removeSequence(sequence);
+				$(this).dialog('close');
+			},
+		},
+	});
+	$("#dialog-delete-ingredient").keypress(function(e) {
+		if (e.keyCode == $.ui.keyCode.ENTER) {
+			$(this).parent().find("button:eq(1)").trigger("click");
+		}
+	});
+
 });
 
 function setRecipeChanged(changed) {
