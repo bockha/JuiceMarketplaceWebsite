@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
+var fs = require('fs');
+var marked = require('marked');
 
 const config = require('./config/config_loader');
 
@@ -41,20 +43,29 @@ app.use('/users', isLoggedIn, require('./routes/users'));
 app.use('/components', isLoggedIn, require('./routes/components'));
 app.use('/console', isLoggedIn, require('./routes/console'));
 
+function renderLegalPage(res, filename) {
+    var path = __dirname + '/resources/' + filename;
+    var file = fs.readFileSync(path, 'utf8');
+    var content = marked(file.toString());
+    res.render('legal', {
+        content: content,
+    });
+}
+
 app.get('/terms-of-service', function(req, res) {
-    res.render('terms-of-service');
+    renderLegalPage(res, 'terms-of-service.md');
 });
 
 app.get('/privacy', function(req, res) {
-    res.render('privacy');
+    renderLegalPage(res, 'privacy.md');
 });
 
 app.get('/contact', function(req, res) {
-    res.render('contact');
+    renderLegalPage(res, 'contact.md');
 });
 
 app.get('/imprint', function(req, res) {
-    res.render('imprint');
+    renderLegalPage(res, 'imprint.md');
 });
 // app.use('/console', require('./routes/console'));
 
@@ -86,11 +97,13 @@ app.use(function (req, res, next) {
     next(err);
 });
 
-app.use(function(err, req, res, next) {
-    //Always logout user on failure
-    req.logout();
-    next(err, req, res)
-});
+if (app.get('env') !== 'development') {
+    app.use(function(err, req, res, next) {
+        //Always logout user on failure
+        req.logout();
+        next(err, req, res)
+    });
+}
 
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {

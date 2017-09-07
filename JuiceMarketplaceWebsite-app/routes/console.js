@@ -2,6 +2,7 @@ const marketplaceCore = require('../adapter/marketplace_core_adapter');
 const express = require('express');
 const router = express.Router();
 const CONFIG = require('../config/config_loader');
+const logger = require('../global/logger');
 
 router.get('/', function (req, res, next) {
     res.redirect('myreports');
@@ -17,7 +18,7 @@ router.get('/configurator', function (req, res, next) {
             return next(err);
         }
         if (recipes.length >= CONFIG.RECIPE_LIMIT_PER_USER) {
-            console.log("Max number of recipes reached. Redirecting to myrecipes.")
+            logger.info("Max number of recipes reached. Redirecting to myrecipes.")
             res.render('console/myrecipes', {
                 query: req.query,
                 errorMaxRecipes: true,

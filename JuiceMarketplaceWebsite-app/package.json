@@ -13,6 +13,7 @@
     "ejs": "^2.5.7",
     "express": "~4.14.1",
     "express-session": "^1.15.3",
+    "marked": "^0.3.6",
     "morgan": "~1.7.0",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
