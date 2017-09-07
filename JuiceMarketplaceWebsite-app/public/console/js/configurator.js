@@ -1,7 +1,17 @@
 var recipeChanged = false;
 
+
 $(function() {
-    $.getJSON('/components', function(data) {
+$body = $("body");
+
+$(document).on({
+    ajaxStart: function() {
+        $body.addClass("processing");    
+    },
+     ajaxStop: function() { $body.removeClass("processing"); }    
+});
+
+$.getJSON('/components', function(data) {
         ingredients = [];
         data.forEach(function(element) {
             var id = element['id'];
