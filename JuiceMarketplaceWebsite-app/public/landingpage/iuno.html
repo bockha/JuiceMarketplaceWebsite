@@ -28,6 +28,31 @@
         <script src="js/respond.min.js"></script>
     <![endif]-->
 
+    <link rel="stylesheet" type="text/css" href="css/cookieconsent.min.css" />
+    <script src="js/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function(){
+            window.cookieconsent.initialise({
+                "palette": {
+                    "popup": {
+                        "background": "#efefef",
+                        "text": "#404040"
+                    },
+                    "button": {
+                        "background": "#8ec760",
+                        "text": "#ffffff"
+                    }
+                },
+                "position": "top",
+                "content": {
+                    "message": "Für die Bereitstellung dieser Website nutzen wir Cookies. Wenn Sie diese Website weiterhin verwenden, ohne die Einstellungen für Cookies zu ändern, gehen wir davon aus, dass Sie mit der Verwendung von Cookies einverstanden sind.",
+                    "dismiss": "OK",
+                    "link": "Weitere Informationen",
+                    "href": "https://iuno.axoom.com/privacy"
+                }
+            })});
+    </script>
+
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">

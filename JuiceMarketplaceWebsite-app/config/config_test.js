@@ -22,7 +22,7 @@ self.HOST_SETTINGS = {
     },
     OAUTH_SERVER_SECURE: {
         PROTOCOL: 'HTTP',
-        HOST: 'localhost',
+        HOST: 'test-tdm.fritz.box',
         PORT: 3006
     }
 };
