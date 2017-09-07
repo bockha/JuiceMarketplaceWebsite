@@ -20,9 +20,8 @@ router.get('/configurator', function (req, res, next) {
             console.log("Max number of recipes reached. Redirecting to myrecipes.")
             res.render('console/myrecipes', {
                 query: req.query,
-                maxRecipesError: true,
+                errorMaxRecipes: true,
             });
-            // return res.redirect('/console/myrecipes');
         } else {
             res.render('console/configurator', {
                 query: req.query,
