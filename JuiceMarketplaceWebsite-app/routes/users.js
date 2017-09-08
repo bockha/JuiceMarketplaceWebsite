@@ -101,10 +101,10 @@ router.post('/:id/recipes', function (req, res, next) {
 
         // check metadata
         var valid = true;
-        if (!title || title.length < 10) {
+        if (!title || title.length < 1) {
             valid = false;
         }
-        if (!description || description.length < 10) {
+        if (!description || description.length < 1) {
             valid = false;
         }
         if (!licenseFee) {
