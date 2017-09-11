@@ -1,8 +1,9 @@
 /**
  * Created by beuttlerma on 02.06.17.
  */
-var express = require('express');
-var logger = require('../global/logger');
+const express = require('express');
+const logger = require('../global/logger');
+const config = require('../config/config_loader');
 
 module.exports = function (passport) {
     var router = express.Router();
@@ -10,7 +11,17 @@ module.exports = function (passport) {
     // LOGOUT ==============================
     router.get('/logout', function (req, res) {
         req.logout();
-        res.redirect('/');
+
+        const hostUrl = req.protocol + '://' + req.get('host');
+
+        const authServerLogout =
+            config.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL
+            + '://' + config.HOST_SETTINGS.OAUTH_SERVER.HOST
+            + ':' + config.HOST_SETTINGS.OAUTH_SERVER.PORT
+            + '/passport/logout?redirect='
+            + encodeURIComponent(hostUrl);
+
+        res.redirect(authServerLogout);
     });
 
     // =============================================================================
