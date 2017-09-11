@@ -85,13 +85,13 @@ $(function () {
         $("#user-id").text(displayName);
     })
 
-    var urlPage = getUrlParameter("page");
-    if (urlPage == null) {
-        urlPage = 'dashboard';
-    }
-    var consolePage = consolePages[urlPage];
-    $(".navbar-brand").text(consolePage['title']);
-    $("#page_content").load(consolePage['url']);
+    // var urlPage = getUrlParameter("page");
+    // if (urlPage == null) {
+    //     urlPage = 'dashboard';
+    // }
+    // var consolePage = consolePages[urlPage];
+    // $(".navbar-brand").text(consolePage['title']);
+    // $("#page_content").load(consolePage['url']);
 });
 
 function checkRecipeLimit() {
