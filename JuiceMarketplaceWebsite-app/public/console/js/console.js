@@ -77,21 +77,6 @@ function getDisplayName(userName, firstName, lastName) {
 
 $(function () {
     openNav();
-    $.getJSON('/users/me', function (data) {
-        var firstName = data['firstname'];
-        var lastName = data['lastname'];
-        var userName = data['username'];
-        var displayName = getDisplayName(userName, firstName, lastName);
-        $("#user-id").text(displayName);
-    })
-
-    // var urlPage = getUrlParameter("page");
-    // if (urlPage == null) {
-    //     urlPage = 'dashboard';
-    // }
-    // var consolePage = consolePages[urlPage];
-    // $(".navbar-brand").text(consolePage['title']);
-    // $("#page_content").load(consolePage['url']);
 });
 
 function checkRecipeLimit() {
