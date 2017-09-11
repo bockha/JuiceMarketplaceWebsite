@@ -33,7 +33,7 @@ self.getUserInfoForToken = function (token, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.PROTOCOL,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.HOST,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.PORT,
         '/userinfo',

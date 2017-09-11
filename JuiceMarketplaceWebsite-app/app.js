@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
-var session = require('express-session');
+var session = require('cookie-session');
 var fs = require('fs');
 var marked = require('marked');
 
@@ -17,9 +17,7 @@ app.set('view engine', 'ejs');
 //Configure Passport
 require('./oauth/passport')(passport); // pass passport for configuration
 app.use(session({
-    secret: 'lbfifiou23bgofr2g18f12345121421pokdfsjga302lbfl2hbfdskb2o78gf324ougf232vksjhdvfakfviy3263972i', // session secret
-    resave: true,
-    saveUninitialized: true
+    secret: config.SESSION_SECRET
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
