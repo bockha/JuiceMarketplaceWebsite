@@ -17,7 +17,7 @@ app.set('view engine', 'ejs');
 //Configure Passport
 require('./oauth/passport')(passport); // pass passport for configuration
 app.use(session({
-    secret: 'lbfifiou23bgofr2g18f12345121421pokdfsjga302lbfl2hbfdskb2o78gf324ougf232vksjhdvfakfviy3263972i', // session secret
+    secret: config.SESSION_SECRET, // session secret
     resave: true,
     saveUninitialized: true
 }));
