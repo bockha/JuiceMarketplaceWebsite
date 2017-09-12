@@ -260,10 +260,11 @@
                         setRecipeChanged(false);
                         window.location.href = "/console/myrecipes";
                     },
-                    error: function() {
-                        console.log(" ############### FEHLER ###############");
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(" ############### FEHLER ###############");;
                         setRecipeChanged(false);
-                        window.alert('Beim erstellen Ihres Rezepts ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.');
+                        window.alert('Beim erstellen Ihres Rezepts ist ein Fehler aufgetreten.');
+                        window.location.href = "/console/myrecipes";
                     }
                 });
 
