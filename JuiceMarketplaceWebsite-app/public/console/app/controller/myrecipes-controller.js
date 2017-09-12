@@ -15,11 +15,11 @@ angular
 
             $scope.deleteRecipe = function (recipeID) {
                 MyRecipesDataService.deleteRecipe(recipeID).then(function (data) {
+                    window.location.reload();
 
                 }, function (error) {
+
                     console.log(error);
                 });
-
-                window.location = window.location.href.replace('limit_reached=true','');
             };
         }]);
