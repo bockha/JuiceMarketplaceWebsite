@@ -20,9 +20,8 @@
         <% include ./partials/sidebar %>
         <div id="main">
         <header>
-            <% include ./partials/header %>
-        </header>
-
+			<%- include("./partials/header", {pageName: 'Neues Getränk anlegen'}); %>
+		</header>
 <div id="configurator">
 <!-- Templates start -->
 	<div id="dialog-delete-ingredient" title="Zutat entfernen" style="display: none">
@@ -33,20 +32,8 @@
 		<br>
 		<!-- <p class="validateTips">Wieviel Milliliter sollen abgetrennt werden?</p> -->
 		<fieldset>
-			<label for="splitml">Milliliter: </label>
-			<input type="text" name="splitml" id="splitml" value="50" class="text ui-widget-content ui-corner-all">
-		</fieldset>
-		<br>
-		<div class="alert alert-danger hidden">
-  			<strong>Fehler!</strong> Die Mindestmenge beträgt 10 ml, die maximale Menge beträgt 120 ml.
-	    </div>
-	</div>
-
-	<div id="dialog-change-amount" title="Menge einstellen" style="display: none">
-		<p class="validateTips"></p>
-		<fieldset>
-			<label for="changeml">Milliliter: </label>
-			<input type="text" name="changeml" id="changeml" value="0" class="text ui-widget-content ui-corner-all">
+			<label for="dialogPhaseMl">Milliliter: </label>
+			<input type="text" name="dialogPhaseMl" id="dialogPhaseMl" value="50" class="text ui-widget-content ui-corner-all">
 		</fieldset>
 		<br>
 		<div class="alert alert-danger hidden">

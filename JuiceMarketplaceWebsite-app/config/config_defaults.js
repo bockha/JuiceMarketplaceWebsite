@@ -44,4 +44,6 @@ self.PUBLIC_KEY_FILE_FOR_ENCRYPTION = 'resources/public_key_encryption.pem';
 
 self.RECIPE_LIMIT_PER_USER = 2;
 
+self.SESSION_SECRET = 'lbfifiou23bgofr2g18f12345121421pokdfsjga302lbfl2hbfdskb2o78gf324ougf232vksjhdvfakfviy3263972i';
+
 module.exports = self;

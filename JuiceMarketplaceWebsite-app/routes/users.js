@@ -206,10 +206,7 @@ router.delete('/:id/recipes/:recipe_id', function (req, res, next) {
         if (err) {
             return next(err);
         }
-
-        const fullUrl = helper.buildFullUrlFromRequest(req);
-        res.set('Location', fullUrl + recipeId);
-        res.sendStatus(201);
+        res.sendStatus(200);
     });
 });
 

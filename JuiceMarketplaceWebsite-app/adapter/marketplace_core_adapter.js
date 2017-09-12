@@ -35,7 +35,7 @@ self.getAllComponents = function (userId, accessToken, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/components',
@@ -73,7 +73,7 @@ self.getRecipesForUser = function (userId, accessToken, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/myreports/technologydata',
@@ -117,7 +117,7 @@ self.getTopDrinkForUser = function (token, topCount, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/myreports/technologydata',
@@ -170,7 +170,7 @@ self.saveRecipeForUser = function (token, recipeData, callback) {
 
     var options = buildOptionsForRequest(
         'POST',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata',
@@ -204,7 +204,7 @@ self.getTopDrinksSince = function (token, sinceDate, topCount, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/reports',
@@ -250,7 +250,7 @@ self.getFavoriteJuicesSince = function (token, sinceDate, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/reports/favorit',
@@ -295,7 +295,7 @@ self.getWorkloadSince = function (token, sinceDate, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/reports/workload',
@@ -340,7 +340,7 @@ self.getRevenueSince = function (token, sinceDate, time, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/reports/revenue',
@@ -386,7 +386,7 @@ self.getTopDrinksSinceForUser = function (token, sinceDate, topCount, callback) 
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/myreports',
@@ -432,7 +432,7 @@ self.getFavoriteJuicesSinceForUser = function (token, sinceDate, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/myreports/favorit',
@@ -477,7 +477,7 @@ self.getWorkloadSinceForUser = function (token, sinceDate, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/myreports/workload',
@@ -522,7 +522,7 @@ self.getRevenueForUser = function (token, sinceDate, time, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/myreports/revenue',
@@ -568,7 +568,7 @@ self.getTotalRevenueForUser = function (token, sinceDate, time, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/myreports/revenue',
@@ -610,11 +610,11 @@ self.getTotalRevenueForUser = function (token, sinceDate, time, callback) {
 // --- REPORTS END ---
 
 // Delete Recipes
-self.deleteRecipe = function (token, recipeID, time, callback) {
+self.deleteRecipe = function (token, recipeID, callback) {
 
     var options = buildOptionsForRequest(
         'DELETE',
-        'http',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeID + '/delete',

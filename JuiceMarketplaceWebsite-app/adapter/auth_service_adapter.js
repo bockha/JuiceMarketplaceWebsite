@@ -33,7 +33,7 @@ self.getUserInfoForToken = function (token, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.PROTOCOL,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.HOST,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.PORT,
         '/userinfo',
@@ -81,6 +81,11 @@ self.getImageForUser = function (user, callback) {
 };
 
 self.refreshTokenForUser = function (user, callback) {
+    if (!user) {
+        callback(new Error('Missing argument'));
+        return;
+    }
+
     if (new Date(user.token.accessTokenExpiresAt) > new Date()) {
         callback(null, user);
         return;
