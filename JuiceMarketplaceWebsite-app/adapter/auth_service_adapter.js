@@ -81,6 +81,11 @@ self.getImageForUser = function (user, callback) {
 };
 
 self.refreshTokenForUser = function (user, callback) {
+    if (!user) {
+        callback(new Error('Missing argument'));
+        return;
+    }
+
     if (new Date(user.token.accessTokenExpiresAt) > new Date()) {
         callback(null, user);
         return;
