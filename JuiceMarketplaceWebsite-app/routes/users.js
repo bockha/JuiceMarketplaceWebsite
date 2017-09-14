@@ -79,8 +79,10 @@ router.post('/:id/recipes', function (req, res, next) {
         if (err) {
             return next(err);
         }
-        if (recipes.length >= CONFIG.RECIPE_LIMIT_PER_USER){
-            return res.status(400).send('Recipe limit reached. Only a maximum of ' + CONFIG.RECIPE_LIMIT_PER_USER + ' recipes is allowed per user.');
+        if (recipes.length >= CONFIG.RECIPE_LIMIT_PER_USER) {
+            logger.warn('Recipe limit reached for user');
+            res.status = 400;
+            return res.send('Recipe limit reached. Only a maximum of ' + CONFIG.RECIPE_LIMIT_PER_USER + ' recipes is allowed per user.');
         }
 
         const minPhaseAmount = 10;
@@ -101,18 +103,27 @@ router.post('/:id/recipes', function (req, res, next) {
 
         // check metadata
         var valid = true;
+        var validText;
         if (!title || title.length < 1) {
+            logger.warn('Submitted recipe: Title is missing');
+            validText = 'Titel fehlt.';
             valid = false;
         }
         if (!description || description.length < 1) {
+            logger.warn('Submitted recipe: Description is missing');
+            validText = 'Beschreibung fehlt.';
             valid = false;
         }
         if (!licenseFee) {
+            logger.warn('Submitted recipe: License Fee is missing');
+            validText = 'Lizenzgebühr fehlt.';
             valid = false;
         }
 
         if (!valid) {
-            return res.status(400).send('invalid metadata.');
+            logger.warn('Submitted recipe: Invalid metadata');
+            res.status = 400;
+            return res.send('Ungültige Metadaten: ' + validText);
         }
 
         // check total amount
@@ -120,29 +131,37 @@ router.post('/:id/recipes', function (req, res, next) {
         var totalPause = 0;
 
         var lines = machineProgram['recipe']['lines'];
-        lines.forEach(function(line) {
+        lines.forEach(function (line) {
             var components = line['components'];
             totalPause += line['sleep'];
-            components.forEach(function(component) {
+            components.forEach(function (component) {
                 var amount = component['amount'];
                 totalAmount += amount;
             });
         });
 
         if (totalAmount > maxTotalAmount) {
+            logger.warn('Submitted program exceeding max total amount size');
+            validText = 'Maximal-Menge (' + maxTotalAmount + ') überschritten';
             valid = false;
         }
 
         if (totalAmount < minTotalAmount) {
+            logger.warn('Submitted program is less than min total amount');
+            validText = 'Minimal-Menge (' + minTotalAmount + ') unterschritten';
             valid = false;
         }
 
         if (totalPause > maxTotalPause) {
+            logger.warn('Submitted program exceeding max total pause size');
+            validText = 'Maximale Pausenlänge (' + maxTotalPause + ') überschritten';
             valid = false;
         }
 
         if (!valid) {
-            return res.status(400).send('invalid program.');
+            logger.warn('Submitted program not valid.');
+            res.status = 400;
+            return res.send('Ungültiges Rezept: ' + validText);
         }
 
         const componentsIds = [];
