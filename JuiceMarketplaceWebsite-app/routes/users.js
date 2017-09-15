@@ -104,7 +104,7 @@ router.post('/:id/recipes', function (req, res, next) {
         // check metadata
         var valid = true;
         var validText;
-        if (!title || title.length < 1 || true) {
+        if (!title || title.length < 1) {
             logger.warn('Submitted recipe: Title is missing');
             validText = 'Titel fehlt.';
             valid = false;
