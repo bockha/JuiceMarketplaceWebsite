@@ -81,7 +81,7 @@ router.post('/:id/recipes', function (req, res, next) {
         }
         if (recipes.length >= CONFIG.RECIPE_LIMIT_PER_USER) {
             logger.warn('Recipe limit reached for user');
-            res.status = 400;
+            res.status(400);
             return res.send('Recipe limit reached. Only a maximum of ' + CONFIG.RECIPE_LIMIT_PER_USER + ' recipes is allowed per user.');
         }
 
@@ -122,7 +122,7 @@ router.post('/:id/recipes', function (req, res, next) {
 
         if (!valid) {
             logger.warn('Submitted recipe: Invalid metadata');
-            res.status = 400;
+            res.status(400);
             return res.send('Ungültige Metadaten: ' + validText);
         }
 
@@ -160,7 +160,7 @@ router.post('/:id/recipes', function (req, res, next) {
 
         if (!valid) {
             logger.warn('Submitted program not valid.');
-            res.status = 400;
+            res.status(400);
             return res.send('Ungültiges Rezept: ' + validText);
         }
 
