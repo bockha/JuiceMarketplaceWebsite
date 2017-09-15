@@ -126,6 +126,26 @@ router.post('/:id/recipes', function (req, res, next) {
             return res.send('Ungültige Metadaten: ' + validText);
         }
 
+        //TODO: Remove this check after issue https://github.com/IUNO-TDM/MarketplaceCore/issues/91 was fixed.
+        //Check for invalid characters
+        const invalidCharacters = '\'';
+        for (var i in invalidCharacters) {
+            const invalidChar = invalidCharacters[i];
+
+            if (title.indexOf(invalidChar) >= 0) {
+                logger.warn('Submitted recipe: Invalid metadata');
+                res.status(400);
+                return res.send('Ungültiges Zeichen im Titel. Bitte verwenden Sie möglichst keine Sonderzeichen.');
+            }
+
+            if (description.indexOf(invalidChar) >= 0) {
+                logger.warn('Submitted recipe: Invalid metadata');
+                res.status(400);
+                return res.send('Ungültiges Zeichen in der Beschreibung. Bitte verwenden Sie möglichst keine Sonderzeichen.');
+            }
+        }
+
+
         // check total amount
         var totalAmount = 0;
         var totalPause = 0;
