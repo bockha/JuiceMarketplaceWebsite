@@ -276,16 +276,18 @@
                 success: function () {
                     console.log(" ############### FERTIG ###############");
                     setRecipeChanged(false);
-                    window.location.href = "/console/myrecipes";
+//                    window.location.href = "/console/myrecipes";
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log(" ############### FEHLER ###############");
+                    console.error(jqXHR);
+                    console.error(jqXHR.status);
                     console.error(textStatus);
                     console.error(errorThrown);
 
                     setRecipeChanged(false);
                     if (jqXHR && jqXHR.status === 400) {
-                        window.alert('Das eingereichte Rezept ist ungültig: [' + textStatus + ']');
+                        window.alert('Das eingereichte Rezept ist ungültig: [' + jqXHR.responseText + ']');
                     } else {
                         window.alert('Beim erstellen Ihres Rezepts ist ein Fehler aufgetreten.');
 
