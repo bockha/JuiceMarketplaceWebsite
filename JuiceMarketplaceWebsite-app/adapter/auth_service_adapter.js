@@ -86,12 +86,17 @@ self.refreshTokenForUser = function (user, callback) {
         return;
     }
 
+    if (!user.token) {
+        callback(new Error('Missing oauth token'));
+        return;
+    }
+
     if (new Date(user.token.accessTokenExpiresAt) > new Date()) {
         callback(null, user);
         return;
     }
 
-    if (new Date(user.token.refreshTokenExpiresAt) < new Date()) {
+    if (!user.token.refreshTokenExpiresAt || new Date(user.token.refreshTokenExpiresAt) < new Date()) {
         callback(new Error('RefreshTokenExpired'));
         return;
     }
