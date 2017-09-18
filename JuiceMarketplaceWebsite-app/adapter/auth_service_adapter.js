@@ -91,7 +91,7 @@ self.refreshTokenForUser = function (user, callback) {
         return;
     }
 
-    if (new Date(user.token.refreshTokenExpiresAt) > new Date()) {
+    if (new Date(user.token.refreshTokenExpiresAt) < new Date()) {
         callback(new Error('RefreshTokenExpired'));
         return;
     }
