@@ -48,9 +48,9 @@ module.exports = function (passport) {
     // used to serialize the user for the session
     passport.serializeUser(function (user, done) {
         logger.debug('Serialize User: ' + JSON.stringify(user));
-        userStore[user.id] = user;
+        userStore[user.token.user] = user;
 
-        done(null, user.id);
+        done(null, user.token.user);
     });
 
     // used to deserialize the user
