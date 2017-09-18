@@ -24,7 +24,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
+// -- PUBLIC CONTENT --
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/reports', require('./routes/reports'));
 
 app.use(session({
     secret: config.SESSION_SECRET
@@ -32,8 +34,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-app.use('/reports', require('./routes/reports'));
 app.use('/auth', require('./routes/auth')(passport));
+
+// -- RESTRICTED CONTENT --
 
 app.use('/myreports', isLoggedIn, require('./routes/myreports'));
 app.use('/users', isLoggedIn, require('./routes/users'));
