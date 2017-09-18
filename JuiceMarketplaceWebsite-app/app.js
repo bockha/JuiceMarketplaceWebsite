@@ -16,11 +16,6 @@ app.set('view engine', 'ejs');
 
 //Configure Passport
 require('./oauth/passport')(passport); // pass passport for configuration
-app.use(session({
-    secret: config.SESSION_SECRET
-}));
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -29,12 +24,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
-// app.use('/console', isLoggedIn);
-
+// -- PUBLIC CONTENT --
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/reports', require('./routes/reports'));
+
+app.use(session({
+    secret: config.SESSION_SECRET
+}));
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+
 app.use('/auth', require('./routes/auth')(passport));
+
+// -- RESTRICTED CONTENT --
 
 app.use('/myreports', isLoggedIn, require('./routes/myreports'));
 app.use('/users', isLoggedIn, require('./routes/users'));
