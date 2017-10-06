@@ -128,7 +128,7 @@ angular
                     //Get Categories
                    drinks.forEach(function (revenueData) {
                        //Get Categories for X-Axis
-                       if(!categories.includes(moment(revenueData.date).format('YYYY-MM-DD'))) {
+                       if(!myIncludes(moment(revenueData.date).format('YYYY-MM-DD'))) {
                            categories.push(moment(revenueData.date).format('YYYY-MM-DD'));
                        }
                        i++;
@@ -137,7 +137,7 @@ angular
                    //Get TechnologyDataName
                    i = 0;
                    drinks.forEach(function (revData) {
-                       if(!techName.includes(revData.technologydataname)) {
+                       if(!myIncludes(revData.technologydataname)) {
                            techName.push(revData.technologydataname);
                            columns.push(new Array(revData.technologydataname));
                            types.push(new Array(revData.technologydataname));
@@ -233,6 +233,15 @@ angular
                 //Always make sure the last timeout is cleared before starting a new one
                 cancelNextLoad();
                 loadPromise = $timeout(getData, loadTime);
+            };
+
+            var myIncludes = function includes(container, value) {
+                var returnValue = false;
+                var pos = container.indexOf(value);
+                if (pos >= 0) {
+                    returnValue = true;
+                }
+                return returnValue;
             };
 
             //Start polling the data from the server
