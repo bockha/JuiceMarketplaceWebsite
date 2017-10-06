@@ -46,4 +46,6 @@ self.RECIPE_LIMIT_PER_USER = 2;
 
 self.SESSION_SECRET = 'lbfifiou23bgofr2g18f12345121421pokdfsjga302lbfl2hbfdskb2o78gf324ougf232vksjhdvfakfviy3263972i';
 
+self.G_RE_CAPTCHA_SECRET = '';
+
 module.exports = self;

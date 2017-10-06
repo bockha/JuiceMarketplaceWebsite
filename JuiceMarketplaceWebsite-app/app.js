@@ -36,6 +36,8 @@ app.use(passport.session()); // persistent login sessions
 
 app.use('/auth', require('./routes/auth')(passport));
 
+app.use('/coupon', require('./routes/coupon'));
+
 // -- RESTRICTED CONTENT --
 
 app.use('/myreports', isLoggedIn, require('./routes/myreports'));
