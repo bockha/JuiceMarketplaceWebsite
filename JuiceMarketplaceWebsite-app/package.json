@@ -21,6 +21,7 @@
     "passport-local": "^1.0.0",
     "passport-oauth2": "^1.4.0",
     "passport-twitter": "^1.0.4",
+    "promise": "^8.0.1",
     "request": "^2.81.0",
     "serve-favicon": "~2.3.2",
     "winston": "^2.3.1"
