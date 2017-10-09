@@ -208,7 +208,7 @@ router.post('/:id/recipes', function (req, res, next) {
         coreData.componentList = componentsIds;
 
         marketplaceCore.saveRecipeForUser(req.user.token, coreData, function (err, recipeId) {
-            if (err.statusCode === 409) {
+            if (err && err.statusCode === 409) {
                 res.status(409);
                 return res.send('Ein Rezept mit diesem Namen existiert bereits.')
             }
