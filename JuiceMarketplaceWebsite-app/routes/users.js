@@ -86,9 +86,9 @@ router.post('/:id/recipes', function (req, res, next) {
         }
 
         const minPhaseAmount = 10;
-        const minTotalAmount = 100;
-        const maxTotalAmount = 120;
-        const maxTotalPause = 5000;
+        const minTotalAmount = 99;
+        const maxTotalAmount = 121;
+        const maxTotalPause = 5001;
 
         // Save recipe for user
         const recipe = req.body;
