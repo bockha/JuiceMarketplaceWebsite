@@ -286,7 +286,7 @@
                     console.error(errorThrown);
 
                     setRecipeChanged(false);
-                    if (jqXHR && jqXHR.status === 400) {
+                    if (jqXHR && jqXHR.status >= 400 && jqXHR.status < 500) {
                         window.alert('Das eingereichte Rezept ist ungültig: [' + jqXHR.responseText + ']');
                     } else {
                         window.alert('Beim erstellen Ihres Rezepts ist ein Fehler aufgetreten.');
