@@ -25,15 +25,14 @@ router.post('/', function (req, res, next) {
 });
 
 router.get('/:id/ios', function (req, res, next) {
-
+    res.set('Content-Disposition','attachment; filename=IUNO_Coupon.pkpass');
     couponAdapter.getIosCoupon(req.params['id'],res)
 
-    // res.send('Coming soon...');
 });
 
 router.get('/:id/pdf', function (req, res, next) {
+    res.set('Content-Disposition','attachment; filename=IUNO_Coupon.pdf');
     couponAdapter.getPdfCoupon(req.params['id'],res)
-    // res.send('Coming soon...');
 });
 
 router.get('/faucet', function (req, res, next) {
