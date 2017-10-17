@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.component-viewer {
+    max-width: 940px;
+    padding: 5px 10px 5px;
+}
+
+@media all and (min-width: 600px) {
+    .component-viewer {
+        max-width: 940px;
+        padding: 20px 70px 50px;
+    }
+}

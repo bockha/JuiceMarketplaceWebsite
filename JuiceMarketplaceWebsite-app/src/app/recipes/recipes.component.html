@@ -1,0 +1,68 @@
+<h1 class="mat-display-1">Getränke verwalten</h1>
+<mat-table #table [dataSource]="dataSource">
+
+  <ng-container matColumnDef="position">
+    <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+    <mat-cell *matCellDef="let i = index;"> {{i}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>Getränkename</mat-header-cell>
+    <mat-cell *matCellDef="let recipe"> {{recipe.technologydataname}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="revenue">
+    <mat-header-cell *matHeaderCellDef>Gesamtumsatz <small>(IUNOs)</small></mat-header-cell>
+    <mat-cell *matCellDef="let recipe"> {{recipe.revenue}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="licensefee">
+    <mat-header-cell *matHeaderCellDef>Lizenzgebühr <small>(IUNOs)</small></mat-header-cell>
+    <mat-cell *matCellDef="let recipe"> {{(recipe.licensefee / 100000).toFixed(2)}} </mat-cell>
+  </ng-container>
+
+  <!-- <ng-container matColumnDef="li">
+    <mat-header-cell *matHeaderCellDef>Lizenzgebühr <small>(IUNOs)</small></mat-header-cell>
+    <mat-cell *matCellDef="let recipe"> {{(recipe.licensefee / 100000).toFixed(2)}} </mat-cell>
+  </ng-container> -->
+
+  <ng-container matColumnDef="description">
+    <mat-header-cell *matHeaderCellDef>Beschreibung</mat-header-cell>
+    <mat-cell *matCellDef="let recipe"> {{recipe.technologydatadescription}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <mat-header-cell *matHeaderCellDef>Aktion</mat-header-cell>
+    <mat-cell *matCellDef="let recipe"><button (click)="deleteRecipe(recipe)" mat-button class="nav-button mat-elevation-z1">Löschen</button></mat-cell>
+  </ng-container>
+
+  <!-- <ng-container matColumnDef="sales">
+    <mat-header-cell *matHeaderCellDef>Gesamtumsatz (IUNOs)</mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="licensefee">
+    <mat-header-cell *matHeaderCellDef>Lizenzgebühr (IUNOs)</mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="components">
+    <mat-header-cell *matHeaderCellDef>Komponenten</mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+    <mat-header-cell *matHeaderCellDef>Beschreibung</mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <mat-header-cell *matHeaderCellDef>Aktion</mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+  </ng-container>
+ -->
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<app-footer></app-footer>

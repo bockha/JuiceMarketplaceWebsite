@@ -24,8 +24,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
-// -- PUBLIC CONTENT --
+// -- STATIC CONTENT --
+// app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use('/reports', require('./routes/reports'));
 
 app.use(session({
@@ -38,12 +41,17 @@ app.use('/auth', require('./routes/auth')(passport));
 
 app.use('/coupon', require('./routes/coupon'));
 
-// -- RESTRICTED CONTENT --
+app.use('/console', isLoggedIn, express.static(path.join(__dirname, 'dist')))
+app.get('/console/*', isLoggedIn, (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
+  });
 
+// -- RESTRICTED CONTENT --
 app.use('/myreports', isLoggedIn, require('./routes/myreports'));
 app.use('/users', isLoggedIn, require('./routes/users'));
 app.use('/components', isLoggedIn, require('./routes/components'));
-app.use('/console', isLoggedIn, require('./routes/console'));
+//app.use('/console', isLoggedIn, require('./routes/console'));
+// app.use('/console', require('./routes/console'));
 
 function renderLegalPage(res, filename) {
     var path = __dirname + '/resources/' + filename;
@@ -69,18 +77,13 @@ app.get('/contact', function(req, res) {
 app.get('/imprint', function(req, res) {
     renderLegalPage(res, 'imprint.md');
 });
+
+app.use('/', function(req, res, next) {
+//     res.sendFile(path.join(__dirname, 'dist/index.html'));
+    res.redirect('/landingpage/iuno.html')
+});
+
 // app.use('/console', require('./routes/console'));
-
-// app.use('/console', isLoggedIn, function(req, res) {
-// app.use('/console', function(req, res) {
-//     res.render('console/console', {query: req.query});
-// });
-// app.get('/console/configurator', function(req, res) {
-//     res.render('console/configurator');
-// });
-// app.use('/console', isLoggedIn, function(req, res, next) {res.redirect('/console/console.html')});
-
-app.use('/', function(req, res, next) {res.redirect('/landingpage/iuno.html')});
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {

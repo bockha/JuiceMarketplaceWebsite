@@ -1,0 +1,26 @@
+<section class="app flex-container" fxLayout="column" fxLayoutAlign="start stretch">
+    <mat-toolbar color="primary" class="mat-elevation-z5" style="z-index: 2">
+        <button mat-button (click)="sidenav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        TDM-Console
+    </mat-toolbar>
+
+    <mat-sidenav-container fxFlex>
+        <mat-sidenav mode="side" align="start" class="mat-elevation-z6" opened #sidenav fxLayout="column" fxLayoutAlign="start stretch">
+            <button (click)="openDashboard()" mat-button class="nav-button">Dashboard
+                <span flex></span>
+            </button>
+            <button (click)="openCreateRecipe()" mat-button class="nav-button">Neues Getränk anlegen
+                <span flex></span>
+            </button>
+            <button (click)="openRecipes()" mat-button class="nav-button">Getränke verwalten
+                <span flex></span>
+            </button>
+        </mat-sidenav>
+        <div class="component-viewer">
+            <router-outlet></router-outlet>
+        </div>
+
+    </mat-sidenav-container>
+</section>

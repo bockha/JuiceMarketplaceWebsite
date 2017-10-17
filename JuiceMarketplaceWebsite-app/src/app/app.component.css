@@ -1,0 +1,25 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: Roboto, sans-serif;
+}
+
+.nav-button {
+    text-align: left;
+}
+
+.app {
+    height: 100vh;
+}
+
+.mat-sidenav {
+    width: 250px;
+}
+
+mat-sidenav {
+    width: 40vw;
+}
+
+mat-card {
+    margin: 12px;
+}
