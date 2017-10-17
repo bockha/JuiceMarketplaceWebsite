@@ -41,12 +41,14 @@ export class RecipeDataSource extends DataSource<any> {
 
   connect(): Observable<Recipe[]> {
       console.log('connect');
-      if (!this.subject.isStopped)
-          this.recipeService.getRecipes()
-              .then(res => {
-                  // console.log(res)
-                  this.subject.next(res)
-              });
+      this.recipeService.recipes.subscribe(recipes => {this.subject.next(recipes)});
+      this.recipeService.updateRecipes();
+      // if (!this.subject.isStopped)
+      //     this.recipeService.getRecipes()
+      //         .then(res => {
+      //             // console.log(res)
+      //             this.subject.next(res)
+      //         });
       return Observable.merge(this.subject);
   }
 
