@@ -25,6 +25,11 @@ self.verifyReCaptchaResponse = function (res, callback) {
             secret: CONFIG.G_RE_CAPTCHA_SECRET
         });
 
+    if(CONFIG.G_RE_CAPTCHA_SECRET === ''){
+        callback(null,true);
+        return;
+    }
+
 
     request(options, function (e, r, jsonData) {
         const err = logger.logRequestAndResponse(e, options, r, jsonData);

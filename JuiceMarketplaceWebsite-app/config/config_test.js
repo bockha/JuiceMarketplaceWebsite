@@ -24,6 +24,11 @@ self.HOST_SETTINGS = {
         PROTOCOL: 'HTTP',
         HOST: 'test-tdm.fritz.box',
         PORT: 3006
+    },
+    COUPON_SERVER: {
+        PROTOCOL: 'HTTP',
+        HOST: 'localhost',
+        PORT: 3010
     }
 };
 
