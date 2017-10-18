@@ -12,10 +12,17 @@ router.post('/', function (req, res, next) {
         }
 
 
-        couponAdapter.createCoupon("",function (err,id) {
-            if(err || !id){
+        couponAdapter.createCoupon("", function (err, id) {
+            if (err || !id) {
+                if (err.statusCode === 900) {
+                    return res.render('coupon/faucet', {
+                        request: req,
+                        response: res,
+                        isEmpty: true
+                    });
+                }
                 res.sendStatus(500);
-            }else{
+            } else {
                 res.redirect('/coupon/faucet?id=' + id);
             }
         });
@@ -25,14 +32,14 @@ router.post('/', function (req, res, next) {
 });
 
 router.get('/:id/ios', function (req, res, next) {
-    res.set('Content-Disposition','attachment; filename=IUNO_Coupon.pkpass');
-    couponAdapter.getIosCoupon(req.params['id'],res)
+    res.set('Content-Disposition', 'attachment; filename=IUNO_Coupon.pkpass');
+    couponAdapter.getIosCoupon(req.params['id'], res)
 
 });
 
 router.get('/:id/pdf', function (req, res, next) {
-    res.set('Content-Disposition','attachment; filename=IUNO_Coupon.pdf');
-    couponAdapter.getPdfCoupon(req.params['id'],res)
+    res.set('Content-Disposition', 'attachment; filename=IUNO_Coupon.pdf');
+    couponAdapter.getPdfCoupon(req.params['id'], res)
 });
 
 router.get('/faucet', function (req, res, next) {

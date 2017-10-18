@@ -35,14 +35,19 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">IUNO Coupons</h3>
-                    <small>Hier entsteht in kürze eine Website zum Download von IUNO Coupons.</small>
                 </div>
+                <% if (isEmpty ) { %>
+                <div id="failure_alert" class="alert alert-warning">Leider sind keine Coupons mehr verfügbar. Bitte versuche es zu einem späteren Zeitpunkt erneut.</div>
+                <% } else{ %>
                 <div class="panel-body">
                     <form action="/coupon" method="post" role="form">
-                        <div class="g-recaptcha" data-sitekey="6LcFUDMUAAAAANHdh_RtQvy67IGG1hnKkbeqwHgj" data-callback="reCaptchaCallback"></div>
-                        <input type="submit" id="request_coupon" value="Coupon Anfordern" class="btn btn-info btn-block" disabled="true">
+                        <div class="g-recaptcha" data-sitekey="6LcFUDMUAAAAANHdh_RtQvy67IGG1hnKkbeqwHgj"
+                             data-callback="reCaptchaCallback"></div>
+                        <input type="submit" id="request_coupon" value="Coupon Anfordern" class="btn btn-info btn-block"
+                               disabled="true">
                     </form>
                 </div>
+                <% } %>
             </div>
         </div>
     </div>
