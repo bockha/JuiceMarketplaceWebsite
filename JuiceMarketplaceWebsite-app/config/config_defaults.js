@@ -24,6 +24,11 @@ self.HOST_SETTINGS = {
         PROTOCOL: 'HTTP',
         HOST: 'localhost',
         PORT: 3006
+    },
+    COUPON_SERVER: {
+        PROTOCOL: 'HTTP',
+        HOST: 'localhost',
+        PORT: 3010
     }
 };
 

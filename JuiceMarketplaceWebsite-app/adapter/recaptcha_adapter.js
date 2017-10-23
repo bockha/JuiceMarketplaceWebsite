@@ -25,11 +25,17 @@ self.verifyReCaptchaResponse = function (res, callback) {
             secret: CONFIG.G_RE_CAPTCHA_SECRET
         });
 
+    if (process.env.NODE_ENV === 'development') {
+        logger.info('[recaptcha_adapter] ignoring captcha result on development env');
+        callback(null, true);
+        return;
+    }
+
 
     request(options, function (e, r, jsonData) {
         const err = logger.logRequestAndResponse(e, options, r, jsonData);
 
-        return callback(err||e, jsonData.success);
+        return callback(err || e, jsonData.success);
     });
 };
 
