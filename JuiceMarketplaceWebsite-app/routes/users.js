@@ -254,4 +254,55 @@ router.get('/:id/image', function (req, res, next) {
         res.send(data.imageBuffer);
     });
 });
+
+/*Reports*/
+
+router.get('/:id/reports/revenue', function (req, res, next) {
+    var token = req.user.token;
+
+    marketplaceCore.getRevenueForUser(
+            req.query['from'],
+            req.query['to'],
+            token,
+            function (err, recipes) {
+        if (err) {
+            return next(err);
+        }
+        res.send(recipes);
+    });
+});
+
+router.get('/:id/reports/revenue/recipes', function (req, res, next) {
+    var token = req.user.token;
+
+    marketplaceCore.getRevenueHistory(
+        req.query['from'],
+        req.query['to'],
+        req.query['detail'],
+        token,
+        function (err, recipes) {
+            if (err) {
+                return next(err);
+            }
+            res.send(recipes);
+        });
+});
+
+router.get('/:id/reports/recipes/top', function (req, res, next) {
+    var token = req.user.token;
+
+    marketplaceCore.getTopTechnologyDataForUser(req.query['from'],
+                                                req.query['to'],
+                                                req.query['limit'],
+                                                token, function (err, recipes) {
+            if (err) {
+                return next(err);
+            }
+            res.send(recipes);
+        });
+});
+
+
+
+
 module.exports = router;
