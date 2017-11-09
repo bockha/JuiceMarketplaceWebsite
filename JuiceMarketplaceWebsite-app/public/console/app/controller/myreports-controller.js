@@ -184,8 +184,6 @@ angular
                             techName.splice(index,1);
                         }
                     }, this);
-                    console.info("Cat: ", categories);
-                    console.info("Col: ", columns);
                     $scope.revenuePerDay.data.columns = columns;
                     $scope.revenuePerDay.axis.x.categories = categories;
                     $scope.revenuePerDay.data.groups = new Array(techName);

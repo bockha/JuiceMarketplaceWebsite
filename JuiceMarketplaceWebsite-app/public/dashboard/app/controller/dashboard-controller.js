@@ -145,7 +145,12 @@ angular
                     x: {
                         label: 'Day',
                         type: 'category',
-                        categories: []
+                        categories: [],
+                        tick: {
+                            fit: true,
+                            outer: false,
+                            culling: {max:10}
+                        }
                     },
                     y: {
                         label: 'Revenue'
@@ -286,7 +291,6 @@ angular
                 var detail = 'day';
                 var interval = 100;
                 dashboardDataService.getTotalRevenue(detail, interval).then(function (data) {
-                    console.info("Data: ", data);
                     $scope.revenuePerDay.data.columns = [];
                     $scope.revenuePerDay.axis.x.categories = [];
 
@@ -302,11 +306,9 @@ angular
                         i++;
                     }, this);
 
-                    console.info("Columns: ", columns);
-                    console.info("categories: ", categories);
-
                     $scope.revenuePerDay.data.columns = columns;
                     $scope.revenuePerDay.axis.x.categories = categories;
+                    console.info('Total',$scope.revenuePerDay.totalAmount);
                 });
             }
 
