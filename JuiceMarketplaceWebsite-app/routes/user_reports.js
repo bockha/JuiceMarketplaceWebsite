@@ -42,7 +42,7 @@ router.get('/recipes/top', function (req, res, next) {
         token['accessToken'],
         req.query['from'],
         req.query['to'],
-        req.query['limit'],
+        parseInt(req.query['limit']),
         token, function (err, recipes) {
             if (err) {
                 return next(err);

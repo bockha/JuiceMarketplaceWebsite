@@ -304,6 +304,7 @@ self.getTopTechnologyData = function (from, to, limit, token, callback) {
             limit: limit
         }
     );
+
     options.headers.authorization = 'Bearer ' + token.accessToken;
 
     request(options, function (e, r, jsonData) {

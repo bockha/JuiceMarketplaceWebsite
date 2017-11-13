@@ -3,8 +3,9 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
     function getTopRecipes() {
         var defer = $q.defer();
         var limit = 5;
-        var fromDate = moment('1970-01-01 00:00:00').format('YYYY-MM-DD HH:mm:ss');
-        var toDate = moment().format('YYYY-MM-DD HH:mm:ss');
+        var fromDate = moment().utc().year(2000).format();
+        var toDate = moment().utc().format();
+        console.info("from: ", fromDate, " to: ", toDate);
 
         $http({
             method: 'GET',
@@ -21,8 +22,8 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
     function getTopRecipeName() {
         var defer = $q.defer();
         var limit = 1;
-        var fromDate = moment('1970-01-01 00:00:00').format('YYYY-MM-DD HH:mm:ss');
-        var toDate = moment().format('YYYY-MM-DD HH:mm:ss');
+        var fromDate = moment().utc().year(2000).format();
+        var toDate = moment().utc().format();
 
         $http({
             method: 'GET',
@@ -38,8 +39,8 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
     function getRevenueHistoryForUser() {
         var defer = $q.defer();
         var detail = 'day';
-        var fromDate = moment('1970-01-01 00:00:00').format('YYYY-MM-DD HH:mm:ss');
-        var toDate = moment().format('YYYY-MM-DD HH:mm:ss');
+        var fromDate = moment().utc().year(2000).format();
+        var toDate = moment().utc().format();
 
         $http({
             method: 'GET',
@@ -54,8 +55,8 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
 
     function getRevenueForUserToday() {
         var defer = $q.defer();
-        var fromDate = moment().format('YYYY-MM-DD') + ' ' + '00:00:00';
-        var toDate = moment().format('YYYY-MM-DD') + ' ' + '23:59:59';
+        var fromDate = moment().utc().startOf('day').format();
+        var toDate = moment().utc().endOf('day').format();
 
         $http({
             method: 'GET',
@@ -70,8 +71,8 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
 
     function getTotalRevenueForUser() {
         var defer = $q.defer();
-        var fromDate = moment('1970-01-01 00:00:00').format('YYYY-MM-DD HH:mm:ss');
-        var toDate = moment().format('YYYY-MM-DD HH:mm:ss');
+        var fromDate = moment().utc().year(2000).format();
+        var toDate = moment().utc().format();
 
         $http({
             method: 'GET',

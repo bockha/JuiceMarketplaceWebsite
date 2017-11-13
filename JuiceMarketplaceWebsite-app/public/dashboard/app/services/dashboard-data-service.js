@@ -2,8 +2,8 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
     
     function getRecipesByHour() {
         var defer = $q.defer();
-        var fromDate = moment().format('YYYY-MM-DD') + ' ' + '00:00:00';
-        var toDate = moment().format('YYYY-MM-DD') + ' ' + '23:59:59';
+        var fromDate = moment().startOf('day').format();
+        var toDate = moment().endOf('day').format();
         var detail = 'hour';
 
         $http({
@@ -20,8 +20,8 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
     function getTopDrinksEver() {
         var defer = $q.defer();
         var limit = 10;
-        var fromDate = moment('1970-01-01 00:00:00').format('YYYY-MM-DD HH:mm:ss');
-        var toDate = moment().format('YYYY-MM-DD HH:mm:ss');
+        var fromDate = moment().year(2000).format();
+        var toDate = moment().format();
 
         $http({
             method: 'GET',
@@ -37,8 +37,8 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
     function getTopDrinksOfToday() {
         var defer = $q.defer();
         var limit = 10;
-        var fromDate = moment().format('YYYY-MM-DD') + ' ' + '00:00:00';
-        var toDate = moment().format('YYYY-MM-DD HH:mm:ss');
+        var fromDate = moment().startOf('day').format();
+        var toDate = moment().format();
 
         $http({
             method: 'GET',
@@ -54,8 +54,8 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
     function getTopComponents() {
         var defer = $q.defer();
         var limit = 10;
-        var fromDate = moment('1970-01-01 00:00:00').format('YYYY-MM-DD HH:mm:ss');
-        var toDate = moment().format('YYYY-MM-DD HH:mm:ss');
+        var fromDate = moment().year(2000).format();
+        var toDate = moment().format();
 
         $http({
             method: 'GET',
@@ -70,8 +70,8 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
 
     function getTotalRevenue(detail, interval) {
         var defer = $q.defer();
-        var fromDate = moment().subtract(interval,'days').format('YYYY-MM-DD') + ' ' + '00:00:00';
-        var toDate = moment().format('YYYY-MM-DD') + ' ' + '23:59:59';
+        var fromDate = moment().subtract(interval,'days').startOf('day').format();
+        var toDate = moment().endOf('day').format();
 
         $http({
             method: 'GET',

@@ -81,7 +81,7 @@ router.get('/recipes/top', function (req, res, next) {
         marketplaceCore.getTopTechnologyData(
             req.query['from'],
             req.query['to'],
-            req.query['limit'],
+            parseInt(req.query['limit']),
             token, function (err, data) {
                 if (err) {
                     res.status(500);
@@ -104,7 +104,7 @@ router.get('/components/top', function (req, res, next) {
         marketplaceCore.getTopComponents(
             req.query['from'],
             req.query['to'],
-            req.query['limit'],
+            parseInt(req.query['limit']),
             token, function (err, data) {
                 if (err) {
                     res.status(500);
