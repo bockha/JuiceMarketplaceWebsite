@@ -83,9 +83,9 @@ self.getRecipesForUser = function (userId, accessToken, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
-        '/myreports/technologydata',
+        '/technologydata',
         {
-            userUUID: userId
+            user: userId
         }
     );
 
@@ -199,7 +199,7 @@ self.deleteRecipe = function (token, recipeID, callback) {
 //</editor-fold>
 
 //<editor-fold desc="Dashboard (Public) Reports">
-self.getTechnologyData = function (from, to, detail, token, callback) {
+self.getTechnologyDataHistory = function (from, to, token, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
@@ -209,9 +209,7 @@ self.getTechnologyData = function (from, to, detail, token, callback) {
         '/reports/technologydata/history',
         {
             from: from,
-            to: to,
-            detail: detail,
-            userUUID: token.user
+            to: to
         }
     );
     options.headers.authorization = 'Bearer ' + token.accessToken;
@@ -257,8 +255,7 @@ self.getTopComponents = function (from, to, limit, token, callback) {
         {
             from: from ,
             to: to,
-            limit: limit,
-            userUUID: token.user
+            limit: limit
         }
     );
     options.headers.authorization = 'Bearer ' + token.accessToken;
@@ -304,8 +301,7 @@ self.getTopTechnologyData = function (from, to, limit, token, callback) {
         {
             from: from,
             to: to,
-            limit: limit,
-            userUUID: token.user
+            limit: limit
         }
     );
     options.headers.authorization = 'Bearer ' + token.accessToken;
@@ -351,8 +347,7 @@ self.getTotalRevenue = function (from, to, detail, token, callback) {
         {
             from: from,
             to: to,
-            detail: detail,
-            userUUID: token.user
+            detail: detail
         }
     );
     options.headers.authorization = 'Bearer ' + token.accessToken;
@@ -444,7 +439,7 @@ self.getTopDrinkNameEver = function (token, topCount, callback) {
     });
 };
 // getRevenueForUser
-self.getRevenueForUser = function (from, to, token, callback) {
+self.getRevenueForUser = function (user, from, to, accessToken, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
@@ -453,13 +448,12 @@ self.getRevenueForUser = function (from, to, token, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/reports/revenue/user',
         {
+            user: user,
             from: from,
-            to: to,
-            technologydataname: 'Total',
-            userUUID: token.user
+            to: to
         }
     );
-    options.headers.authorization = 'Bearer ' + token.accessToken;
+    options.headers.authorization = 'Bearer ' + accessToken;
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
@@ -491,7 +485,7 @@ self.getRevenueForUser = function (from, to, token, callback) {
     });
 };
 // getRevenueHistory
-self.getRevenueHistory = function (from, to, detail, token, callback) {
+self.getRevenueHistory = function (accessToken, from, to, detail, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
@@ -502,11 +496,10 @@ self.getRevenueHistory = function (from, to, detail, token, callback) {
         {
             from: from,
             to: to,
-            detail: detail,
-            userUUID: token.user
+            detail: detail
         }
     );
-    options.headers.authorization = 'Bearer ' + token.accessToken;
+    options.headers.authorization = 'Bearer ' + accessToken;
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
@@ -538,7 +531,7 @@ self.getRevenueHistory = function (from, to, detail, token, callback) {
     });
 };
 // getTopTechnologyDataForUser
-self.getTopTechnologyDataForUser = function (from, to, limit, token, callback) {
+self.getTopTechnologyDataForUser = function (user, accessToken, from, to, limit, token, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
@@ -550,11 +543,10 @@ self.getTopTechnologyDataForUser = function (from, to, limit, token, callback) {
             from: from,
             to: to,
             limit: limit,
-            user: token.user,
-            userUUID: token.user
+            user: user
         }
     );
-    options.headers.authorization = 'Bearer ' + token.accessToken;
+    options.headers.authorization = 'Bearer ' + accessToken;
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));

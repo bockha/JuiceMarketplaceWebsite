@@ -35,7 +35,7 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
         return defer.promise;
     }
 
-    function getRevenuePerRecipeForUser() {
+    function getRevenueHistoryForUser() {
         var defer = $q.defer();
         var detail = 'day';
         var fromDate = moment('1970-01-01 00:00:00').format('YYYY-MM-DD HH:mm:ss');
@@ -43,7 +43,7 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
 
         $http({
             method: 'GET',
-            url: '/users/me/reports/revenue/recipes?detail= ' + detail + '&from=' + fromDate + '&to=' + toDate
+            url: '/users/me/reports/revenue/history?detail= ' + detail + '&from=' + fromDate + '&to=' + toDate
         }).then(function(result) {
             defer.resolve(result);
         }, function(error) {
@@ -88,7 +88,7 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
     return {
         getTopRecipes: getTopRecipes,
         getTopRecipeName: getTopRecipeName,
-        getRevenuePerRecipeForUser: getRevenuePerRecipeForUser,
+        getRevenueHistoryForUser: getRevenueHistoryForUser,
         getRevenueForUserToday: getRevenueForUserToday,
         getTotalRevenueForUser: getTotalRevenueForUser
     };

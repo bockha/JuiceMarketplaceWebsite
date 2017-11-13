@@ -68,22 +68,6 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
         return defer.promise;
     }
 
-    function getRevenueHistory(detail) {
-        var defer = $q.defer();
-        var fromDate = moment().format('YYYY-MM-DD') + ' ' + '00:00:00';
-        var toDate = moment().format('YYYY-MM-DD') + ' ' + '23:59:59';
-
-        $http({
-            method: 'GET',
-            url: '/reports/revenue/history?from=' + fromDate + '&to=' + toDate + '&detail=' + detail
-        }).then(function(result) {
-            defer.resolve(result);
-        }, function(error) {
-            defer.reject(error);
-        });
-        return defer.promise;
-    }
-
     function getTotalRevenue(detail, interval) {
         var defer = $q.defer();
         var fromDate = moment().subtract(interval,'days').format('YYYY-MM-DD') + ' ' + '00:00:00';
@@ -105,7 +89,6 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
         getTopDrinksEver: getTopDrinksEver,
         getTopDrinksOfToday: getTopDrinksOfToday,
         getTopComponents: getTopComponents,
-        getRevenueHistory: getRevenueHistory,
         getTotalRevenue:getTotalRevenue
     };
 }]);

@@ -120,8 +120,8 @@ angular
                 });
             }
 
-            $scope.getRevenuePerRecipeForUser = function () {
-               MyReportsDataService.getRevenuePerRecipeForUser().then(function (data) {
+            $scope.getRevenueHistoryForUser = function () {
+               MyReportsDataService.getRevenueHistoryForUser().then(function (data) {
                     var drinks = data.data;
                     var categories = [];
                     var columns = [];
@@ -219,7 +219,7 @@ angular
             }
 
             var getData = function () {
-                $scope.getRevenuePerRecipeForUser();
+                $scope.getRevenueHistoryForUser();
                 $scope.getTopRecipeName();
                 $scope.getTopRecipes();
                 $scope.getRevenueForUserToday();
