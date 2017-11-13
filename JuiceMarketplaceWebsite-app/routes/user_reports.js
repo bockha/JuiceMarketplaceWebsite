@@ -50,3 +50,6 @@ router.get('/recipes/top', function (req, res, next) {
             res.send(recipes);
         });
 });
+
+
+module.exports = router;
