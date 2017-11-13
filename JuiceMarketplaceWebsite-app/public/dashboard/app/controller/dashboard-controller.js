@@ -145,7 +145,12 @@ angular
                     x: {
                         label: 'Day',
                         type: 'category',
-                        categories: []
+                        categories: [],
+                        tick: {
+                            fit: true,
+                            outer: false,
+                            culling: {max:10}
+                        }
                     },
                     y: {
                         label: 'Revenue'
@@ -160,21 +165,11 @@ angular
                 $scope.chart.data.hide.push(datum.id);
             };
 
-            $scope.getDrinksByHours = function (hours) {
-                dashboardDataService.getDrinksByHours(hours).then(function (data) {
-                    var drinks = data.data;
-                    $scope.getactivatedlicensessince = drinks[0].getactivatedlicensessince;
-                }, function (error) {
-                    console.log(error);
-                });
-            }
-
-
             $scope.getTopDrinksEver = function () {
                 dashboardDataService.getTopDrinksEver().then(function (data) {
                     var drinks = data.data;
                     drinks.sort(function (a, b) {
-                        return b.rank - a.rank;
+                        return b.amount - a.amount;
                     });
                     $scope.topEver.data.columns = [];
 
@@ -183,7 +178,7 @@ angular
 
                     drinks.forEach(function (drink) {
                         keys.push(drink.technologydataname);
-                        values.push(drink.rank);
+                        values.push(drink.amount);
                     }, this);
 
                     $scope.topEver.data.columns.push(keys);
@@ -194,12 +189,11 @@ angular
                 });
             }
 
-
             $scope.getTopDrinksOfToday = function () {
                 dashboardDataService.getTopDrinksOfToday().then(function (data) {
                     var drinks = data.data;
                     drinks.sort(function (a, b) {
-                        return b.rank - a.rank;
+                        return b.amount - a.amount;
                     });
                     $scope.topToday.data.columns = [];
 
@@ -208,7 +202,7 @@ angular
 
                     drinks.forEach(function (drink) {
                         keys.push(drink.technologydataname);
-                        values.push(drink.rank);
+                        values.push(drink.amount);
                     }, this);
 
                     $scope.topToday.data.columns.push(keys);
@@ -219,8 +213,8 @@ angular
                 });
             }
 
-            $scope.getFavoriteJuicesSince = function () {
-                dashboardDataService.getFavoriteJuicesSince().then(function (data) {
+            $scope.getTopComponents = function () {
+                dashboardDataService.getTopComponents().then(function (data) {
                     var juices = data.data;
                     $scope.donut.data.columns = [];
 
@@ -234,8 +228,8 @@ angular
                 });
             }
 
-            $scope.getWorkloadSince = function () {
-                dashboardDataService.getWorkloadSince().then(function (data) {
+            $scope.getRecipesByHour = function () {
+                dashboardDataService.getRecipesByHour().then(function (data) {
 
                     $scope.dailyWorkload.data.columns = [];
                     $scope.dailyWorkload.data.groups = [];
@@ -253,7 +247,7 @@ angular
                         }, this);
 
                         data.data.forEach(function (technologyData) {
-                            if (technologyData.dayhour == i + 8) {
+                            if (technologyData.hour == i + 8) {
                                 columns.forEach(function (column) {
                                     if (column[0] === technologyData.technologydataname) {
                                         column[i + 1] += technologyData.amount;
@@ -272,7 +266,9 @@ angular
             };
 
             $scope.getRevenuePerHour = function () {
-                dashboardDataService.getRevenuePerHour().then(function (data) {
+                var detail = 'hour';
+                var interval = 0;
+                dashboardDataService.getTotalRevenue(detail, interval).then(function (data) {
                     $scope.revenuePerHour.data.columns = [];
 
                     var columns = [];
@@ -282,7 +278,7 @@ angular
                         columns[0].push(0);
                         data.data.forEach(function (revenueData) {
                             if (revenueData.hour == i + 8) {
-                                columns[0][i + 1] += revenueData.revenue;
+                                columns[0][i + 1] += parseFloat(revenueData.revenue);
                             }
                         }, this);
                     }
@@ -292,7 +288,9 @@ angular
             }
 
             $scope.getRevenuePerDay = function () {
-                dashboardDataService.getRevenuePerDay().then(function (data) {
+                var detail = 'day';
+                var interval = 100;
+                dashboardDataService.getTotalRevenue(detail, interval).then(function (data) {
                     $scope.revenuePerDay.data.columns = [];
                     $scope.revenuePerDay.axis.x.categories = [];
 
@@ -303,13 +301,14 @@ angular
 
                     var i = 1;
                     data.data.forEach(function (revenueData) {
-                        columns[0][i] = revenueData.revenue;
+                        columns[0][i] = parseFloat(revenueData.revenue);
                         categories[i-1] = moment(revenueData.date).format('YYYY-MM-DD');
                         i++;
                     }, this);
 
                     $scope.revenuePerDay.data.columns = columns;
                     $scope.revenuePerDay.axis.x.categories = categories;
+                    console.info('Total',$scope.revenuePerDay.totalAmount);
                 });
             }
 
@@ -328,11 +327,10 @@ angular
             }
 
             var getData = function () {
-                $scope.getDrinksByHours(5);
                 $scope.getTopDrinksOfToday();
                 $scope.getTopDrinksEver();
-                $scope.getFavoriteJuicesSince();
-                $scope.getWorkloadSince();
+                $scope.getTopComponents();
+                $scope.getRecipesByHour();
                 $scope.getRevenuePerHour();
                 $scope.getRevenuePerDay();
                 nextLoad();
