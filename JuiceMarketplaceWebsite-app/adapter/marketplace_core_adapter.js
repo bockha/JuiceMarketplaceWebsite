@@ -29,7 +29,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
 //<editor-fold desc="Components">
 // Get all Components
-self.getAllComponents = function (userId, accessToken, callback) {
+self.getAllComponents = function (accessToken, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -44,7 +44,7 @@ self.getAllComponents = function (userId, accessToken, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/components',
         {
-            userUUID: userId
+
         }
     );
     options.headers.authorization = 'Bearer ' + accessToken;
@@ -129,7 +129,7 @@ self.saveRecipeForUser = function (token, recipeData, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata',
         {
-            userUUID: token.user
+
         }
     );
     options.headers.authorization = 'Bearer ' + token.accessToken;
@@ -385,60 +385,6 @@ self.getTotalRevenue = function (from, to, detail, token, callback) {
 //</editor-fold>
 
 //<editor-fold desc="User (Non-Public) Reports">
-// getTopDrinkNameEver
-self.getTopDrinkNameEver = function (token, topCount, callback) {
-
-    if (typeof(callback) !== 'function') {
-
-        callback = function () {
-            logger.info('Callback not registered');
-        }
-    }
-
-    var options = buildOptionsForRequest(
-        'GET',
-        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
-        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
-        '/myreports/technologydata',
-        {
-            top: true,
-            topValue: topCount,
-            userUUID: token.user
-        }
-    );
-
-    options.headers.authorization = 'Bearer ' + token.accessToken;
-
-    request(options, function (e, r, jsonData) {
-        logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
-        if (typeof(callback) !== 'function') {
-
-            callback = function (err, data) {
-                logger.warn('Callback not handled by caller');
-            };
-        }
-
-        if (e) {
-            logger.crit(e);
-
-            callback(e);
-        }
-
-        if (r && r.statusCode !== 200) {
-            var err = {
-                status: r.statusCode,
-                message: jsonData
-            };
-            logger.warn('Call not successful: Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
-            callback(err);
-
-            return;
-        }
-
-        callback(null, jsonData);
-    });
-};
 // getRevenueForUser
 self.getRevenueForUser = function (user, from, to, accessToken, callback) {
 
@@ -548,53 +494,6 @@ self.getTopTechnologyDataForUser = function (user, accessToken, from, to, limit,
         }
     );
     options.headers.authorization = 'Bearer ' + accessToken;
-
-    request(options, function (e, r, jsonData) {
-        logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
-        if (typeof(callback) !== 'function') {
-
-            callback = function (err, data) {
-                logger.warn('Callback not handled by caller');
-            };
-        }
-
-        if (e) {
-            logger.crit(e);
-
-            callback(e);
-        }
-
-        if (r && r.statusCode !== 200) {
-            var err = {
-                status: r.statusCode,
-                message: jsonData
-            };
-            logger.warn('Call not successful: Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
-            callback(err);
-
-            return;
-        }
-
-        callback(null, jsonData);
-    });
-};
-// getTotalUserRevenue
-self.getTotalUserRevenue = function (from, to, detail, token, callback) {
-
-    var options = buildOptionsForRequest(
-        'GET',
-        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
-        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
-        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
-        '/reports/revenue',
-        {
-            from: from,
-            to: to,
-            detail: detail,
-            userUUID: token.user
-        }
-    );
-    options.headers.authorization = 'Bearer ' + token.accessToken;
 
     request(options, function (e, r, jsonData) {
         logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
