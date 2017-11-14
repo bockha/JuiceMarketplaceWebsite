@@ -87,9 +87,9 @@ router.post('/:id/recipes', function (req, res, next) {
         }
 
         const minPhaseAmount = 10;
-        const minTotalAmount = 100;
-        const maxTotalAmount = 120;
-        const maxTotalPause = 5000;
+        const minTotalAmount = 99;
+        const maxTotalAmount = 121;
+        const maxTotalPause = 5001;
 
         // Save recipe for user
         const recipe = req.body;
@@ -126,26 +126,6 @@ router.post('/:id/recipes', function (req, res, next) {
             res.status(400);
             return res.send('Ungültige Metadaten: ' + validText);
         }
-
-        //TODO: Remove this check after issue https://github.com/IUNO-TDM/MarketplaceCore/issues/91 was fixed.
-        //Check for invalid characters
-        const invalidCharacters = '\'';
-        for (var i in invalidCharacters) {
-            const invalidChar = invalidCharacters[i];
-
-            if (title.indexOf(invalidChar) >= 0) {
-                logger.warn('Submitted recipe: Invalid metadata');
-                res.status(400);
-                return res.send('Ungültiges Zeichen im Titel. Bitte verwenden Sie möglichst keine Sonderzeichen.');
-            }
-
-            if (description.indexOf(invalidChar) >= 0) {
-                logger.warn('Submitted recipe: Invalid metadata');
-                res.status(400);
-                return res.send('Ungültiges Zeichen in der Beschreibung. Bitte verwenden Sie möglichst keine Sonderzeichen.');
-            }
-        }
-
 
         // check total amount
         var totalAmount = 0;
@@ -209,7 +189,7 @@ router.post('/:id/recipes', function (req, res, next) {
         coreData.componentList = componentsIds;
 
         marketplaceCore.saveRecipeForUser(req.user.token, coreData, function (err, recipeId) {
-            if (err.statusCode === 409) {
+            if (err && err.statusCode === 409) {
                 res.status(409);
                 return res.send('Ein Rezept mit diesem Namen existiert bereits.')
             }
@@ -275,4 +255,10 @@ router.get('/:id/image', function (req, res, next) {
         res.send(data.imageBuffer);
     });
 });
+
+/* Reports */
+
+router.get('/:id/reports', require('./user_reports'));
+
+
 module.exports = router;

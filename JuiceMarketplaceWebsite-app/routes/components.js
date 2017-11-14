@@ -8,11 +8,9 @@ var marketplaceCore = require('../adapter/marketplace_core_adapter');
 var logger = require('../global/logger');
 
 router.get('/', function (req, res, next) {
+    var accessToken = req.user.token.accessToken;
 
-    var userUUUID = req.user.token.user;
-    var token = req.user.token.accessToken;
-
-    marketplaceCore.getAllComponents(userUUUID, token, function (err, components) {
+    marketplaceCore.getAllComponents(accessToken, function (err, components) {
 
         if (err) {
             next(err);

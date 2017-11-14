@@ -96,8 +96,7 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    req.session.redirectTo = req.originalUrl;
-    req.session.save();
+    res.cookie('redirectTo', req.originalUrl);
 
     res.redirect('/auth/iuno');
 }
