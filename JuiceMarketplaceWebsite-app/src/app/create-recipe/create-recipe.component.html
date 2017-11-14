@@ -1,5 +1,238 @@
 <h1 class="mat-display-1">Neues Getränk anlegen</h1>
-<p>
-  create-recipe works!
-</p>
+
+<div class="page iuno-card mat-elevation-z3">
+  <div id="configurator">
+    <!-- Templates start -->
+    <div id="dialog-delete-ingredient" title="Zutat entfernen" style="display: none">
+      <p class="validateTips">Soll die Zutat wirklich entfernt werden?</p>
+    </div>
+
+    <div id="dialog-phase" title="Phase bearbeiten" style="display: none">
+      <br>
+      <!-- <p class="validateTips">Wieviel Milliliter sollen abgetrennt werden?</p> -->
+      <fieldset>
+        <label for="dialogPhaseMl">Milliliter: </label>
+        <input type="text" name="dialogPhaseMl" id="dialogPhaseMl" value="50" class="text ui-widget-content ui-corner-all">
+      </fieldset>
+      <br>
+      <div class="alert alert-danger hidden">
+        <strong>Fehler!</strong> Die Mindestmenge beträgt 10 ml, die maximale Menge beträgt 120 ml.
+      </div>
+    </div>
+
+    <div id="dialog-add-ingredient" title="Zutat hinzufügen" style="display: none">
+      <input type="hidden" name="ingredientId" value="">
+      <div id="dialog-add-ingredient-table">
+        <input type="text" id="ingredientSearchBox" onkeyup="ingredientSearch()" placeholder="Suchbegriff eingeben...">
+        <div class="table">
+          <table id="ingredientTable">
+            <tr class="header">
+              <th style="width:60%;">Name</th>
+              <th style="width:40%;">Beschreibung</th>
+            </tr>
+            <tr class="ingredient">
+              <td class="name"></td>
+              <td class="description"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div id="dialog-add-ingredient-amount">
+        <!--<form>-->
+        <!--<fieldset>-->
+        <span class="ingredient">Zutat:</span>
+        <br>
+        <span>Wieviel Milliliter sollen hinzugefügt werden?</span>
+        <br>
+        <label for="addml">Milliliter: </label>
+        <input type="text" name="addml" id="addml" value="50" class="text ui-widget-content ui-corner-all">
+        <!--</fieldset>-->
+        <!--</form>-->
+      </div>
+      <!--<p class="validateTips">Welche Zutat möchten Sie hinzufügen?</p>
+            <form>
+                <fieldset>
+                <label for="addml">Milliliter: </label>
+                <input type="text" name="addml" id="addml" value="50" class="text ui-widget-content ui-corner-all">
+                </fieldset>
+            </form>-->
+    </div>
+
+    <div id="program-template" style="display: none">
+      <div id="program-header" class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-2 program-row program-row-label">
+          <span></span>
+        </div>
+        <div class="col-sm-8 program-row content"></div>
+        <div class="col-sm-1"></div>
+      </div>
+      <div id="program-sequence" class="row sequence">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-2 program-row program-row-label">
+          <div class="valign">
+            <a href="javascript:void(0);" class="ingredient-delete">
+              <img src="/img/delete-icon.png" width="16px" height="16px">
+            </a>
+            <div class="ingredient-label"></div>
+          </div>
+        </div>
+        <div class="col-sm-7 program-row content">
+          <div id="program-phase" class="phase">
+            <div class="phase-content">
+              <div class="phase-content-throughput"></div>
+              <div class="phase-content-label valign"></div>
+            </div>
+            <div class="phase-throughput-handle">
+              <div class="phase-throughput-caret valign"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-1 program-row program-row-total">
+          <div class="valign total-label change-amount"></div>
+        </div>
+        <div class="col-sm-1"></div>
+      </div>
+
+      <div id="program-pause" class="row">
+        <div class="col-xs-1"></div>
+        <div class="col-xs-2 program-pause-label program-row">
+          <div class="valign">
+            <div class="ingredient-label"></div>
+          </div>
+        </div>
+        <div class="col-xs-7 program-row content">
+          <div id="program-pause-phase" class="pause-phase">
+            <div class="pause-phase-content">
+              <div class="phase-content-label valign"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-1 program-row program-row-total">
+          <div class="valign">
+            <div class="label">-</div>
+          </div>
+        </div>
+        <div class="col-xs-1"></div>
+      </div>
+      <div id="program-footer" class="row footer">
+        <div class="col-xs-1"></div>
+        <div class="col-xs-2 program-row-footer program-footer-label">
+          <div class="valign">
+            <!-- <div class="ingredient-label valign"> -->
+            <a href="javascript:void(0);" class="add-ingredient">Zutat hinzufügen</a>
+          </div>
+        </div>
+        <div class="col-xs-7 program-row-footer content">
+          <div class="error-minimum-total error valign hidden">Mindestmenge (100 ml) unterschritten.</div>
+          <div class="error-maximum-total error valign hidden">Höchstmenge (120 ml) überschritten.</div>
+          <div class="error-maximum-pause error valign hidden">Zulässige Summe der Pausenzeiten (5 s) überschritten.
+          </div>
+        </div>
+        <div class="col-xs-1 program-row-footer program-row-total">
+          <div class="total-label valign">-</div>
+        </div>
+        <div class="col-xs-1"></div>
+      </div>
+      <div id="program-empty-placeholder" class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10 user-input" style="background-color: #eee; border: 1px solid #ddd; height: 100px; text-align: center;">
+          <div class="valign">
+            <a href="javascript:void(0);" class="add-ingredient">Zutat hinzufügen</a>
+          </div>
+        </div>
+        <div class="col-sm-1"></div>
+      </div>
+    </div>
+    <!-- Templates end -->
+
+
+    <div class="tdmc-page">
+      <div class="row">
+        <h3>Produktdetails</h3>
+      </div>
+      <div fxLayout="column" fxLayoutGap="10px">
+
+        <!-- recipe title -->
+        <div fxLayout="row" fxLayoutGap="10px">
+          <div fxFlex="30">
+            <p class="label">Titel</p>
+          </div>
+          <div fxFlex="70">
+            <mat-form-field fxFlexFill>
+              <input matInput [(ngModel)]="recipeName" placeholder="">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- recipe description -->
+        <div fxLayout="row" fxLayoutGap="10px">
+          <div fxFlex="30">
+            <p class="label">Beschreibung</p>
+          </div>
+          <div fxFlex="70">
+            <mat-form-field fxFlexFill>
+              <textarea matInput [(ngModel)]="recipeDescription" placeholder="" style="width: 100%; height: 100px;"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+        
+        <!-- recipe program -->
+        <div fxLayout="column" fxLayoutGap="10px">
+          <div fxFlex="100">
+            <p class="label">Rezeptur</p>
+          </div>
+          <div fxLayout="row">
+            <!-- <div fxFlex="100">
+                          <p class="label">Rezeptur</p>
+                        </div> -->
+            <div fxFlex="10"></div>
+            <div fxFlex="90">
+              <juice-program-configurator [program]=program [components]=components></juice-program-configurator>
+            </div>
+          </div>
+        </div>
+        
+        <!-- recipe license fee -->
+        <div fxLayout="row" fxLayoutGap="10px">
+          <div fxFlex="30">
+            <p class="label">Lizenzgebühr</p>
+          </div>
+          <div fxFlex="70">
+            <mat-form-field fxFlexFill>
+              <mat-select placeholder="" [(ngModel)]="recipeLicenseFee" name="licenseFee">
+                <mat-option *ngFor="let fee of licenseFees" [value]="fee">
+                  {{fee}} IUNO
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- save button -->
+
+        <div fxLayout="row" fxLayoutGap="10px">
+          <div fxFlex="100" fxLayoutAlign="center center">
+              <button (click)="actionSaveRecipe()" mat-raised-button color="primary" class="mat-elevation-z1">Speichern</button>
+          </div>
+        </div>
+
+        <!-- end of page -->
+      </div>
+
+      <!-- <div class="row config">
+        <div class="col-sm-3">
+          <p class="label">Rezeptur</p>
+        </div>
+      </div>
+      <div id="program-1" class="row">
+      </div>
+      <div class="col-sm-3">
+        <button id="button-save" class="ui-button ui-widget ui-corner-all" style="float: right;">
+          Speichern
+        </button>
+      </div> -->
+    </div>
+  </div>
+</div>
 <app-footer></app-footer>

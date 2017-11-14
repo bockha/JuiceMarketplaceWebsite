@@ -6,6 +6,15 @@
     padding: 5px 10px 5px;
 }
 
+.main-container {
+    background-color: #eee;
+    height: 100%;
+}
+
+.iuno-card {
+    background-color: #fff;
+}
+
 @media all and (min-width: 600px) {
     .component-viewer {
         max-width: 940px;

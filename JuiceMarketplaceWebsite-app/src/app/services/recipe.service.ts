@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Recipe } from '../models/recipe';
 import { HttpModule, Http, Response } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { TdmRecipe } from '../juice-program-configurator/models/tdmrecipe';
 
 @Injectable()
 export class RecipeService {
-  recipes = new BehaviorSubject<Recipe[]>([]);
+  recipes = new BehaviorSubject<TdmRecipe[]>([]);
   private recipesUrl = '/users/me/recipes';
 
   constructor(private http: Http) {
@@ -16,8 +16,7 @@ export class RecipeService {
     .get(this.recipesUrl)
     .toPromise()
     .then(response => {
-      var r = response.json() as Recipe[];
-      console.log("recipes updated, this.recipes = " + this.recipes);
+      var r = response.json() as TdmRecipe[];
       this.recipes.next(r);
     })
     .catch(this.handleError);
@@ -38,7 +37,7 @@ export class RecipeService {
   //   });
   // }
 
-  deleteRecipe(recipe: Recipe) {
+  deleteRecipe(recipe: TdmRecipe) {
     return this.http
     .delete(this.recipesUrl + "/" + recipe.technologydatauuid)
     .toPromise()

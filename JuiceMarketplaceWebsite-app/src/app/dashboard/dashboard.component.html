@@ -1,51 +1,68 @@
 <h1 class="mat-display-1">Dashboard</h1>
 <div fxLayout="column" fxLayoutGap="10px">
-  <mat-card fxFill class="mat-elevation-z2">
-    <mat-card-header>
-      <mat-card-title>Blubb</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        Blablabla
-      </p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button>
-    </mat-card-actions>
-  </mat-card>
-
   <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="10px">
-      <mat-card fxFlex="100" fxFlex.gt-sm="50" class="example-card" class="mat-elevation-z2">
-    <mat-card-header>
-      <mat-card-title>Blubb</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        Blablabla
-      </p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button>
-    </mat-card-actions>
-  </mat-card>
-
-  <mat-card fxFlex="100" fxFlex.gt-sm="50" class="example-card" class="mat-elevation-z2">
+    <mat-card fxFlex="100" fxFlex.gt-sm="50" class="iuno-card mat-elevation-z2">
+      <!-- <mat-card fxFill class="iuno-card mat-elevation-z2"> -->
       <mat-card-header>
-      <mat-card-title>Blubb</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        Blablabla
-      </p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button>
-    </mat-card-actions>
-  </mat-card>
-</div>
+        <mat-card-title>Umsatz pro Getränk</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div id='chart-revenue' style="padding: 10px;"></div>
+      </mat-card-content>
+      <mat-card-actions>
+        <!-- <button mat-button>LIKE</button>
+      <button mat-button>SHARE</button> -->
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card fxFlex="100" fxFlex.gt-sm="50" class="iuno-card mat-elevation-z2">
+      <mat-card-header>
+        <mat-card-title>Top 5 Getränke aller Hersteller</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div id='chart-top-recipes' style="padding: 10px;"></div>
+      </mat-card-content>
+      <mat-card-actions>
+        <!-- <button mat-button>LIKE</button>
+        <button mat-button>SHARE</button> -->
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  
+  <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="10px">
+    <mat-card fxFlex="100" fxFlex.gt-sm="50" class="iuno-card mat-elevation-z2">
+      <mat-card-header>
+        <mat-card-title>Umsatz heute (IUNOs)</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          <h2>
+            <strong style="color: #AAC253">Top Revenue</strong>
+          </h2>
+      </mat-card-content>
+      <mat-card-actions>
+        <!-- <button mat-button>LIKE</button>
+        <button mat-button>SHARE</button> -->
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card fxFlex="100" fxFlex.gt-sm="50" class="iuno-card mat-elevation-z2">
+      <mat-card-header>
+        <mat-card-title>Meistverkauftes Getränk</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          <h2>
+            <strong style="color: #AAC253">{{topRecipeName}}</strong>
+          </h2>
+      </mat-card-content>
+      <mat-card-actions>
+        <!-- <button mat-button>LIKE</button>
+        <button mat-button>SHARE</button> -->
+      </mat-card-actions>
+    </mat-card>
+
+  </div>
 </div>
 
 <app-footer></app-footer>

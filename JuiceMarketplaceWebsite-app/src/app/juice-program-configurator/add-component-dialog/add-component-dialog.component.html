@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>Zutat hinzufügen</h1>
+
+<div mat-dialog-content>
+    <mat-list>
+        <mat-list-item *ngFor="let component of components" (click)="componentSelected(component)">
+            {{component.name}}
+            <!-- <button mat-button  style="text-align: left;">{{component.name}}<span flex></span></button> -->
+        </mat-list-item>
+        <!-- <mat-list-option *ngFor="let component of components" (click)="componentSelected(component)">
+        </mat-list-option> -->
+      </mat-list>
+
+  <!-- <mat-select [(ngModel)]="selectedComponent">
+    <mat-option *ngFor="let component of components" [value]="component">
+      {{ component.name }}
+    </mat-option>
+  </mat-select>
+</div>
+<h1>selected: {{selectedComponent}}</h1>
+<div mat-dialog-actions>
+  <button mat-button (click)="confirmSelection()" color="primary">
+    Okays!
+  </button>
+  <button mat-button (click)="dialogRef.close()">
+    Cancel
+  </button> -->
+</div>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close>Abbrechen</button>
+</mat-dialog-actions>

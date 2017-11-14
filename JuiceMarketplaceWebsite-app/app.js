@@ -21,7 +21,7 @@ require('./oauth/passport')(passport); // pass passport for configuration
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // -- STATIC CONTENT --
@@ -41,10 +41,17 @@ app.use('/auth', require('./routes/auth')(passport));
 
 app.use('/coupon', require('./routes/coupon'));
 
+// app.use('/console', express.static(path.join(__dirname, 'dist')))
+// app.get('/console/*', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'dist/index.html'));
+// });
+
+// app.use('/console', express.static(path.join(__dirname, 'dist')))
+// app.get('/console/*', (req, res) => {
 app.use('/console', isLoggedIn, express.static(path.join(__dirname, 'dist')))
 app.get('/console/*', isLoggedIn, (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
-  });
+});
 
 // -- RESTRICTED CONTENT --
 app.use('/myreports', isLoggedIn, require('./routes/myreports'));
@@ -62,24 +69,24 @@ function renderLegalPage(res, filename) {
     });
 }
 
-app.get('/terms-of-service', function(req, res) {
+app.get('/terms-of-service', function (req, res) {
     renderLegalPage(res, 'terms-of-service.md');
 });
 
-app.get('/privacy', function(req, res) {
+app.get('/privacy', function (req, res) {
     renderLegalPage(res, 'privacy.md');
 });
 
-app.get('/contact', function(req, res) {
+app.get('/contact', function (req, res) {
     renderLegalPage(res, 'contact.md');
 });
 
-app.get('/imprint', function(req, res) {
+app.get('/imprint', function (req, res) {
     renderLegalPage(res, 'imprint.md');
 });
 
-app.use('/', function(req, res, next) {
-//     res.sendFile(path.join(__dirname, 'dist/index.html'));
+app.use('/', function (req, res, next) {
+    //     res.sendFile(path.join(__dirname, 'dist/index.html'));
     res.redirect('/landingpage/iuno.html')
 });
 
@@ -103,7 +110,7 @@ app.use(function (req, res, next) {
 });
 
 if (app.get('env') !== 'development') {
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
         //Always logout user on failure
         req.logout();
         next(err, req, res)

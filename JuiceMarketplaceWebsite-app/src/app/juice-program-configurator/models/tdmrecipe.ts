@@ -1,4 +1,4 @@
-export class Recipe {
+export class TdmRecipe {
     technologydatauuid: string;
     technologydataname: string;
     revenue: number;

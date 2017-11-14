@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/observable/of';
 
-import { Recipe } from '../models/recipe';
 import { RecipeService } from '../services/recipe.service';
+import { TdmRecipe } from '../juice-program-configurator/models/tdmrecipe';
 
 @Component({
   selector: 'app-recipes',
@@ -24,7 +25,7 @@ export class RecipesComponent implements OnInit {
     this.dataSource = new RecipeDataSource(this.recipeService);
   }
 
-  deleteRecipe(recipe: Recipe) {
+  deleteRecipe(recipe: TdmRecipe) {
     this.recipeService.deleteRecipe(recipe).then(res => {
       console.log("Done with res: "+res);
     });
@@ -37,11 +38,12 @@ export class RecipeDataSource extends DataSource<any> {
     super();
   }
   
-  subject: BehaviorSubject<Recipe[]> = new BehaviorSubject<Recipe[]>([]);
+  subject: BehaviorSubject<TdmRecipe[]> = new BehaviorSubject<TdmRecipe[]>([]);
+  recipesSubscription: Subscription;
 
-  connect(): Observable<Recipe[]> {
+  connect(): Observable<TdmRecipe[]> {
       console.log('connect');
-      this.recipeService.recipes.subscribe(recipes => {this.subject.next(recipes)});
+      this.recipesSubscription = this.recipeService.recipes.subscribe(recipes => {this.subject.next(recipes)});
       this.recipeService.updateRecipes();
       // if (!this.subject.isStopped)
       //     this.recipeService.getRecipes()
@@ -53,8 +55,13 @@ export class RecipeDataSource extends DataSource<any> {
   }
 
   disconnect() {
+    this.recipesSubscription.unsubscribe()
     console.log('disconnect');
     this.subject.complete();
       this.subject.observers = [];
+  }
+
+  private handleRecipesUpdate(recipes:TdmRecipe[]) {
+    
   }
 }
