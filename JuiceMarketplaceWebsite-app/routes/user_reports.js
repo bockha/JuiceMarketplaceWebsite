@@ -22,7 +22,6 @@ router.get('/revenue/history', function (req, res, next) {
     var token = req.user.token;
 
     marketplaceCore.getRevenueHistory(
-        req.params['id'],
         token['accessToken'],
         req.query['from'],
         req.query['to'],

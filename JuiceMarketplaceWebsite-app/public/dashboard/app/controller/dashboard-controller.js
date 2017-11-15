@@ -308,7 +308,6 @@ angular
 
                     $scope.revenuePerDay.data.columns = columns;
                     $scope.revenuePerDay.axis.x.categories = categories;
-                    console.info('Total',$scope.revenuePerDay.totalAmount);
                 });
             }
 

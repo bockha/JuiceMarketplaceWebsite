@@ -2,8 +2,8 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
     
     function getRecipesByHour() {
         var defer = $q.defer();
-        var fromDate = moment().startOf('day').format();
-        var toDate = moment().endOf('day').format();
+        var fromDate = moment().utc().startOf('day').format();
+        var toDate = moment().utc().endOf('day').format();
         var detail = 'hour';
 
         $http({
@@ -20,8 +20,8 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
     function getTopDrinksEver() {
         var defer = $q.defer();
         var limit = 10;
-        var fromDate = moment().year(2000).format();
-        var toDate = moment().format();
+        var fromDate = moment().utc().year(2000).format();
+        var toDate = moment().utc().format();
 
         $http({
             method: 'GET',
@@ -37,8 +37,8 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
     function getTopDrinksOfToday() {
         var defer = $q.defer();
         var limit = 10;
-        var fromDate = moment().startOf('day').format();
-        var toDate = moment().format();
+        var fromDate = moment().utc().startOf('day').format();
+        var toDate = moment().utc().format();
 
         $http({
             method: 'GET',
@@ -54,8 +54,8 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
     function getTopComponents() {
         var defer = $q.defer();
         var limit = 10;
-        var fromDate = moment().year(2000).format();
-        var toDate = moment().format();
+        var fromDate = moment().utc().year(2000).format();
+        var toDate = moment().utc().format();
 
         $http({
             method: 'GET',
@@ -70,8 +70,8 @@ angular.module('dashboard').factory('DashboardDataService', ['$q', '$http', 'mom
 
     function getTotalRevenue(detail, interval) {
         var defer = $q.defer();
-        var fromDate = moment().subtract(interval,'days').startOf('day').format();
-        var toDate = moment().endOf('day').format();
+        var fromDate = moment().utc().subtract(interval,'days').startOf('day').format();
+        var toDate = moment().utc().endOf('day').format();
 
         $http({
             method: 'GET',

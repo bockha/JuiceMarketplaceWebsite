@@ -5,7 +5,6 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
         var limit = 5;
         var fromDate = moment().utc().year(2000).format();
         var toDate = moment().utc().format();
-        console.info("from: ", fromDate, " to: ", toDate);
 
         $http({
             method: 'GET',
@@ -38,13 +37,12 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
 
     function getRevenueHistoryForUser() {
         var defer = $q.defer();
-        var detail = 'day';
         var fromDate = moment().utc().year(2000).format();
         var toDate = moment().utc().format();
 
         $http({
             method: 'GET',
-            url: '/users/me/reports/revenue/history?detail= ' + detail + '&from=' + fromDate + '&to=' + toDate
+            url: '/users/me/reports/revenue/history?from=' + fromDate + '&to=' + toDate
         }).then(function(result) {
             defer.resolve(result);
         }, function(error) {
