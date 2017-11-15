@@ -1,0 +1,32 @@
+@import '~@angular/material/_theming.scss';
+
+// Create a config with the default typography levels.
+$config: mat-typography-config();
+
+.base {
+    border-radius: 8px;
+    margin: 10px 0px;
+    padding: 10px 15px;
+    font-size: mat-font-size($config, body-1);
+    font-weight: mat-font-weight($config, body-1);
+    font-family: mat-font-family($config);
+}
+
+.error {
+    @extend .base;
+    background-color: #fcc;
+    border: 2px solid #d66;
+}
+
+.info {
+    @extend .base;
+    background-color: #ffc;
+    border: 2px solid #dd6;
+}
+
+.success {
+    @extend .base;
+    background-color: #cfc;
+    border: 2px solid #6d6;
+}
+

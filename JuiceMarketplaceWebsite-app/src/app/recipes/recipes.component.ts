@@ -7,6 +7,7 @@ import 'rxjs/add/observable/of';
 
 import { RecipeService } from '../services/recipe.service';
 import { TdmRecipe } from '../juice-program-configurator/models/tdmrecipe';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-recipes',
@@ -18,8 +19,17 @@ import { TdmRecipe } from '../juice-program-configurator/models/tdmrecipe';
 export class RecipesComponent implements OnInit {
   displayedColumns = ["position", "name", "revenue", "licensefee", "description", "action"];
   dataSource: RecipeDataSource | null;
+  errorMaxRecipes = false;
 
-  constructor(private recipeService: RecipeService) { }
+  constructor(
+    private recipeService: RecipeService,
+    private route: ActivatedRoute
+  ) {
+    console.log("Test");
+      this.route.params.subscribe(params => {
+        this.errorMaxRecipes = params['errorMaxRecipes'] ? true : false;
+      });
+  }
 
   ngOnInit() {
     this.dataSource = new RecipeDataSource(this.recipeService);

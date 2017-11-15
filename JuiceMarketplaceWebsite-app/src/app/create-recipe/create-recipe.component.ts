@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import * as $ from 'jquery';
 
 import { MarketplaceService } from '../services/marketplace.service';
@@ -9,19 +10,22 @@ import { TdmComponent } from '../juice-program-configurator/models/tdmcomponent'
 import { TdmProgram } from '../juice-program-configurator/models/tdmprogram';
 import { JuiceProgramConfiguratorComponent } from '../juice-program-configurator/juice-program-configurator.component';
 import { TdmRecipe } from '../juice-program-configurator/models/tdmrecipe';
+import { RecipeService } from '../services/recipe.service';
 
 @Component({
   selector: 'app-create-recipe',
   templateUrl: './create-recipe.component.html',
   styleUrls: ['./create-recipe.component.css'],
-  providers: [MarketplaceService],
+  providers: [MarketplaceService, RecipeService],
 })
 
 @Injectable()
 export class CreateRecipeComponent implements OnInit {
   components: TdmComponent[];
   licenseFees: number[] = [0.25, 0.5, 0.75, 1.00];
+  spinnerCounter = 0;
 
+  maxRecipeCount = 3;
   recipeName: string = "";
   recipeDescription: string = "";
   recipeLicenseFee: number = -1;
@@ -29,14 +33,27 @@ export class CreateRecipeComponent implements OnInit {
 
   constructor(
     private marketplaceService: MarketplaceService,
-    private http: HttpClient
+    private recipeService: RecipeService,
+    private http: HttpClient,
+    private router: Router,
   ) {
 
   }
 
-  ngOnInit() {
+  ngOnInit() {    
+    this.spinnerCounter += 1;
+    this.recipeService.recipes.subscribe(recipes => {
+      this.spinnerCounter -= 1;
+      if (recipes.length >= this.maxRecipeCount) {
+        this.router.navigate(['recipes', {errorMaxRecipes: true}]);
+      }
+    });
+    this.recipeService.updateRecipes();
+
+    this.spinnerCounter += 1;
     this.marketplaceService.getComponents().then(components => {
       this.components = components;
+      this.spinnerCounter -= 1;
     });
   }
 
@@ -82,9 +99,10 @@ export class CreateRecipeComponent implements OnInit {
       valid = false;
     }
     if (valid) {
+      this.spinnerCounter += 1;
       // create json    
       var jsonProgram = {}; // program
-      jsonProgram['milliliter-per-millisecond'] = this.program.amountPerMillisecond;      
+      jsonProgram['amount-per-millisecond'] = this.program.amountPerMillisecond;      
       var jsonSequences: any[] = []; // sequences
       this.program.sequences.forEach(sequence => {
         var jsonSequence = {}; // sequence
@@ -108,58 +126,21 @@ export class CreateRecipeComponent implements OnInit {
       jsonRecipe['description'] = recipe.technologydatadescription;
       jsonRecipe['license-fee'] = recipe.licensefee;
       jsonRecipe['program'] = jsonProgram;
-      console.log(jsonRecipe);
-      var jsonString = JSON.stringify(jsonRecipe);
-      console.log("JSONString: ");
-      console.log(jsonString);
-      console.log("JSONString type: " + typeof(jsonString));
-      this.http.post('/users/me/recipes', jsonRecipe).subscribe(data => {
-        console.log(data);
-      });
+      this.http.post('/users/me/recipes', jsonRecipe).subscribe(
+        data => {
+          this.spinnerCounter -= 1;
+        },
+        error => {
+          this.spinnerCounter -= 1;
+          if (error.status == 201) { // this isn't an error. @see https://github.com/angular/angular/issues/18396
+            this.router.navigate(['recipes']);
+          } else {
+            alert("Es ist ein Fehler aufgetreten.\nDas Rezept konnte nicht gespeichert werden.");
+            this.spinnerCounter -= 1;
+          }
+        }
+      );
     }
-    // var json = recipe.toJSON();
-    // var jsonString = JSON.stringify(json);
-    // console.log("JSON = " + jsonString);
-    // // var jsonProgram = json['program'];
-    // // var convertedProgram = convert(jsonProgram);
-
-    // $.ajax({
-    //   url: '/users/me/recipes',
-    //   type: "POST",
-    //   data: jsonString,
-    //   contentType: "application/json",
-    //   success: function () {
-    //     console.log(" ############### FERTIG ###############");
-    //     setRecipeChanged(false);
-    //     window.location.href = "/console/myrecipes";
-    //   },
-    //   error: function (jqXHR, textStatus, errorThrown) {
-    //     console.log(" ############### FEHLER ###############");
-    //     console.error(jqXHR);
-    //     console.error(jqXHR.status);
-    //     console.error(textStatus);
-    //     console.error(errorThrown);
-
-    //     setRecipeChanged(false);
-    //     if (jqXHR && jqXHR.status >= 400 && jqXHR.status < 500) {
-    //       window.alert('Das eingereichte Rezept ist ungültig: [' + jqXHR.responseText + ']');
-    //     } else {
-    //       window.alert('Beim erstellen Ihres Rezepts ist ein Fehler aufgetreten.');
-
-    //       window.location.href = "/console/myrecipes";
-    //     }
-    //   }
-    // });
-
-    // var recovery = JSON.parse(jsonString);
-    // var rec = Recipe.fromJSON(recovery);
-    // var converter = new ProgramConverter();
-    // var machineCode = converter.convert(rec.program);
-    // var machineCodeString = JSON.stringify(machineCode);
-    // console.log("Machine-Code:\n\n"+machineCodeString);
-    // convertJSONRecipe(jsonString);
-    // convertProgramToMachinecode(recipe.program);
-    // }
   }
 
 }

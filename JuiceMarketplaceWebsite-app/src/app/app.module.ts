@@ -20,6 +20,7 @@ import { MatGridListModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material';
 import { MatInputModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // Flex-Layout
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -34,6 +35,8 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FooterComponent } from './footer/footer.component';
 import { JuiceProgramConfiguratorModule } from './juice-program-configurator/juice-program-configurator.module';
+import { SpinnerComponent } from './spinner/spinner.component';
+import { MessageBoxComponent } from './message-box/message-box.component';
 
 @NgModule({
   imports: [
@@ -58,6 +61,7 @@ import { JuiceProgramConfiguratorModule } from './juice-program-configurator/jui
     MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
+    MatProgressSpinnerModule,
     JuiceProgramConfiguratorModule
   ],
   declarations: [
@@ -65,7 +69,9 @@ import { JuiceProgramConfiguratorModule } from './juice-program-configurator/jui
     CreateRecipeComponent,
     RecipesComponent,
     DashboardComponent,
-    FooterComponent,    
+    FooterComponent,
+    SpinnerComponent,
+    MessageBoxComponent,    
   ],
   providers: [],
   bootstrap: [AppComponent],

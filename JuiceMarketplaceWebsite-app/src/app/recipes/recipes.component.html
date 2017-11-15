@@ -1,4 +1,5 @@
 <h1 class="mat-display-1">Getränke verwalten</h1>
+<app-message-box type="error" *ngIf="errorMaxRecipes">Derzeit ist die Anzahl an Rezepten pro Benutzer begrenzt. Bitte lösche ein bestehendes Rezept, falls du weitere Rezepte auf dem Marktplatz veröffentlichen möchtest.</app-message-box>
 <mat-table #table [dataSource]="dataSource">
 
   <ng-container matColumnDef="position">
@@ -12,13 +13,13 @@
   </ng-container>
 
   <ng-container matColumnDef="revenue">
-    <mat-header-cell *matHeaderCellDef>Gesamtumsatz <small>(IUNOs)</small></mat-header-cell>
-    <mat-cell *matCellDef="let recipe"> {{recipe.revenue}} </mat-cell>
+    <mat-header-cell *matHeaderCellDef class="right">Gesamtumsatz<br><small>(IUNOs)</small></mat-header-cell>
+    <mat-cell *matCellDef="let recipe" class="right"> {{recipe.revenue}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="licensefee">
-    <mat-header-cell *matHeaderCellDef>Lizenzgebühr <small>(IUNOs)</small></mat-header-cell>
-    <mat-cell *matCellDef="let recipe"> {{(recipe.licensefee / 100000).toFixed(2)}} </mat-cell>
+    <mat-header-cell *matHeaderCellDef class="right">Lizenzgebühr<br><small>(IUNOs)</small></mat-header-cell>
+    <mat-cell *matCellDef="let recipe" class="right"> {{(recipe.licensefee / 100000).toFixed(2)}} </mat-cell>
   </ng-container>
 
   <!-- <ng-container matColumnDef="li">
@@ -32,8 +33,8 @@
   </ng-container>
 
   <ng-container matColumnDef="action">
-    <mat-header-cell *matHeaderCellDef>Aktion</mat-header-cell>
-    <mat-cell *matCellDef="let recipe"><button (click)="deleteRecipe(recipe)" mat-button class="nav-button mat-elevation-z1">Löschen</button></mat-cell>
+    <mat-header-cell *matHeaderCellDef class="right">Aktion</mat-header-cell>
+    <mat-cell *matCellDef="let recipe" class="right"><button (click)="deleteRecipe(recipe)" mat-button class="nav-button mat-elevation-z1">Löschen</button></mat-cell>
   </ng-container>
 
   <!-- <ng-container matColumnDef="sales">
