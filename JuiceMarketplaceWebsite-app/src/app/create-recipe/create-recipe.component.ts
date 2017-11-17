@@ -50,11 +50,14 @@ export class CreateRecipeComponent implements OnInit {
     });
     this.recipeService.updateRecipes();
 
-    this.spinnerCounter += 1;
-    this.marketplaceService.getComponents().then(components => {
+    // this.spinnerCounter += 1;
+    this.marketplaceService.components.subscribe(components => {
       this.components = components;
-      this.spinnerCounter -= 1;
-    });
+    })
+    // this.marketplaceService.getComponents().then(components => {
+    //   this.components = components;
+    //   this.spinnerCounter -= 1;
+    // });
   }
 
   actionSaveRecipe() {
