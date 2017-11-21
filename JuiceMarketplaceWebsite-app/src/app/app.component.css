@@ -6,6 +6,7 @@ body {
 
 .nav-button {
     text-align: left;
+    height: 50px;
 }
 
 .app {
@@ -16,10 +17,43 @@ body {
     width: 250px;
 }
 
-mat-sidenav {
-    width: 40vw;
+/* :host ::ng-deep .mat-card {
+    padding: 0px;
+    background-color: #fff;
+}
+ */
+
+:host ::ng-deep a {
+    color: #337ab7;
+    text-decoration: none;
 }
 
-mat-card {
-    margin: 12px;
+:host ::ng-deep .mat-card-header-text {
+    margin: 0px;
 }
+    
+:host ::ng-deep .mat-card-header {
+    /* margin-top: 124px;
+    margin-left: -24px;
+    margin-right: -24px;
+    padding: 15px; */
+    /* background-color: #aac253; */
+}
+
+:host ::ng-deep .mat-card-title {
+    margin: 0px;
+    font-size: 14pt;
+}
+
+:host ::ng-deep .mat-card-content {
+    padding: 15px;
+}
+
+:host ::ng-deep .mat-card-actions {
+    padding: 15px;
+}
+
+/* :host ::ng-deep .mat-form-field-flex {
+    background-color: #eee;
+} */
+

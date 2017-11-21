@@ -20,17 +20,15 @@ router.get('/revenue', function (req, res, next) {
 
 router.get('/revenue/history', function (req, res, next) {
     var token = req.user.token;
-    console.log("start query...");
+
     marketplaceCore.getRevenueHistory(
         token['accessToken'],
         req.query['from'],
         req.query['to'],
         function (err, recipes) {
-            console.log("done query, possible error = "+err);
             if (err) {
                 return next(err);
             }
-            console.log("sending recipes: "+recipes);
             res.send(recipes);
         });
 });

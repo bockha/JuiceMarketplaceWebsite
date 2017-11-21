@@ -432,7 +432,7 @@ self.getRevenueForUser = function (user, from, to, accessToken, callback) {
     });
 };
 // getRevenueHistory
-self.getRevenueHistory = function (accessToken, from, to, detail, callback) {
+self.getRevenueHistory = function (accessToken, from, to, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
@@ -442,8 +442,7 @@ self.getRevenueHistory = function (accessToken, from, to, detail, callback) {
         '/reports/revenue/technologydata/history',
         {
             from: from,
-            to: to,
-            detail: detail
+            to: to
         }
     );
     options.headers.authorization = 'Bearer ' + accessToken;

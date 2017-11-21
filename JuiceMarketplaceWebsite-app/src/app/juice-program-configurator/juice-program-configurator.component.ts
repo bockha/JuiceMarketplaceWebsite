@@ -176,12 +176,16 @@ export class JuiceProgramConfiguratorComponent implements OnInit {
       var bounds = this.program.getBounds();
       var span = bounds[1] - bounds[0];
       if (span > 0) {
-        this.pixelPerAmount = contentWidth / span;
+        var newPixelPerAmount = contentWidth / span;
+        if (newPixelPerAmount != this.pixelPerAmount) {
+          this.pixelPerAmount = contentWidth / span;
+        }
       }
     }
   }
 
   convertAmountToPixel(amount: number) {
+    this.updateScale();
     var pixels = amount * this.pixelPerAmount;
     return pixels;
   }

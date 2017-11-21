@@ -12,7 +12,6 @@ import { HttpModule } from '@angular/http'; // still needed @see https://github.
 import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 import { MatToolbarModule } from '@angular/material';
 import { MatSidenavModule } from '@angular/material'
-import { MatCardModule } from '@angular/material';
 import { MatTabsModule } from '@angular/material';
 import { MatIconModule } from '@angular/material';
 import { MatTableModule } from '@angular/material';
@@ -20,7 +19,7 @@ import { MatGridListModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material';
 import { MatInputModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material';
 
 // Flex-Layout
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -35,8 +34,7 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FooterComponent } from './footer/footer.component';
 import { JuiceProgramConfiguratorModule } from './juice-program-configurator/juice-program-configurator.module';
-import { SpinnerComponent } from './spinner/spinner.component';
-import { MessageBoxComponent } from './message-box/message-box.component';
+import { UtilitiesModule } from './utilities/utilities.module';
 
 @NgModule({
   imports: [
@@ -49,7 +47,6 @@ import { MessageBoxComponent } from './message-box/message-box.component';
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    MatCardModule,
     MatButtonModule,
     MatCheckboxModule,
     MatToolbarModule,
@@ -57,12 +54,13 @@ import { MessageBoxComponent } from './message-box/message-box.component';
     MatTabsModule,
     MatIconModule,
     MatTableModule,
+    MatCardModule,
     MatGridListModule,
     MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
-    MatProgressSpinnerModule,
-    JuiceProgramConfiguratorModule
+    JuiceProgramConfiguratorModule,
+    UtilitiesModule
   ],
   declarations: [
     AppComponent,
@@ -70,8 +68,6 @@ import { MessageBoxComponent } from './message-box/message-box.component';
     RecipesComponent,
     DashboardComponent,
     FooterComponent,
-    SpinnerComponent,
-    MessageBoxComponent,    
   ],
   providers: [],
   bootstrap: [AppComponent],

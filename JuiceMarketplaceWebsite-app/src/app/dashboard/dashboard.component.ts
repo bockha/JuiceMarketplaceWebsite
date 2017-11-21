@@ -9,9 +9,12 @@ import { TdmRecipe } from '../juice-program-configurator/models/tdmrecipe';
 
 @Component({
   selector: 'app-dashboard',
-  encapsulation: ViewEncapsulation.None,
+  // encapsulation: ViewEncapsulation.None,
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
+  styleUrls: [
+    './dashboard.component.css',
+    '../../../node_modules/c3/c3.css'
+  ],
   providers: [DashboardService]
 })
 
@@ -77,43 +80,41 @@ export class DashboardComponent implements OnInit {
   private loadTopRecipesChart() {
     console.log("Loading top recipes chart...");
     this.dashboardService.getTopRecipes(5).subscribe(ranking => {
-      console.log("Done!");
-      console.log(ranking);
       var keys = ['x'];
       var values = ['value'];
+      var cs: any[] = [];
 
       ranking.forEach(function (info: any) {
+        cs.push([info.technologydataname, info.amount]);
         keys.push(info.technologydataname);
         values.push(info.amount);
       }, this);
-      console.log(keys);
-      console.log(values);
       
       this.chartTopRecipes = c3.generate({
         bindto: "#chart-top-recipes",
         data: {
-          x: 'x',
-          type: 'bar',
+          // x: 'x',
+          type: 'pie',
           empty: { label: { text: "Keine Daten vorhanden" } },
-          columns: [keys, values],
+          columns: cs,//[keys, values],
         },
-        bar: {
-          width: {
-            ratio: 0.9 // this makes bar width 50% of length between ticks
-          }
-          // or
-          //width: 100 // this makes bar width 100px
-        },
-        axis: {
-          rotated: true,
-          x: {
-            type: 'category'
-          },
-          y: { show: false }
+        // bar: {
+        //   width: {
+        //     ratio: 0.9 // this makes bar width 50% of length between ticks
+        //   }
+        //   // or
+        //   //width: 100 // this makes bar width 100px
+        // },
+        // axis: {
+        //   rotated: true,
+        //   x: {
+        //     type: 'category'
+        //   },
+        //   y: { show: false }
 
-        },
+        // },
         legend: {
-          show: false
+          show: true
         }
       })
     });
@@ -122,10 +123,75 @@ export class DashboardComponent implements OnInit {
   private loadRevenueChart() {
     console.log("loding hist data");
     this.dashboardService.getRevenueHistoryForUser().subscribe(revenues => {
-      console.log("Historic Data:");
-      console.log(revenues);
+      var drinks = revenues['data'];
+      var categories: string[] = [];
+      var columns: string[] = [];
+      var techName: string[] = [];
+      var types: string[] = [];
+      var i = 0;
+      var count = 0;
+      //categories.push(moment('2017-01-01').format('YYYY-MM-DD'));
+
+    //   //Get Categories
+    //  drinks.forEach(function (revenueData) {
+    //      //Get Categories for X-Axis
+    //      if(!myIncludes(categories, moment(revenueData.date).format('YYYY-MM-DD'))) {
+    //          categories.push(moment(revenueData.date).format('YYYY-MM-DD'));
+    //      }
+    //      i++;
+    //  }, this);
+
+    //  //Get TechnologyDataName
+    //  i = 0;
+    //  drinks.forEach(function (revData) {
+    //      if(!myIncludes(techName, revData.technologydataname)) {
+    //          techName.push(revData.technologydataname);
+    //          columns.push(new Array(revData.technologydataname));
+    //          types.push(new Array(revData.technologydataname));
+    //      }
+    //      i++;
+    //  }, this);
+
+    //  //Create types
+    //  i = 0;
+    //  var type = new Object();
+    //  techName.forEach(function (name) {
+    //      if(name == "Benchmark") {
+    //          type[name] = "line";
+    //      }
+    //      else {
+    //          type[name] = "area";
+    //      }
+    //      i++;
+    //  },this);
+
+    //  // Get Revenue
+    //  drinks.forEach(function (revData) {
+    //      count=0;
+    //      techName.forEach(function (tName) {
+    //          if(tName == revData.technologydataname) {
+    //              //if(count == 0) { columns[count].push('0');}
+    //              columns[count].push(revData.revenue);
+    //          }
+    //          count++;
+    //      }, this);
+    //  }, this);
+
+    //  var index;
+    //  //Create Groups without Benchmark
+    //   techName.forEach(function (name) {
+    //       if(name == "Benchmark") {
+    //           index = techName.indexOf(name)
+    //           techName.splice(index,1);
+    //       }
+    //   }, this);
+    //   $scope.revenuePerDay.data.columns = columns;
+    //   $scope.revenuePerDay.axis.x.categories = categories;
+    //   $scope.revenuePerDay.data.groups = new Array(techName);
+    //   $scope.revenuePerDay.data.types =  type;
+
     }, error => {
-      console.log("Error!");
+      console.log(error);
     //   // var categories: string[] = [];
     //   // var columns: string[] = []
     //   // var techName: string[] = []

@@ -1,25 +1,28 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material';
+import { ViewEncapsulation } from '@angular/core/src/metadata/view';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: [
+    './app.component.css'
+  ]
 })
 
 export class AppComponent implements OnInit {
   title = 'app';
 
   @ViewChild('sidenav') sidenav: MatSidenav;
-  
+
   constructor(
     private router: Router,
   ) {
 
   }
 
-  ngOnInit(){
+  ngOnInit() {
     // this.models = this.modelsService.getAll();
   }
 

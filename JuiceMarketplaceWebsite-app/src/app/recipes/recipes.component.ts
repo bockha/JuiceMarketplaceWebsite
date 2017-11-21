@@ -33,6 +33,7 @@ export class RecipesComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new RecipeDataSource(this.recipeService);
+    console.log(this.dataSource);
   }
 
   deleteRecipe(recipe: TdmRecipe) {

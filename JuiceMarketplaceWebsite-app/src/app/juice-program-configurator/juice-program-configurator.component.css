@@ -15,17 +15,21 @@
     height: 40px;
 }
 .tdm-sequence-label {
-    font-weight: normal;
-    height: 40px;
+    border-bottom: 1px solid #999;
     border-right: 1px solid #999;
+    font-weight: normal;
     padding-left: 2px;
 }
 .tdm-sequence-remove-button {
     margin-right: 5px;
 }
 .tdm-sequence-content {
-    /* background-color: #394; */
+    border-bottom: 1px solid #999;
     position: relative;
+}
+.tdm-sequence-total-label {
+    border-bottom: 1px solid #999;
+    border-left: 1px solid #999;
 }
 .tdm-sequence-snapline {
     position: absolute;
@@ -34,6 +38,16 @@
     height: 100%;
     width: 2px;
 }
+
+.tdm-footer-label {
+    border-right: 1px solid #999;
+    font-weight: normal;
+    padding-left: 2px;
+}
+.tdm-footer-total-label {
+    border-left: 1px solid #999;
+}
+
 
 /*** PHASE ***/
 .tdm-phase {
@@ -106,8 +120,11 @@
     font-weight: bold;
     color: #f00;
 }
-
-
+.tdm-empty-program-box {
+    background-color: #eee;
+    border: 1px solid #ddd;
+    height: 100px;
+}
 
 
 .pause-phase {

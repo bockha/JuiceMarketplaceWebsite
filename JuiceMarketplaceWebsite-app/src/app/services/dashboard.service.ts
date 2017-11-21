@@ -38,12 +38,12 @@ export class DashboardService {
   }
 
   getRevenueHistoryForUser() {
+    console.log("Hallo?");
     var fromDate = moment().utc().year(2000).format();
     let toDate = moment().utc().endOf('day').format();
     let url = '/users/me/reports/revenue/history?from=' + fromDate + '&to=' + toDate;
-    console.log("Go! url = "+url);
-    var result = this.http.get(url);
-    console.log("Return!");
+    console.log(url);
+    var result = this.http.get<any[]>(url);
     return result;
   }
 
