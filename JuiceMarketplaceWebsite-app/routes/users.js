@@ -254,4 +254,10 @@ router.get('/:id/image', function (req, res, next) {
         res.send(data.imageBuffer);
     });
 });
+
+/* Reports */
+
+router.use('/:id/reports', require('./user_reports'));
+
+
 module.exports = router;

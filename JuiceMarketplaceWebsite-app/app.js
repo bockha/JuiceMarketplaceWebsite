@@ -40,7 +40,6 @@ app.use('/coupon', require('./routes/coupon'));
 
 // -- RESTRICTED CONTENT --
 
-app.use('/myreports', isLoggedIn, require('./routes/myreports'));
 app.use('/users', isLoggedIn, require('./routes/users'));
 app.use('/components', isLoggedIn, require('./routes/components'));
 app.use('/console', isLoggedIn, require('./routes/console'));

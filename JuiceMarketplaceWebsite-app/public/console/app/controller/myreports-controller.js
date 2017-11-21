@@ -12,14 +12,21 @@ angular
                     columns: [],
                     types: {},
                     groups: [],
-                    empty: { label: { text: "Keine Daten vorhanden" }}
+                    empty: { label: { text: "Keine Daten vorhanden" }
+                    }
 
                     },
                 axis: {
                     x: {
                         label: 'Datum',
                         type: 'category',
-                        categories: []
+                        categories: [],
+                        tick: {
+                            fit: true,
+                            outer: false,
+                            culling: {max:6}
+                        }
+
                     },
                     y: {
                         label: 'Umsatz',
@@ -68,9 +75,8 @@ angular
                 $scope.chart.data.hide.push(datum.id);
             };
 
-
-            $scope.getTopDrinkNameEver = function () {
-                MyReportsDataService.getTopDrinkForUser().then(function (data) {
+            $scope.getTopRecipeName = function () {
+                MyReportsDataService.getTopRecipeName().then(function (data) {
 
                     if(!data || !data.data[0]) {
                         $scope.topEverName = 'Keine Daten';
@@ -83,7 +89,6 @@ angular
                     console.log(error);
                 });
             }
-
 
             $scope.getTotalRevenueForUser = function () {
                 MyReportsDataService.getTotalRevenueForUser().then(function (data) {
@@ -99,8 +104,8 @@ angular
                 });
             }
 
-            $scope.getRevenueForToday = function () {
-                MyReportsDataService.getRevenueForToday().then(function (data) {
+            $scope.getRevenueForUserToday = function () {
+                MyReportsDataService.getRevenueForUserToday().then(function (data) {
 
                     var revenue;
 
@@ -115,8 +120,8 @@ angular
                 });
             }
 
-            $scope.getRevenuePerDayForUser = function () {
-               MyReportsDataService.getRevenuePerDayForUser().then(function (data) {
+            $scope.getRevenueHistoryForUser = function () {
+               MyReportsDataService.getRevenueHistoryForUser().then(function (data) {
                     var drinks = data.data;
                     var categories = [];
                     var columns = [];
@@ -124,11 +129,12 @@ angular
                     var types = [];
                     var i = 0;
                     var count = 0;
+                    //categories.push(moment('2017-01-01').format('YYYY-MM-DD'));
 
                     //Get Categories
                    drinks.forEach(function (revenueData) {
                        //Get Categories for X-Axis
-                       if(!myIncludes(moment(revenueData.date).format('YYYY-MM-DD'))) {
+                       if(!myIncludes(categories, moment(revenueData.date).format('YYYY-MM-DD'))) {
                            categories.push(moment(revenueData.date).format('YYYY-MM-DD'));
                        }
                        i++;
@@ -137,7 +143,7 @@ angular
                    //Get TechnologyDataName
                    i = 0;
                    drinks.forEach(function (revData) {
-                       if(!myIncludes(revData.technologydataname)) {
+                       if(!myIncludes(techName, revData.technologydataname)) {
                            techName.push(revData.technologydataname);
                            columns.push(new Array(revData.technologydataname));
                            types.push(new Array(revData.technologydataname));
@@ -163,6 +169,7 @@ angular
                        count=0;
                        techName.forEach(function (tName) {
                            if(tName == revData.technologydataname) {
+                               //if(count == 0) { columns[count].push('0');}
                                columns[count].push(revData.revenue);
                            }
                            count++;
@@ -177,23 +184,21 @@ angular
                             techName.splice(index,1);
                         }
                     }, this);
-
                     $scope.revenuePerDay.data.columns = columns;
                     $scope.revenuePerDay.axis.x.categories = categories;
                     $scope.revenuePerDay.data.groups = new Array(techName);
                     $scope.revenuePerDay.data.types =  type;
-
 
                 }, function (error) {
                     console.log(error);
                 });
             }
 
-            $scope.getTopDrinksEver = function () {
-                MyReportsDataService.getTopDrinksEver().then(function (data) {
+            $scope.getTopRecipes = function () {
+                MyReportsDataService.getTopRecipes().then(function (data) {
                     var drinks = data.data;
                     drinks.sort(function (a, b) {
-                        return b.rank - a.rank;
+                        return b.amount - a.amount;
                     });
                     $scope.topEver.data.columns = [];
 
@@ -202,7 +207,7 @@ angular
 
                     drinks.forEach(function (drink) {
                         keys.push(drink.technologydataname);
-                        values.push(drink.rank);
+                        values.push(drink.amount);
                     }, this);
 
                     $scope.topEver.data.columns.push(keys);
@@ -214,10 +219,10 @@ angular
             }
 
             var getData = function () {
-                $scope.getTopDrinksEver();
-                $scope.getRevenuePerDayForUser();
-                $scope.getTopDrinkNameEver();
-                $scope.getRevenueForToday();
+                $scope.getRevenueHistoryForUser();
+                $scope.getTopRecipeName();
+                $scope.getTopRecipes();
+                $scope.getRevenueForUserToday();
                 $scope.getTotalRevenueForUser();
                 nextLoad();
             }
