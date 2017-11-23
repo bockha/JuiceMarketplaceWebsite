@@ -78,7 +78,7 @@ function componentsLoaded(success) {
             var row = $(template).clone();
 
 			row.find('.name').html(element.name);
-            row.find('.description').html(element.description);
+            // row.find('.description').html(element.description);
             row.attr("id", 'ingredient-'+element.id);
             row.click(function() {
             	var configurator = $( "#dialog-add-ingredient" ).data('configurator');
