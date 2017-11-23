@@ -154,10 +154,12 @@ self.getPublicToken = function (callback) {
     request(options, function (e, r, data) {
         var err = logger.logRequestAndResponse(e, options, r, data);
 
-        const _token = data.access_token;
+        if (!err && data) {
+            const _token = data.access_token;
 
-        if (_token) {
-            self.publicToken = _token;
+            if (_token) {
+                self.publicToken = _token;
+            }
         }
 
         callback(err, self.publicToken);
