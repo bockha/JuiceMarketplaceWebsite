@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material';
 import { DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
@@ -17,62 +18,31 @@ import { ActivatedRoute } from '@angular/router';
 })
 
 export class RecipesComponent implements OnInit {
-  displayedColumns = ["position", "name", "revenue", "licensefee", "description", "action"];
-  dataSource: RecipeDataSource | null;
+  displayedColumns = ["position", "name", "description", "licensefee", "revenue", "action"];
+  dataSource = new MatTableDataSource<TdmRecipe>();
   errorMaxRecipes = false;
 
   constructor(
     private recipeService: RecipeService,
     private route: ActivatedRoute
   ) {
-    console.log("Test");
       this.route.params.subscribe(params => {
         this.errorMaxRecipes = params['errorMaxRecipes'] ? true : false;
+      });
+      console.log("Hallo!");
+      this.recipeService.recipes.subscribe(recipes => {
+        this.dataSource.data = recipes;
       });
   }
 
   ngOnInit() {
-    this.dataSource = new RecipeDataSource(this.recipeService);
-    console.log(this.dataSource);
   }
 
   deleteRecipe(recipe: TdmRecipe) {
-    this.recipeService.deleteRecipe(recipe).then(res => {
-      console.log("Done with res: "+res);
-    });
+    this.recipeService.deleteRecipe(recipe);
+    // this.recipeService.deleteRecipe(recipe).then(res => {
+    //   console.log("Done with res: "+res);
+    // });
   }
 
-}
-
-export class RecipeDataSource extends DataSource<any> {
-  constructor(private recipeService: RecipeService) {
-    super();
-  }
-  
-  subject: BehaviorSubject<TdmRecipe[]> = new BehaviorSubject<TdmRecipe[]>([]);
-  recipesSubscription: Subscription;
-
-  connect(): Observable<TdmRecipe[]> {
-      console.log('connect');
-      this.recipesSubscription = this.recipeService.recipes.subscribe(recipes => {this.subject.next(recipes)});
-      this.recipeService.updateRecipes();
-      // if (!this.subject.isStopped)
-      //     this.recipeService.getRecipes()
-      //         .then(res => {
-      //             // console.log(res)
-      //             this.subject.next(res)
-      //         });
-      return Observable.merge(this.subject);
-  }
-
-  disconnect() {
-    this.recipesSubscription.unsubscribe()
-    console.log('disconnect');
-    this.subject.complete();
-      this.subject.observers = [];
-  }
-
-  private handleRecipesUpdate(recipes:TdmRecipe[]) {
-    
-  }
 }

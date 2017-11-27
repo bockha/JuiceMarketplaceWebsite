@@ -9,11 +9,10 @@
     <mat-card-content>
       <app-message-box type="error" *ngIf="errorMaxRecipes">Derzeit ist die Anzahl an Rezepten pro Benutzer begrenzt. Bitte lösche ein bestehendes Rezept, falls du weitere Rezepte
         auf dem Marktplatz veröffentlichen möchtest.</app-message-box>
-
-        <div *ngIf="dataSource.subject.value.length == 0" class="no-recipes-available">
-          Keine Getränke vorhanden
-        </div>            
-      <div *ngIf="dataSource.subject.value.length > 0">
+      <div *ngIf="dataSource.data.length == 0" class="no-recipes-available">
+        Keine Getränke vorhanden
+      </div>
+      <div *ngIf="dataSource.data.length > 0">
         <mat-table #table [dataSource]="dataSource">
 
           <ng-container matColumnDef="position">
@@ -26,20 +25,19 @@
             <mat-cell *matCellDef="let recipe"> {{recipe.technologydataname}} </mat-cell>
           </ng-container>
 
+          <ng-container matColumnDef="description">
+            <mat-header-cell *matHeaderCellDef>Beschreibung</mat-header-cell>
+            <mat-cell *matCellDef="let recipe"> {{recipe.technologydatadescription}} </mat-cell>
+          </ng-container>
+
           <ng-container matColumnDef="revenue">
-            <mat-header-cell *matHeaderCellDef class="right">Gesamtumsatz
-              <br>
-              <small>(IUNOs)</small>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let recipe" class="right"> {{recipe.revenue}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef>Gesamtumsatz (IUNOs)</mat-header-cell>
+            <mat-cell *matCellDef="let recipe"> {{recipe.revenue}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="licensefee">
-            <mat-header-cell *matHeaderCellDef class="right">Lizenzgebühr
-              <br>
-              <small>(IUNOs)</small>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let recipe" class="right"> {{(recipe.licensefee / 100000).toFixed(2)}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef>Lizenzgebühr (IUNOs)</mat-header-cell>
+            <mat-cell *matCellDef="let recipe"> {{(recipe.licensefee / 100000).toFixed(2)}} </mat-cell>
           </ng-container>
 
           <!-- <ng-container matColumnDef="li">
@@ -47,14 +45,9 @@
             <mat-cell *matCellDef="let recipe"> {{(recipe.licensefee / 100000).toFixed(2)}} </mat-cell>
           </ng-container> -->
 
-          <ng-container matColumnDef="description">
-            <mat-header-cell *matHeaderCellDef>Beschreibung</mat-header-cell>
-            <mat-cell *matCellDef="let recipe"> {{recipe.technologydatadescription}} </mat-cell>
-          </ng-container>
-
           <ng-container matColumnDef="action">
-            <mat-header-cell *matHeaderCellDef class="right">Aktion</mat-header-cell>
-            <mat-cell *matCellDef="let recipe" class="right">
+            <mat-header-cell *matHeaderCellDef>Aktion</mat-header-cell>
+            <mat-cell *matCellDef="let recipe">
               <button (click)="deleteRecipe(recipe)" mat-raised-button color="primary">Löschen</button>
             </mat-cell>
           </ng-container>

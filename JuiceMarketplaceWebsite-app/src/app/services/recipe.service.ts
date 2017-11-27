@@ -1,25 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpModule, Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TdmRecipe } from '../juice-program-configurator/models/tdmrecipe';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class RecipeService {
-  recipes = new BehaviorSubject<TdmRecipe[]>([]);
+  // @see https://blog.angular-university.io/how-to-build-angular2-apps-using-rxjs-observable-data-services-pitfalls-to-avoid/
+  // This is to prevent the service clients from themselves emitting store values directly instead of calling action methods and therefore bypassing the store.
+  private _recipes: BehaviorSubject<TdmRecipe[]> = new BehaviorSubject([]);
+  public readonly recipes: Observable<TdmRecipe[]> = this._recipes.asObservable();
+
+  // recipes = new BehaviorSubject<TdmRecipe[]>([]);
   private recipesUrl = '/users/me/recipes';
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
+    this.updateRecipes();
   }
 
   updateRecipes() {
-    return this.http
-    .get(this.recipesUrl)
-    .toPromise()
-    .then(response => {
-      var r = response.json() as TdmRecipe[];
-      this.recipes.next(r);
-    })
-    .catch(this.handleError);
+    this.http.get<TdmRecipe[]>(this.recipesUrl).subscribe(recipes => {
+      this._recipes.next(recipes);
+    });
+    // return this.http.get<TdmRecipe>(this.recipesUrl);
+    // .toPromise()
+    // .then(response => {
+    //   var r = response.json() as TdmRecipe[];
+    //   this.recipes.next(r);
+    // })
+    // .catch(this.handleError);
   }
 
   // getRecipes(): Promise<Recipe[]> {
@@ -38,12 +47,19 @@ export class RecipeService {
   // }
 
   deleteRecipe(recipe: TdmRecipe) {
-    return this.http
-    .delete(this.recipesUrl + "/" + recipe.technologydatauuid)
-    .toPromise()
-    .then(response => {
+    var x = this.http.delete(this.recipesUrl + "/" + recipe.technologydatauuid, {
+      responseType: 'text',
+    }).subscribe(response => {
       this.updateRecipes();
     });
+    console.log("X");
+    console.log(x);
+    // return this.http
+    // .delete(this.recipesUrl + "/" + recipe.technologydatauuid)
+    // .toPromise()
+    // .then(response => {
+    //   this.updateRecipes();
+    // });
   }
 
   private handleError(error: any): Promise<any> {

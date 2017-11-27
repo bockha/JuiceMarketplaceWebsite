@@ -1,4 +1,38 @@
-.right {
-    display: flex !important;
-    justify-content: flex-end !important;
+/* .right {
+    display: flex;
+    justify-content: flex-end;
+} */
+
+.mat-column-revenue {
+    display: flex;
+    justify-content: flex-end;
+    text-align: right;
+    max-width: 75px;
+}
+
+.mat-column-licensefee {
+    display: flex;
+    justify-content: flex-end;
+    text-align: right;
+    max-width: 75px;
+}
+
+.mat-column-action {
+    max-width: 80px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+/* .mat-header-cell-revenue {
+    display: flex;
+    justify-content: flex-end;
+    color: #0f0;
+}
+ */
+.mat-column-position {
+    max-width: 15px;
+    display: flex;
+    justify-content: flex-end;
+    text-align: right;
 }
