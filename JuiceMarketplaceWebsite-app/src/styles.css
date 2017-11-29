@@ -3,16 +3,19 @@
 
 body {
     margin: 0 0;
+    padding: 0;
+    font-family: Roboto, sans-serif;
 }
 
 .component-viewer {
     max-width: 940px;
     padding: 5px 10px 5px;
+    /* background-color: #eee; */
 }
 
 .main-container {
     background-color: #eee;
-    height: 100%;
+    min-height: 100%;
 }
 
 /* .mat-toolbar {

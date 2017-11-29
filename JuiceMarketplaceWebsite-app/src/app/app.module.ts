@@ -36,6 +36,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { FooterComponent } from './footer/footer.component';
 import { JuiceProgramConfiguratorModule } from './juice-program-configurator/juice-program-configurator.module';
 import { UtilitiesModule } from './utilities/utilities.module';
+import { AccessGuard } from './services/user.service';
 
 @NgModule({
   imports: [
@@ -71,7 +72,7 @@ import { UtilitiesModule } from './utilities/utilities.module';
     DashboardComponent,
     FooterComponent,
   ],
-  providers: [],
+  providers: [AccessGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

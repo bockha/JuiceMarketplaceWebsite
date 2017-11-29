@@ -24,6 +24,16 @@ module.exports = function (passport) {
         res.redirect(authServerLogout);
     });
 
+    // LOGOUT ==============================
+    router.get('/loggedin', function (req, res) {
+        res.status(200);
+        if (req.isAuthenticated()) {
+            res.send('true');
+        } else {
+            res.send('false');
+        }
+    });
+
     // =============================================================================
     // AUTHENTICATE (IUNO) ==================================================
     // =============================================================================

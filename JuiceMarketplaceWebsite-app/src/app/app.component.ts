@@ -24,6 +24,11 @@ export class AppComponent implements OnInit {
     private router: Router,
     private userService: UserService
   ) {
+    // if (userService.isLoggedIn()) {
+    //   console.log("LoggedIn!");
+    // } else {
+    //   console.log("Not LoggedIn!");
+    // }
   }
 
   ngOnInit() {

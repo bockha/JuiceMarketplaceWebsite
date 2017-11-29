@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit {
   constructor(private dashboardService: DashboardService) { }
 
   ngOnInit() {
+
     // pupulate topRecipe
     this.dashboardService.getTopRecipeForUser().subscribe(recipe => {
       this.topRecipe = recipe;

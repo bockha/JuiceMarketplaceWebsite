@@ -9,6 +9,7 @@ import 'rxjs/add/observable/of';
 import { RecipeService } from '../services/recipe.service';
 import { TdmRecipe } from '../juice-program-configurator/models/tdmrecipe';
 import { ActivatedRoute } from '@angular/router';
+import { AccessGuard } from '../services/user.service';
 
 @Component({
   selector: 'app-recipes',
@@ -24,12 +25,12 @@ export class RecipesComponent implements OnInit {
 
   constructor(
     private recipeService: RecipeService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private accessGuard: AccessGuard
   ) {
       this.route.params.subscribe(params => {
         this.errorMaxRecipes = params['errorMaxRecipes'] ? true : false;
       });
-      console.log("Hallo!");
       this.recipeService.recipes.subscribe(recipes => {
         this.dataSource.data = recipes;
       });
@@ -39,10 +40,11 @@ export class RecipesComponent implements OnInit {
   }
 
   deleteRecipe(recipe: TdmRecipe) {
-    this.recipeService.deleteRecipe(recipe);
-    // this.recipeService.deleteRecipe(recipe).then(res => {
-    //   console.log("Done with res: "+res);
-    // });
+    this.accessGuard.guardLoggedIn().subscribe(loggedIn => {
+      if (loggedIn) {
+        this.recipeService.deleteRecipe(recipe);      
+      }
+    });
   }
 
 }
