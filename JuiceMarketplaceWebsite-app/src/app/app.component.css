@@ -23,6 +23,12 @@ body {
 }
  */
 
+ :host ::ng-deep .card-information {
+     /* font-weight: lighter; */
+     font-size: 34pt;
+     color: #AAC253;
+ }
+
 :host ::ng-deep a {
     color: #337ab7;
     text-decoration: none;
@@ -50,7 +56,8 @@ body {
 
 :host ::ng-deep .mat-card-title {
     margin: 0px;
-    font-size: 14pt;
+    font-size: 12pt;
+    font-weight: bolder;
 }
 
 :host ::ng-deep .mat-card-content {

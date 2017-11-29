@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TdmRecipe } from '../juice-program-configurator/models/tdmrecipe';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class RecipeService {
@@ -11,7 +13,6 @@ export class RecipeService {
   private _recipes: BehaviorSubject<TdmRecipe[]> = new BehaviorSubject([]);
   public readonly recipes: Observable<TdmRecipe[]> = this._recipes.asObservable();
 
-  // recipes = new BehaviorSubject<TdmRecipe[]>([]);
   private recipesUrl = '/users/me/recipes';
 
   constructor(private http: HttpClient) {
@@ -19,53 +20,24 @@ export class RecipeService {
   }
 
   updateRecipes() {
+    console.log("Updating recipes");
     this.http.get<TdmRecipe[]>(this.recipesUrl).subscribe(recipes => {
       this._recipes.next(recipes);
+    }, error => {
+      this.handleError(error);
     });
-    // return this.http.get<TdmRecipe>(this.recipesUrl);
-    // .toPromise()
-    // .then(response => {
-    //   var r = response.json() as TdmRecipe[];
-    //   this.recipes.next(r);
-    // })
-    // .catch(this.handleError);
   }
 
-  // getRecipes(): Promise<Recipe[]> {
-  //   return this.http
-  //   .get(this.recipesUrl)
-  //   .toPromise()
-  //   .then(response => response.json() as Recipe[])
-  //   .catch(this.handleError);
-  // }
-
-  // // just for testing purpose
-  // getRecipesSlowly(): Promise<Recipe[]> {
-  //   return new Promise(resolve => {      
-  //     setTimeout(() => resolve(this.getRecipes()), 2000); // Simulate server latency with 2 second delay
-  //   });
-  // }
-
   deleteRecipe(recipe: TdmRecipe) {
-    var x = this.http.delete(this.recipesUrl + "/" + recipe.technologydatauuid, {
+    this.http.delete(this.recipesUrl + "/" + recipe.technologydatauuid, {
       responseType: 'text',
     }).subscribe(response => {
       this.updateRecipes();
     });
-    console.log("X");
-    console.log(x);
-    // return this.http
-    // .delete(this.recipesUrl + "/" + recipe.technologydatauuid)
-    // .toPromise()
-    // .then(response => {
-    //   this.updateRecipes();
-    // });
   }
 
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error);
     return Promise.reject(error.message || error);
   }
-
-
 }

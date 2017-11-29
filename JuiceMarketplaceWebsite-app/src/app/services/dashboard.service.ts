@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as moment from 'moment';
 import { TdmRecipe } from '../juice-program-configurator/models/tdmrecipe';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/mergeMap';
 
 // import { TdmRecipe } from 'juice-program-configurator';
 

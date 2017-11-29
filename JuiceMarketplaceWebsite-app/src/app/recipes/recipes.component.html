@@ -1,4 +1,4 @@
-<h1 class="mat-display-1">Getränke verwalten</h1>
+<h1 class="headline">Getränke verwalten</h1>
 <div fxLayout="column" fxLayoutGap="10px">
   <mat-card fxFlex="100" class="iuno-card">
     <mat-card-header>
@@ -32,7 +32,7 @@
 
           <ng-container matColumnDef="revenue">
             <mat-header-cell *matHeaderCellDef>Gesamtumsatz (IUNOs)</mat-header-cell>
-            <mat-cell *matCellDef="let recipe"> {{recipe.revenue}} </mat-cell>
+            <mat-cell *matCellDef="let recipe"> {{recipe.revenue | number:'1.2'}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="licensefee">
