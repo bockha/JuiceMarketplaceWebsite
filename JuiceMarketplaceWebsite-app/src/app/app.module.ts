@@ -11,6 +11,7 @@ import { HttpModule } from '@angular/http'; // still needed @see https://github.
 // Angular Material
 import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 import { MatToolbarModule } from '@angular/material';
+import { MatMenuModule } from '@angular/material';
 import { MatSidenavModule } from '@angular/material'
 import { MatTabsModule } from '@angular/material';
 import { MatIconModule } from '@angular/material';
@@ -50,6 +51,7 @@ import { UtilitiesModule } from './utilities/utilities.module';
     MatButtonModule,
     MatCheckboxModule,
     MatToolbarModule,
+    MatMenuModule,
     MatSidenavModule,
     MatTabsModule,
     MatIconModule,

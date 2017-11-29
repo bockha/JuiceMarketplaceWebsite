@@ -1,9 +1,19 @@
+<app-spinner [counter]="spinnerCounter"></app-spinner>
 <section class="app flex-container" fxLayout="column" fxLayoutAlign="start stretch">
     <mat-toolbar color="primary" class="mat-elevation-z5" style="z-index: 2">
         <button mat-button (click)="sidenav.toggle()">
             <mat-icon>menu</mat-icon>
         </button>
         TDM-Console
+        <div fxFlex></div>
+        <button mat-button [matMenuTriggerFor]="menu">
+            {{getUserDisplayName()}}
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="logout()">
+                <span>Logout</span>
+            </button>
+        </mat-menu>
     </mat-toolbar>
 
     <mat-sidenav-container fxFlex>
