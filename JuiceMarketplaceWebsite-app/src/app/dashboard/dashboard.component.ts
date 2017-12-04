@@ -172,14 +172,18 @@ export class DashboardComponent implements OnInit {
           types: types,
           // columns: columns,
         },
+        point: {
+          r: 0,
+        },
         grid: {
           x: {
             show: false
           },
           y: {
-            show: true
+            show: false
           }
         },
+        
         axis: {
           x: {
             // padding: {

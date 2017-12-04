@@ -25,3 +25,8 @@
     stroke-width: 1.5px;
   }
   
+  .c3-chart-lines .c3-target-Benchmark  {
+    stroke-width: 1px;
+    stroke-dasharray: 3, 3;
+  }
+  
