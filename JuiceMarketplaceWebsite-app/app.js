@@ -1,28 +1,20 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var passport = require('passport');
-var session = require('cookie-session');
-var fs = require('fs');
-var marked = require('marked');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const session = require('cookie-session');
+const fs = require('fs');
+const marked = require('marked');
+const contentTypeValidation = require('./services/content_type_validation');
 
 const config = require('./config/config_loader');
 
-var app = express();
+const app = express();
 
-// Accept JSON and URL ENCODED only
-app.use('/', function (req, res, next) {
-    if (req.method !== 'GET' && req.method !== 'HEAD') {
-        if (!(req.is('application/json') || req.is('application/x-www-form-urlencoded'))) {
-            return res.status(400).send('content-type not accepted');
-        }
-    }
-
-    next();
-});
+app.use('/', contentTypeValidation);
 
 
 app.set('view engine', 'ejs');
@@ -66,19 +58,19 @@ function renderLegalPage(res, filename) {
     });
 }
 
-app.get('/terms-of-service', function(req, res) {
+app.get('/terms-of-service', function (req, res) {
     renderLegalPage(res, 'terms-of-service.md');
 });
 
-app.get('/privacy', function(req, res) {
+app.get('/privacy', function (req, res) {
     renderLegalPage(res, 'privacy.md');
 });
 
-app.get('/contact', function(req, res) {
+app.get('/contact', function (req, res) {
     renderLegalPage(res, 'contact.md');
 });
 
-app.get('/imprint', function(req, res) {
+app.get('/imprint', function (req, res) {
     renderLegalPage(res, 'imprint.md');
 });
 // app.use('/console', require('./routes/console'));
@@ -92,7 +84,9 @@ app.get('/imprint', function(req, res) {
 // });
 // app.use('/console', isLoggedIn, function(req, res, next) {res.redirect('/console/console.html')});
 
-app.use('/', function(req, res, next) {res.redirect('/landingpage/iuno.html')});
+app.use('/', function (req, res, next) {
+    res.redirect('/landingpage/iuno.html')
+});
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
@@ -111,7 +105,7 @@ app.use(function (req, res, next) {
 });
 
 if (app.get('env') !== 'development') {
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
         //Always logout user on failure
         req.logout();
         next(err, req, res)
