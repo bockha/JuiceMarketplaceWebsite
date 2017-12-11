@@ -1,27 +1,28 @@
-import { NgModule }             from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-// import { LandingComponent} from './landing/landing.component';
-// import { ConsoleComponent} from './console/console.component';
-import { AppComponent} from './app.component';
-import { DashboardComponent }   from './dashboard/dashboard.component';
-import { CreateRecipeComponent }      from './create-recipe/create-recipe.component';
-import { RecipesComponent }  from './recipes/recipes.component';
-import { AccessGuard }  from './services/user.service';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+import {ConsoleMenuComponent} from './sidebar/console/console-menu.component';
+import {ConsoleComponent} from './console/console.component';
+import {StatisticsComponent} from './sidebar/statistics/statistics.component';
+import {IndexComponent} from './sidebar/index/index.component';
+
 
 const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'dashboard',  component: DashboardComponent, canActivate: [AccessGuard] },
-  { path: 'create-recipe',  component: CreateRecipeComponent, canActivate: [AccessGuard] },
-  { path: 'recipes',  component: RecipesComponent, canActivate: [AccessGuard] },
-  // { path: 'console', component: ConsoleComponent },
-  // { path: 'console',  loadChildren: './console/console.module#ConsoleModule' },
+  {path: '', redirectTo: 'landingpage', pathMatch: 'full'},
+  {path: 'landingpage', loadChildren: './landingpage/landingpage.module#LandingpageModule'},
+  {path: 'console', loadChildren: './console/console.module#ConsoleModule'},
+  // {path: 'console', component: ConsoleComponent},
+  {path: 'statistics', loadChildren: './statistics/statistics.module#StatisticsModule'},
+  {path: 'news', loadChildren: './news/news.module#NewsModule'},
+  // {path: '', outlet: 'sidebar', redirectTo: 'console'},
+  {path: 'index', outlet: 'sidebar', component: IndexComponent},
+  {path: 'console-menu', outlet: 'sidebar', component: ConsoleMenuComponent},
+  {path: 'statistics', outlet: 'sidebar', component: StatisticsComponent}
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ],
-  providers: [
-    AccessGuard,
-  ]
+//  imports: [RouterModule.forRoot(routes, { enableTracing: true })], // Just for debugging
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

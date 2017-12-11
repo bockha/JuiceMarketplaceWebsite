@@ -1,0 +1,10 @@
+<div *ngIf="loggedIn; else elseTemplate" fxLayout="row">
+  <!-- <div *ngIf="!respCalc.getAccountInfoShortened()" class="userName"> -->
+    <span class=" light">USERNAME NAME OF USER</span>
+  <!-- </div> -->
+  <img class="userImg" src="./assets/images/1.jpg"/>
+
+</div>
+<ng-template #elseTemplate>
+  LOGIN
+</ng-template>

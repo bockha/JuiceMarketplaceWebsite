@@ -34,10 +34,16 @@ $iuno-palette: (
     )
 );
 
-$primary: mat-palette($iuno-palette,500);
-$accent: mat-palette($iuno-palette,200);
+// $iuno-primary: mat-palette($iuno-palette,500);
+// $iuno-accent: mat-palette($iuno-palette,200);
 
-$theme: mat-light-theme($primary, $accent);
+$iuno-primary: mat-palette($mat-lime);
+$iuno-accent:  mat-palette($mat-pink, A200, A100, A400);
 
-@include angular-material-theme($theme);
+// The warn palette is optional (defaults to red).
+$iuno-warn:    mat-palette($mat-red);
+
+$iuno-theme: mat-light-theme($iuno-primary, $iuno-accent);
+
+@include angular-material-theme($iuno-theme);
 

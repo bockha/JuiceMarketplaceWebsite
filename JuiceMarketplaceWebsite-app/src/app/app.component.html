@@ -1,38 +1,29 @@
-<app-spinner [counter]="spinnerCounter"></app-spinner>
-<section class="app flex-container" fxLayout="column" fxLayoutAlign="start stretch">
-    <mat-toolbar color="primary" class="mat-elevation-z5" style="z-index: 2">
-        <button mat-button (click)="sidenav.toggle()">
-            <mat-icon>menu</mat-icon>
-        </button>
-        TDM-Console
-        <div fxFlex></div>
-        <button mat-button [matMenuTriggerFor]="menu">
-            {{getUserDisplayName()}}
-        </button>
-        <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="logout()">
-                <span>Logout</span>
-            </button>
-        </mat-menu>
-    </mat-toolbar>
+<div class="app" fxLayout="column" style="background-color: #0d47a1">
+  <mat-toolbar color="primary" class="mat-elevation-z5 nav-bar" style="z-index: 2">
 
-    <mat-sidenav-container fxFlex>
-        <mat-sidenav mode="side" align="start" class="mat-elevation-z6" opened #sidenav fxLayout="column" fxLayoutAlign="start stretch">
-            <div style="height: 8px;"></div>
-            <button (click)="openDashboard()" mat-button class="nav-button">Dashboard
-                <span flex></span>
-            </button>
-            <button (click)="openCreateRecipe()" mat-button class="nav-button">Neues Getränk anlegen
-                <span flex></span>
-            </button>
-            <button (click)="openRecipes()" mat-button class="nav-button">Getränke verwalten
-                <span flex></span>
-            </button>
-        </mat-sidenav>
-        <div class="main-container" fxLayout="column">
-            <div class="component-viewer">
-                <router-outlet></router-outlet>
-            </div>
-        </div>
-    </mat-sidenav-container>
-</section>
+    <button *ngIf="menuButtonVisible" mat-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <img *ngIf="tdmLogoVisible" class="logo" src="./assets/images/tdm_logo.svg">
+    <div *ngIf="navigationButtonsVisible" class="nav-buttons">
+      <a #start mat-button class="lightupper " (click)="startClicked()">Start</a>
+      <a #tdm mat-button class="lightupper " (click)="tdmClicked()">Marktplatz</a>
+      <a #stats mat-button class="lightupper " (click)="statisticsClicked()">Statistiken</a>
+      <a #news mat-button class="lightupper " (click)="newsClicked()">Neuigkeiten</a>
+    </div>
+    <span class="spacer"></span>
+    <app-account></app-account>
+  </mat-toolbar>
+  <mat-sidenav-container fxFlex>
+    <mat-sidenav #sidenav mode="side" align="start" class="mat-elevation-z6" opened="{{menuVisible}}">
+      <router-outlet name="sidebar"></router-outlet>
+    </mat-sidenav>
+    <div class="component-viewer" fxLayout="column">
+      <div fxFlex="grow">
+        <router-outlet></router-outlet>
+      </div>
+      <app-footer fxFlex="none"></app-footer>
+    </div>
+  </mat-sidenav-container>
+</div>
+

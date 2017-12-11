@@ -1,0 +1,17 @@
+img.userImg{
+  width: 30px;
+  height: 30px;
+  border: 1px solid grey;
+  border-radius: 50%;
+  float: left;
+  margin-right: 1em;
+  object-fit: cover;
+
+}
+
+/*@media only screen and (max-width: 580px){*/
+  /*.userName{*/
+    /*visibility: hidden;*/
+    /*width: 0px;*/
+  /*}*/
+/*}*/
