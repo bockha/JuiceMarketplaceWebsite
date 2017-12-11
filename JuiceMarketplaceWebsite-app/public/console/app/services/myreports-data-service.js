@@ -84,11 +84,43 @@ angular.module('myreports').factory('MyReportsDataService', ['$q', '$http', 'mom
     }
 
 
+    function getVaultBalance() {
+        var defer = $q.defer();
+
+        $http({
+            method: 'GET',
+            url: '/users/me/vault/balance'
+        }).then(function(result) {
+            defer.resolve(result);
+        }, function(error) {
+            defer.reject(error);
+        });
+        return defer.promise;
+    }
+
+
+    function getVaultWallets() {
+        var defer = $q.defer();
+
+        $http({
+            method: 'GET',
+            url: '/users/me/vault/wallets'
+        }).then(function(result) {
+            defer.resolve(result);
+        }, function(error) {
+            defer.reject(error);
+        });
+        return defer.promise;
+    }
+
+
     return {
         getTopRecipes: getTopRecipes,
         getTopRecipeName: getTopRecipeName,
         getRevenueHistoryForUser: getRevenueHistoryForUser,
         getRevenueForUserToday: getRevenueForUserToday,
-        getTotalRevenueForUser: getTotalRevenueForUser
+        getTotalRevenueForUser: getTotalRevenueForUser,
+        getVaultBalance: getVaultBalance,
+        getVaultWallets: getVaultWallets
     };
 }]);

@@ -525,4 +525,86 @@ self.getTopTechnologyDataForUser = function (user, accessToken, from, to, limit,
 };
 //</editor-fold>
 
+
+
+self.getCumulatedVaultBalanceForUser = function(user, accessToken, callback){
+    var options = buildOptionsForRequest(
+        'GET',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/vault/'+user+'/cumulated',
+        null);
+    options.headers.authorization = 'Bearer ' + accessToken;
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
+        if (typeof(callback) !== 'function') {
+
+            callback = function (err, data) {
+                logger.warn('Callback not handled by caller');
+            };
+        }
+
+        if (e) {
+            logger.crit(e);
+
+            callback(e);
+        }
+
+        if (r && r.statusCode !== 200) {
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn('Call not successful: Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        callback(null, jsonData);
+    });
+};
+
+self.getVaultWalletsForUser = function(user, accessToken, callback){
+    var options = buildOptionsForRequest(
+        'GET',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/vault/'+user+'/wallets',
+        null);
+    options.headers.authorization = 'Bearer ' + accessToken;
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response from MarketplaceCore: ' + JSON.stringify(jsonData));
+        if (typeof(callback) !== 'function') {
+
+            callback = function (err, data) {
+                logger.warn('Callback not handled by caller');
+            };
+        }
+
+        if (e) {
+            logger.crit(e);
+
+            callback(e);
+        }
+
+        if (r && r.statusCode !== 200) {
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn('Call not successful: Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        callback(null, jsonData);
+    });
+};
+
 module.exports = self;

@@ -258,6 +258,7 @@ router.get('/:id/image', function (req, res, next) {
 /* Reports */
 
 router.use('/:id/reports', require('./user_reports'));
+router.use('/:id/vault', require('./vault'));
 
 
 module.exports = router;
