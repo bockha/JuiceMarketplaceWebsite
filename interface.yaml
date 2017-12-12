@@ -513,28 +513,10 @@ paths:
         - application/json
       responses:
         '201':
-          description: Created Coupon
-          schema:
-            $ref: '#/definitions/Coupon'
-  '/coupons/{couponId}':
-    get:
-      description: Get a coupon which was created before
-      parameters:
-        - name: couponId
-          in: path
-          required: true
-          type: string
-          format: uuid
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: The Coupon ID
+          description: id of created Coupon
           schema:
             type: string
             format: uuid
-        '404':
-          description: No Coupon for this id
   '/coupons/{couponId}/ios':
     get:
       description: Get a ios coupon which was created before
