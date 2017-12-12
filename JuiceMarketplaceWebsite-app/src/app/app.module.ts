@@ -1,18 +1,24 @@
-// import {BrowserModule} from '@angular/platform-browser';
-import {CommonModule} from '@angular/common';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {NgModule} from '@angular/core';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {MatIconModule, MatToolbarModule} from '@angular/material';
-import {MatSidenavModule} from '@angular/material';
-import {MatButtonModule} from '@angular/material';
-import {FooterComponent} from './footer/footer.component';
-import {FlexLayoutModule} from '@angular/flex-layout';
-import {SidebarModule} from "./sidebar/sidebar.module";
+// Angular Modules
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+// Angular Material
+import { MatIconModule } from '@angular/material';
+import { MatToolbarModule } from '@angular/material';
+import { MatSidenavModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material';
+import { MatMenuModule } from '@angular/material';
+
+// Custom imports
+import { FooterComponent } from './footer/footer.component';
+import { SidebarModule } from "./sidebar/sidebar.module";
 import { AccountComponent } from './account/account.component';
 import { ConsoleModule } from './console/console.module';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 
 
 @NgModule({
@@ -23,7 +29,6 @@ import { ConsoleModule } from './console/console.module';
   ],
   imports: [
     CommonModule,
-    // BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     SidebarModule,
@@ -31,6 +36,7 @@ import { ConsoleModule } from './console/console.module';
     MatSidenavModule,
     MatButtonModule,
     MatIconModule,
+    MatMenuModule,
     FlexLayoutModule,
     ConsoleModule
   ],

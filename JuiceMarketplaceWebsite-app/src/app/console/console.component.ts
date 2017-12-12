@@ -41,28 +41,6 @@ export class ConsoleComponent implements OnInit {
     });
   }
 
-  getUserDisplayName() {
-    var displayName = '';
-    if (this.user != null) {
-      displayName = 'Anonymous';
-      if (this.user.firstname && this.user.lastname) {
-        displayName = this.user.firstname + " " + this.user.lastname;
-      } else if (this.user.username) {
-        displayName = this.user.username;
-      } else if (this.user.firstname) {
-        displayName = this.user.firstname;
-      } else if (this.user.lastname) {
-        displayName = this.user.lastname;
-      }
-    }
-    return displayName;
-  }
-
-
-  logout() {
-    window.location.href="/auth/logout";
-  }
-
   openDashboard() {
     this.router.navigate(['dashboard']);
   }

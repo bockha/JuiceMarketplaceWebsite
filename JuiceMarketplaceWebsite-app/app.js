@@ -48,7 +48,7 @@ app.use('/coupon', require('./routes/coupon'));
 // app.use('/console', express.static(path.join(__dirname, 'dist')))
 // app.get('/console/*', (req, res) => {
 app.use('/', express.static(path.join(__dirname, 'dist')))
-app.use('/console', isLoggedIn, express.static(path.join(__dirname, 'dist')))
+// app.use('/console', isLoggedIn, express.static(path.join(__dirname, 'dist')))
 app.get('/console/*', isLoggedIn, (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
 });

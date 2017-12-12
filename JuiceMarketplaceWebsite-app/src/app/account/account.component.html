@@ -1,10 +1,21 @@
-<div *ngIf="loggedIn; else elseTemplate" fxLayout="row">
+<div *ngIf="user != null" fxLayout="row">
+    <button mat-button class="lightupper" [matMenuTriggerFor]="menu">
+        {{getUserDisplayName()}}
+    </button>
+    <!-- <img class="userImg" src="./assets/images/1.jpg"/> -->
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="logout()">
+            <span>Logout</span>
+        </button>
+    </mat-menu>
   <!-- <div *ngIf="!respCalc.getAccountInfoShortened()" class="userName"> -->
-    <span class=" light">USERNAME NAME OF USER</span>
+    <!-- <span class=" light">{{getUserDisplayName()}}</span> -->
   <!-- </div> -->
-  <img class="userImg" src="./assets/images/1.jpg"/>
-
+  <!-- <img class="userImg" src="./assets/images/1.jpg"/> -->
 </div>
-<ng-template #elseTemplate>
-  LOGIN
-</ng-template>
+
+<div *ngIf="user == null">
+    <button mat-button class="lightupper" (click)="login()">
+        Anmelden / Registrieren
+    </button>
+</div>
