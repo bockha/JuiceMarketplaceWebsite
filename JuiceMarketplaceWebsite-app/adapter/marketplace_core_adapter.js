@@ -162,7 +162,7 @@ self.deleteRecipe = function (token, recipeID, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeID + '/delete',
         {
-            userUUID: token.user
+
         }
     );
     options.headers.authorization = 'Bearer ' + token.accessToken;
