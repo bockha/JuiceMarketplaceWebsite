@@ -24,6 +24,15 @@ module.exports = function (passport) {
         res.redirect(authServerLogout);
     });
 
+    router.get('/loggedin', function (req, res) {
+        res.status(200);
+        if (req.isAuthenticated()) {
+            res.send('true');
+        } else {
+            res.send('false');
+        }
+    });
+
     // =============================================================================
     // AUTHENTICATE (IUNO) ==================================================
     // =============================================================================
@@ -37,7 +46,7 @@ module.exports = function (passport) {
         logger.info('iuno callback');
 
         passport.authenticate('iuno', {
-            successRedirect: req.cookies.redirectTo || '/console',
+            successRedirect: '/console',
             failureRedirect: '/',
             failureFlash: true
         })(req, res, next);

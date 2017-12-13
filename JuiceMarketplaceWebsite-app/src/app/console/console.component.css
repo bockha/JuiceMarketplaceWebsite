@@ -1,0 +1,24 @@
+.nav-button {
+    text-align: left;
+    height: 50px;
+}
+
+.app {
+    height: 100vh;
+}
+
+.mat-sidenav {
+    width: 250px;
+}
+
+/* :host ::ng-deep .mat-card {
+    padding: 0px;
+    background-color: #fff;
+}
+ */
+
+
+/* :host ::ng-deep .mat-form-field-flex {
+    background-color: #eee;
+} */
+

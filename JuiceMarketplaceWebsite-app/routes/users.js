@@ -73,7 +73,8 @@ router.get('/:id/recipes/limit', function (req, res, next) {
  * Saves a recipe for a specific user
  */
 router.post('/:id/recipes', function (req, res, next) {
-
+    console.log("recieved following recipe:");
+    console.log(req.body);
     // Check if user can still publish recipes or if his limit is reached.
     marketplaceCore.getRecipesForUser(req.params['id'], req.user.token.accessToken, function (err, recipes) {
         if (err) {

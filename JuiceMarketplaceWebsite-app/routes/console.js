@@ -6,7 +6,8 @@ const CONFIG = require('../config/config_loader');
 const logger = require('../global/logger');
 
 router.get('/', function (req, res, next) {
-    res.redirect('myreports');
+    res.sendFile("public/console/index.html");
+    // res.redirect('myreports');
     // res.render('console/configurator', {
     //     query: req.query,
     // });

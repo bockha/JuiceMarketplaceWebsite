@@ -16,7 +16,6 @@ const app = express();
 
 app.use('/', contentTypeValidation);
 
-
 app.set('view engine', 'ejs');
 
 //Configure Passport
@@ -26,37 +25,32 @@ require('./oauth/passport')(passport); // pass passport for configuration
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// -- PUBLIC CONTENT --
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/reports', require('./routes/reports'));
-
+// -- CONFIGURE PASSPORT SESSION --
 app.use(session({
     secret: config.SESSION_SECRET
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-app.use('/auth', require('./routes/auth')(passport));
 
+// -- PUBLIC CONTENT --
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/reports', require('./routes/reports'));
+app.use('/auth', require('./routes/auth')(passport));
 app.use('/coupon', require('./routes/coupon'));
+app.use('/', express.static(path.join(__dirname, 'dist')));
 
 // -- RESTRICTED CONTENT --
-
 app.use('/users', isLoggedIn, require('./routes/users'));
 app.use('/components', isLoggedIn, require('./routes/components'));
-app.use('/console', isLoggedIn, require('./routes/console'));
 
-function renderLegalPage(res, filename) {
-    var path = __dirname + '/resources/' + filename;
-    var file = fs.readFileSync(path, 'utf8');
-    var content = marked(file.toString());
-    res.render('legal', {
-        content: content,
-    });
-}
+app.get('/console/*', isLoggedIn, (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
+});
 
 app.get('/terms-of-service', function (req, res) {
     renderLegalPage(res, 'terms-of-service.md');
@@ -73,33 +67,14 @@ app.get('/contact', function (req, res) {
 app.get('/imprint', function (req, res) {
     renderLegalPage(res, 'imprint.md');
 });
-// app.use('/console', require('./routes/console'));
-
-// app.use('/console', isLoggedIn, function(req, res) {
-// app.use('/console', function(req, res) {
-//     res.render('console/console', {query: req.query});
-// });
-// app.get('/console/configurator', function(req, res) {
-//     res.render('console/configurator');
-// });
-// app.use('/console', isLoggedIn, function(req, res, next) {res.redirect('/console/console.html')});
 
 app.use('/', function (req, res, next) {
-    res.redirect('/landingpage/iuno.html')
+    express.static(path.join(__dirname, 'dist'))
 });
-
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.cookie('redirectTo', req.originalUrl);
-
-    res.redirect('/auth/iuno');
-}
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    var err = new Error('Not Found');
+    const err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
@@ -147,3 +122,23 @@ if (app.get('env') === 'development') {
 }
 
 module.exports = app;
+
+
+// -- FUNCTIONS --
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+
+    res.sendStatus(401);
+}
+
+function renderLegalPage(res, filename) {
+    const path = __dirname + '/resources/' + filename;
+    const file = fs.readFileSync(path, 'utf8');
+    const content = marked(file.toString());
+    res.render('legal', {
+        content: content
+    });
+}
