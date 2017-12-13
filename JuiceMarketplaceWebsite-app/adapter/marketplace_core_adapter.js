@@ -533,7 +533,7 @@ self.getCumulatedVaultBalanceForUser = function(user, accessToken, callback){
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
-        '/vault/'+user+'/cumulated',
+        '/vault/users/'+user+'/balance',
         null);
     options.headers.authorization = 'Bearer ' + accessToken;
 
@@ -573,7 +573,7 @@ self.getVaultWalletsForUser = function(user, accessToken, callback){
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
-        '/vault/'+user+'/wallets',
+        '/vault/users/'+user+'/wallets',
         null);
     options.headers.authorization = 'Bearer ' + accessToken;
 
