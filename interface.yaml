@@ -545,7 +545,7 @@ paths:
           description: Upload successful
           schema:
             $ref: '#/definitions/Recipe'
-  '/users/{userId}/recipelimit':
+  '/users/{userId}/recipes/limit':
     get:
       description: The number of recipes a user can have
       parameters:
@@ -560,7 +560,7 @@ paths:
           schema:
             type: integer
             minimum: 0
-  '/users/{userId}/recipecount':
+  '/users/{userId}/recipes/count':
     get:
       description: The count of recipes a user has created
       parameters:
@@ -571,7 +571,7 @@ paths:
           format: uuid
       responses:
         '200':
-          description: The t
+          description: The count of recipes for this user
           schema:
             type: object
             properties:
@@ -615,6 +615,27 @@ paths:
               $ref: '#/definitions/Wallet'
         '404':
           description: the user in unknown in the vault
+  '/users/{userId}/vault/wallets/{walletId}/payouts':
+    post:
+      description: triggering the payout
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: walletId
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: the payout
+          schema:
+            $ref: '#/definitions/Payout'
+        '404':
+          description: the user in unknown in the vault or this is not the user's wallet
   '/users/{userId}/reports/revenue':
     get:
       description: Route to get the total revenue of a user
@@ -900,6 +921,24 @@ definitions:
       confirmed:
         type: integer
         minimum: 0
+  Payout:
+    type: object
+    properties:
+      payoutId:
+        type: string
+        format: UUID
+        required: false
+      payoutAddress:
+        type: string
+      amount:
+        type: integer
+        format: int32
+        minimum: 1
+      emptyWallet:
+        type: boolean
+      referenceId:
+        type: string
+        required: false
   User:
     type: object
     properties:
