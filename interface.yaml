@@ -12,6 +12,26 @@ schemes:
 consumes:
   - application/json
 paths:
+  /auth/iuno:
+    get:
+      description: triggers the login route
+      responses:
+        '200':
+          description: ok
+  /auth/loggedin:
+    get:
+      description: returns the login state
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: boolean
+  /auth/logout:
+    get:
+      description: triggers the logout
+      responses:
+        '200':
+          description: ok
   /recipes:
     get:
       description: Returns a list of recipes
@@ -810,7 +830,8 @@ definitions:
           type: integer
           minimum: 0
         revenue:
-          type: string
+          type: number
+          minimum: 0
   RecipeHistoryReport:
     type: array
     items:
