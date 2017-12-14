@@ -433,6 +433,42 @@ paths:
           description: the user list
           schema:
             $ref: '#/definitions/User'
+  '/users/{userId}/image':
+    get:
+      description: Returns the image of the user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+          format: uuid
+      produces:
+        - image/*
+      responses:
+        '200':
+          description: the user image
+          schema:
+            type: string
+            format: binary
+    put:
+      description: sets the image of the user
+      consumes:
+        - image/*
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: image
+          in: body
+          required: true
+          schema:
+            type: string
+            format: binary
+      responses:
+        '200':
+          description: the user image
   '/users/{userId}/recipes':
     get:
       description: Returns a list of recipes
@@ -559,6 +595,59 @@ paths:
               $ref: '#/definitions/Wallet'
         '404':
           description: the user in unknown in the vault
+  '/users/{userId}/reports/revenue':
+    get:
+      description: Route to get the total revenue of a user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: from
+          in: query
+          required: true
+          type: string
+          format: date-time
+        - name: to
+          in: query
+          required: true
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: the report
+          schema:
+            $ref: '#/definitions/UserRevenueReport'
+  '/users/{userId}/reports/recipes/top':
+    get:
+      description: Get the toplist of recipes for a user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: from
+          in: query
+          required: true
+          type: string
+          format: date-time
+        - name: to
+          in: query
+          required: true
+          type: string
+          format: date-time
+        - name: limit
+          in: query
+          required: true
+          type: integer
+          minimum: 1
+      responses:
+        '200':
+          description: the report
+          schema:
+            $ref: '#/definitions/RecipesTopReport'
   /coupons:
     post:
       description: Create a Coupon object to get a Coupon
@@ -606,7 +695,178 @@ paths:
             format: binary
         '404':
           description: No Coupon for this id
+  /reports/revenue:
+    get:
+      description: Route to get the total revenue
+      parameters:
+        - name: from
+          in: query
+          required: true
+          type: string
+          format: date-time
+        - name: to
+          in: query
+          required: true
+          type: string
+          format: date-time
+        - name: detail
+          in: query
+          required: true
+          type: string
+          enum:
+            - day
+            - hour
+      responses:
+        '200':
+          description: the report
+          schema:
+            $ref: '#/definitions/RevenueReport'
+  /reports/recipes/history:
+    get:
+      description: Route to get the amount and revenue per recipe and hour
+      parameters:
+        - name: from
+          in: query
+          required: true
+          type: string
+          format: date-time
+        - name: to
+          in: query
+          required: true
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: the report
+          schema:
+            $ref: '#/definitions/RecipeHistoryReport'
+  /reports/recipes/top:
+    get:
+      description: Get the toplist of recipes
+      parameters:
+        - name: from
+          in: query
+          required: true
+          type: string
+          format: date-time
+        - name: to
+          in: query
+          required: true
+          type: string
+          format: date-time
+        - name: limit
+          in: query
+          required: true
+          type: integer
+          minimum: 1
+      responses:
+        '200':
+          description: the report
+          schema:
+            $ref: '#/definitions/RecipesTopReport'
+  /reports/components/top:
+    get:
+      description: Get the toplist of components
+      parameters:
+        - name: from
+          in: query
+          required: true
+          type: string
+          format: date-time
+        - name: to
+          in: query
+          required: true
+          type: string
+          format: date-time
+        - name: limit
+          in: query
+          required: true
+          type: integer
+          minimum: 1
+      responses:
+        '200':
+          description: the report
+          schema:
+            $ref: '#/definitions/ComponentTopReport'
 definitions:
+  ComponentTopReport:
+    type: array
+    items:
+      type: object
+      properties:
+        componentname:
+          type: string
+        amount:
+          type: integer
+          minimum: 0
+  RecipesTopReport:
+    type: array
+    items:
+      type: object
+      properties:
+        technologydataname:
+          type: string
+        amount:
+          type: integer
+          minimum: 0
+        revenue:
+          type: string
+  RecipeHistoryReport:
+    type: array
+    items:
+      type: object
+      properties:
+        year:
+          type: number
+          minimum: 1971
+          maximum: 2100
+        month:
+          type: number
+          minimum: 1
+          maximum: 12
+        day:
+          type: number
+          minimum: 1
+          maximum: 31
+        hour:
+          type: number
+          minimum: 0
+          maximum: 23
+        technologydataname:
+          type: string
+        amount:
+          type: integer
+          minimum: 0
+        revenue:
+          type: number
+          minimum: 0
+  UserRevenueReport:
+    type: object
+    properties:
+      amount:
+        type: integer
+        minimum: 0
+      revenue:
+        type: number
+        minimum: 0
+  RevenueReport:
+    type: object
+    properties:
+      date:
+        type: string
+        format: date-time
+      hour:
+        type: number
+        minimum: 0
+        maximum: 23
+      technologydataname:
+        type: string
+      amount:
+        type: integer
+        minimum: 0
+      revenue:
+        type: number
+        minimum: 0
   Wallet:
     type: object
     properties:
