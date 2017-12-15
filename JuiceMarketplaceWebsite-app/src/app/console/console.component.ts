@@ -24,21 +24,21 @@ export class ConsoleComponent implements OnInit {
     private router: Router,
     private userService: UserService
   ) {
-    // if (userService.isLoggedIn()) {
-    //   console.log("LoggedIn!");
-    // } else {
-    //   console.log("Not LoggedIn!");
-    // }
+    if (userService.isLoggedIn()) {
+      console.log("LoggedIn!");
+    } else {
+      console.log("Not LoggedIn!");
+    }
   }
 
   ngOnInit() {
     this.spinnerCounter += 1;
-    this.userService.user.subscribe(user => {
-      if (user != null) {
-        this.user = user;
-        this.spinnerCounter -= 1;
-      }
-    });
+    // this.userService.user.subscribe(user => {
+    //   if (user != null) {
+    //     this.user = user;
+    //     this.spinnerCounter -= 1;
+    //   }
+    // });
   }
 
   openDashboard() {

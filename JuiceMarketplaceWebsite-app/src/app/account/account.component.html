@@ -1,4 +1,4 @@
-<div *ngIf="user != null" fxLayout="row">
+<div *ngIf="loggedin && user != null" fxLayout="row">
     <button mat-button class="lightupper" [matMenuTriggerFor]="menu">
         {{getUserDisplayName()}}
     </button>
@@ -14,7 +14,7 @@
   <!-- <img class="userImg" src="./assets/images/1.jpg"/> -->
 </div>
 
-<div *ngIf="user == null">
+<div *ngIf="!loggedin">
     <button mat-button class="lightupper" (click)="login()">
         Anmelden / Registrieren
     </button>

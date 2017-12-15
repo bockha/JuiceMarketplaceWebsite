@@ -38,7 +38,7 @@ import { AppComponent } from './app.component';
     MatIconModule,
     MatMenuModule,
     FlexLayoutModule,
-    ConsoleModule
+    ConsoleModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

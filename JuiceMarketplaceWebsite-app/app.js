@@ -27,7 +27,7 @@ app.use(cookieParser());
 // -- STATIC CONTENT --
 // app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'dist')));
 app.use('/reports', require('./routes/reports'));
 
 app.use(session({
@@ -49,9 +49,9 @@ app.use('/coupon', require('./routes/coupon'));
 // app.get('/console/*', (req, res) => {
 app.use('/', express.static(path.join(__dirname, 'dist')))
 // app.use('/console', isLoggedIn, express.static(path.join(__dirname, 'dist')))
-app.get('/console/*', isLoggedIn, (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
-});
+// app.get('/console/*', isLoggedIn, (req, res) => {
+//     res.sendFile(path.join(__dirname, 'dist/index.html'));
+// });
 
 // -- RESTRICTED CONTENT --
 app.use('/users', isLoggedIn, require('./routes/users'));
@@ -68,28 +68,26 @@ function renderLegalPage(res, filename) {
     });
 }
 
-app.get('/terms-of-service', function (req, res) {
-    renderLegalPage(res, 'terms-of-service.md');
-});
+// app.get('/terms-of-service', function (req, res) {
+//     renderLegalPage(res, 'terms-of-service.md');
+// });
+//
+// app.get('/privacy', function (req, res) {
+//     renderLegalPage(res, 'privacy.md');
+// });
+//
+// app.get('/contact', function (req, res) {
+//     renderLegalPage(res, 'contact.md');
+// });
+//
+// app.get('/imprint', function (req, res) {
+//     renderLegalPage(res, 'imprint.md');
+// });
 
-app.get('/privacy', function (req, res) {
-    renderLegalPage(res, 'privacy.md');
+app.all('*', function (req, res, next) {
+    // Just send the index.html for other files to support HTML5Mode
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
-
-app.get('/contact', function (req, res) {
-    renderLegalPage(res, 'contact.md');
-});
-
-app.get('/imprint', function (req, res) {
-    renderLegalPage(res, 'imprint.md');
-});
-
-app.use('/', function (req, res, next) {
-    express.static(path.join(__dirname, 'dist'))
-    //     res.sendFile(path.join(__dirname, 'dist/index.html'));
-    // res.redirect('/landingpage/iuno.html')
-});
-
 // app.use('/console', require('./routes/console'));
 
 function isLoggedIn(req, res, next) {
