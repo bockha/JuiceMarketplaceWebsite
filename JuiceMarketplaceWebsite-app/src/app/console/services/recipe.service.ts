@@ -13,7 +13,7 @@ export class RecipeService {
     private _recipes: BehaviorSubject<TdmRecipe[]> = new BehaviorSubject([]);
     public readonly recipes: Observable<TdmRecipe[]> = this._recipes.asObservable();
 
-    private recipesUrl = '/users/me/recipes';
+    private recipesUrl = '/api/users/me/recipes';
 
     constructor(private http: HttpClient) {
         this.updateRecipes();

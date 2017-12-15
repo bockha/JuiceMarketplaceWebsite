@@ -11,6 +11,7 @@ schemes:
   - https
 consumes:
   - application/json
+basepath: /api
 paths:
   /auth/iuno:
     get:

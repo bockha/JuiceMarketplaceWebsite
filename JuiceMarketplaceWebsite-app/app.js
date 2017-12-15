@@ -17,18 +17,14 @@ app.set('view engine', 'ejs');
 //Configure Passport
 require('./oauth/passport')(passport); // pass passport for configuration
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// -- STATIC CONTENT --
-// app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.static(path.join(__dirname, 'dist')));
-app.use('/reports', require('./routes/reports'));
+app.use('/api/reports', require('./routes/reports'));
 
 app.use(session({
     secret: config.SESSION_SECRET
@@ -38,26 +34,13 @@ app.use(passport.session()); // persistent login sessions
 
 app.use('/auth', require('./routes/auth')(passport));
 
-app.use('/coupon', require('./routes/coupon'));
+app.use('/api/coupon', require('./routes/coupon'));
 
-// app.use('/console', express.static(path.join(__dirname, 'dist')))
-// app.get('/console/*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'dist/index.html'));
-// });
-
-// app.use('/console', express.static(path.join(__dirname, 'dist')))
-// app.get('/console/*', (req, res) => {
-app.use('/', express.static(path.join(__dirname, 'dist')))
-// app.use('/console', isLoggedIn, express.static(path.join(__dirname, 'dist')))
-// app.get('/console/*', isLoggedIn, (req, res) => {
-//     res.sendFile(path.join(__dirname, 'dist/index.html'));
-// });
+app.use('/', express.static(path.join(__dirname, 'dist')));
 
 // -- RESTRICTED CONTENT --
-app.use('/users', isLoggedIn, require('./routes/users'));
-app.use('/components', isLoggedIn, require('./routes/components'));
-//app.use('/console', isLoggedIn, require('./routes/console'));
-// app.use('/console', require('./routes/console'));
+app.use('/api/users', isLoggedIn, require('./routes/users'));
+app.use('/api/components', isLoggedIn, require('./routes/components'));
 
 function renderLegalPage(res, filename) {
     var path = __dirname + '/resources/' + filename;
@@ -68,29 +51,10 @@ function renderLegalPage(res, filename) {
     });
 }
 
-// app.get('/terms-of-service', function (req, res) {
-//     renderLegalPage(res, 'terms-of-service.md');
-// });
-//
-// app.get('/privacy', function (req, res) {
-//     renderLegalPage(res, 'privacy.md');
-// });
-//
-// app.get('/contact', function (req, res) {
-//     renderLegalPage(res, 'contact.md');
-// });
-//
-// app.get('/imprint', function (req, res) {
-//     renderLegalPage(res, 'imprint.md');
-// });
-
 app.all('*', function (req, res, next) {
     // Just send the index.html for other files to support HTML5Mode
     res.sendFile(path.join(__dirname, 'dist/index.html'));
-});
-// app.use('/console', require('./routes/console'));
-
-function isLoggedIn(req, res, next) {
+});function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }

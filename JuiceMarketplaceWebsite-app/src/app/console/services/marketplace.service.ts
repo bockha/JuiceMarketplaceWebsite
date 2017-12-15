@@ -15,7 +15,7 @@ export class MarketplaceService {
     }
 
     updateComponents() {
-        this.http.get<TdmComponent[]>('/components').subscribe(components => {
+        this.http.get<TdmComponent[]>('/api/components').subscribe(components => {
             this._components.next(components);
         });
     }

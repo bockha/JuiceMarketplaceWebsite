@@ -14,13 +14,13 @@
     /* background-color: #eee; */
 }
 
-@media all and (min-width: 1000px) {
-    :host ::ng-deep .centered-component {
-        /* max-width: 940px; */
-        width: 1000px;
-        padding: 20px 70px 50px;
-    }
-}
+/*@media all and (min-width: 1000px) {*/
+    /*:host ::ng-deep .centered-component {*/
+        /*!* max-width: 940px; *!*/
+        /*width: 1000px;*/
+        /*padding: 20px 70px 50px;*/
+    /*}*/
+/*}*/
 
 .mat-sidenav {
     width: 250px;

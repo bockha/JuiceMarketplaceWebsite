@@ -14,7 +14,7 @@ export class DashboardService {
         var limit = 1;
         var fromDate = moment().utc().year(2000).format();
         var toDate = moment().utc().format();
-        var url = '/users/me/reports/recipes/top?limit=' + limit + '&from=' + fromDate + '&to=' + toDate;
+        var url = '/api/users/me/reports/recipes/top?limit=' + limit + '&from=' + fromDate + '&to=' + toDate;
         return this.http.get<TdmRecipe[]>(url).flatMap(recipes => {
             if (recipes.length > 0) {
                 return Observable.of(recipes[0] || 0);
@@ -27,7 +27,7 @@ export class DashboardService {
     getTopRecipes(limit: number): Observable<TdmRecipe[]> {
         var fromDate = moment().utc().year(2000).format();
         var toDate = moment().utc().format();
-        var url = '/reports/recipes/top?limit=' + limit + '&from=' + fromDate + '&to=' + toDate;
+        var url = '/api/reports/recipes/top?limit=' + limit + '&from=' + fromDate + '&to=' + toDate;
         var result = this.http.get<TdmRecipe[]>(url);
         console.log("Top Recipes:");
         console.log(result);
@@ -38,7 +38,7 @@ export class DashboardService {
         console.log("Hallo?");
         var fromDate = moment().utc().year(2000).format();
         let toDate = moment().utc().endOf('day').format();
-        let url = '/users/me/reports/revenue/history?from=' + fromDate + '&to=' + toDate;
+        let url = '/api/users/me/reports/revenue/history?from=' + fromDate + '&to=' + toDate;
         console.log(url);
         var result = this.http.get<any[]>(url);
         return result;
@@ -47,7 +47,7 @@ export class DashboardService {
     getRevenueTodayForUser() {
         let fromDate = moment().utc().startOf('day').format();
         let toDate = moment().utc().endOf('day').format();
-        let url = '/users/me/reports/revenue?from=' + fromDate + '&to=' + toDate;
+        let url = '/api/users/me/reports/revenue?from=' + fromDate + '&to=' + toDate;
         return this.http.get(url).flatMap(res => {
             return Observable.of(res[0].revenue || 0);
         });

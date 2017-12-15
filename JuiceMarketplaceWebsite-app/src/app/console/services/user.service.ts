@@ -9,7 +9,7 @@ export class UserService {
     }
 
     getUser(): Observable<User> {
-        return this.http.get<User>("/users/me");
+        return this.http.get<User>("/api/users/me");
     }
 
     isLoggedIn(): Observable<boolean> {

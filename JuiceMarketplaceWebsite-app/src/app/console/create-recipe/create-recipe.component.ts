@@ -132,7 +132,7 @@ export class CreateRecipeComponent implements OnInit {
                     jsonRecipe['description'] = recipe.technologydatadescription;
                     jsonRecipe['license-fee'] = recipe.licensefee;
                     jsonRecipe['program'] = jsonProgram;
-                    this.http.post('/users/me/recipes', jsonRecipe).subscribe(
+                    this.http.post('/api/users/me/recipes', jsonRecipe).subscribe(
                         data => {
                             this.spinnerCounter -= 1;
                         },
