@@ -4,21 +4,9 @@
 }
 
 .app {
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .mat-sidenav {
     width: 250px;
 }
-
-/* :host ::ng-deep .mat-card {
-    padding: 0px;
-    background-color: #fff;
-}
- */
-
-
-/* :host ::ng-deep .mat-form-field-flex {
-    background-color: #eee;
-} */
-

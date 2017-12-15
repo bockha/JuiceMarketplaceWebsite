@@ -106,10 +106,10 @@ export class AppComponent implements OnInit {
     }
 
     tdmClicked() {
-        this.userService.isLoggedIn().subscribe(loggedin =>{
-            if(loggedin){
+        this.userService.isLoggedIn().subscribe(loggedin => {
+            if (loggedin) {
                 this.router.navigateByUrl('/console');
-            }else{
+            } else {
 
                 document.cookie = "redirectTo=/console";
                 window.location.href = "/auth/iuno";

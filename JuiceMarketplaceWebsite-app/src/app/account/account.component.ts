@@ -55,7 +55,7 @@ export class AccountComponent implements OnInit {
     }
 
     login() {
-        document.cookie = "redirectTo="+this.router.url.toString();
+        document.cookie = "redirectTo=" + this.router.url.toString();
         window.location.href = "/auth/iuno";
     }
 }
