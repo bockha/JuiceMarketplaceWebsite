@@ -13,7 +13,7 @@ const routes: Routes = [
     {path: 'news', loadChildren: './news/news.module#NewsModule'},
     {path: 'index', outlet: 'sidebar', component: IndexComponent},
     {path: 'console-menu', outlet: 'sidebar', component: ConsoleMenuComponent},
-    {path: 'statistics', outlet: 'sidebar', component: StatisticsComponent}
+    // {path: 'statistics', outlet: 'sidebar', component: StatisticsComponent}
 ];
 
 @NgModule({

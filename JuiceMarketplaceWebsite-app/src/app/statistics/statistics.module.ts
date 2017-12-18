@@ -5,12 +5,14 @@ import {StatisticsRoutingModule} from './statistics-routing.module';
 import {RecipesComponent} from './recipes/recipes.component';
 import {CreatorsComponent} from './creators/creators.component';
 import {MatCardModule} from "@angular/material";
+import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 
 @NgModule({
     imports: [
         CommonModule,
         StatisticsRoutingModule,
-        MatCardModule
+        MatCardModule,
+        Ng2GoogleChartsModule
     ],
     declarations: [OverviewComponent, RecipesComponent, CreatorsComponent]
 })

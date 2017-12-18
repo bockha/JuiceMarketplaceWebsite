@@ -78,9 +78,12 @@ export class AppComponent implements OnInit {
                 // console.log(self.tdmButton);
                 this.router.navigate([{outlets: {'sidebar': ['console-menu']}}]);
             } else if (path.startsWith('/statistics')) {
-                this.menuVisible = true;
-                this.menuButtonVisible = true;
-                this.router.navigate([{outlets: {'sidebar': ['statistics']}}]);
+                // this.menuVisible = true;
+                // this.menuButtonVisible = true;
+                // this.router.navigate([{outlets: {'sidebar': ['statistics']}}]);
+                this.menuVisible = false;
+                this.menuButtonVisible = false;
+                this.sidenav.close();
             } else if (path.startsWith('/landingpage')) {
                 this.menuVisible = false;
                 this.menuButtonVisible = false;
