@@ -21,7 +21,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/news/blog/blog.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  blog works!\n</p>\n"
+module.exports = "<p>\n    blog works!\n</p>\n"
 
 /***/ }),
 

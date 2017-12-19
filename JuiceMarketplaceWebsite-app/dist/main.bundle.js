@@ -44,7 +44,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "img.userImg{\n  width: 30px;\n  height: 30px;\n  border: 1px solid grey;\n  border-radius: 50%;\n  float: left;\n  margin-right: 1em;\n  -o-object-fit: cover;\n     object-fit: cover;\n\n}\n\n/*@media only screen and (max-width: 580px){*/\n  /*.userName{*/\n    /*visibility: hidden;*/\n    /*width: 0px;*/\n  /*}*/\n/*}*/\n", ""]);
+exports.push([module.i, "img.userImg {\n    width: 30px;\n    height: 30px;\n    border: 1px solid grey;\n    border-radius: 50%;\n    float: left;\n    margin-right: 1em;\n    -o-object-fit: cover;\n       object-fit: cover;\n\n}", ""]);
 
 // exports
 
@@ -57,7 +57,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/account/account.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"user != null\" fxLayout=\"row\">\n    <button mat-button class=\"lightupper\" [matMenuTriggerFor]=\"menu\">\n        {{getUserDisplayName()}}\n    </button>\n    <!-- <img class=\"userImg\" src=\"./assets/images/1.jpg\"/> -->\n    <mat-menu #menu=\"matMenu\">\n        <button mat-menu-item (click)=\"logout()\">\n            <span>Logout</span>\n        </button>\n    </mat-menu>\n  <!-- <div *ngIf=\"!respCalc.getAccountInfoShortened()\" class=\"userName\"> -->\n    <!-- <span class=\" light\">{{getUserDisplayName()}}</span> -->\n  <!-- </div> -->\n  <!-- <img class=\"userImg\" src=\"./assets/images/1.jpg\"/> -->\n</div>\n\n<div *ngIf=\"user == null\">\n    <button mat-button class=\"lightupper\" (click)=\"login()\">\n        Anmelden / Registrieren\n    </button>\n</div>\n"
+module.exports = "<div *ngIf=\"loggedin && user != null\" fxLayout=\"row\">\n    <button mat-button class=\"lightupper\" [matMenuTriggerFor]=\"menu\">\n        {{getUserDisplayName()}}\n    </button>\n    <!-- <img class=\"userImg\" src=\"./assets/images/1.jpg\"/> -->\n    <mat-menu #menu=\"matMenu\">\n        <button mat-menu-item (click)=\"logout()\">\n            <span>Logout</span>\n        </button>\n    </mat-menu>\n</div>\n\n<div *ngIf=\"!loggedin\">\n    <button mat-button class=\"lightupper\" (click)=\"login()\">\n        Anmelden / Registrieren\n    </button>\n</div>\n"
 
 /***/ }),
 
@@ -68,6 +68,7 @@ module.exports = "<div *ngIf=\"user != null\" fxLayout=\"row\">\n    <button mat
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AccountComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__console_services_user_service__ = __webpack_require__("../../../../../src/app/console/services/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -79,16 +80,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 // import {ResponsiveCalc} from '../helper/responsive-calc';
 var AccountComponent = (function () {
     // respCalc = ResponsiveCalc.Instance;
-    function AccountComponent(userService) {
+    function AccountComponent(userService, router) {
         var _this = this;
         this.userService = userService;
+        this.router = router;
         this.user = null;
-        userService.user.subscribe(function (user) {
-            _this.user = user;
-            console.log("Hallo???");
+        this.loggedin = false;
+        this.userService.isLoggedIn().subscribe(function (loggedIn) {
+            console.log("UserService loggedin:" + loggedIn);
+            _this.loggedin = loggedIn;
+            if (_this.loggedin) {
+                userService.getUser().subscribe(function (user) {
+                    console.log("User is:" + user);
+                    _this.user = user;
+                });
+            }
         });
     }
     AccountComponent.prototype.ngOnInit = function () {
@@ -116,6 +126,7 @@ var AccountComponent = (function () {
         window.location.href = "/auth/logout";
     };
     AccountComponent.prototype.login = function () {
+        document.cookie = "redirectTo=" + this.router.url.toString();
         window.location.href = "/auth/iuno";
     };
     AccountComponent = __decorate([
@@ -125,7 +136,7 @@ var AccountComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/account/account.component.css")],
             providers: [__WEBPACK_IMPORTED_MODULE_1__console_services_user_service__["b" /* UserService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__console_services_user_service__["b" /* UserService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__console_services_user_service__["b" /* UserService */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* Router */]])
     ], AccountComponent);
     return AccountComponent;
 }());
@@ -142,8 +153,7 @@ var AccountComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sidebar_console_console_menu_component__ = __webpack_require__("../../../../../src/app/sidebar/console/console-menu.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sidebar_statistics_statistics_component__ = __webpack_require__("../../../../../src/app/sidebar/statistics/statistics.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__sidebar_index_index_component__ = __webpack_require__("../../../../../src/app/sidebar/index/index.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sidebar_index_index_component__ = __webpack_require__("../../../../../src/app/sidebar/index/index.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -154,25 +164,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-
 var routes = [
     { path: '', redirectTo: 'landingpage', pathMatch: 'full' },
     { path: 'landingpage', loadChildren: './landingpage/landingpage.module#LandingpageModule' },
     { path: 'console', loadChildren: './console/console.module#ConsoleModule' },
-    // {path: 'console', component: ConsoleComponent},
     { path: 'statistics', loadChildren: './statistics/statistics.module#StatisticsModule' },
     { path: 'news', loadChildren: './news/news.module#NewsModule' },
-    // {path: '', outlet: 'sidebar', redirectTo: 'console'},
-    { path: 'index', outlet: 'sidebar', component: __WEBPACK_IMPORTED_MODULE_4__sidebar_index_index_component__["a" /* IndexComponent */] },
+    { path: 'index', outlet: 'sidebar', component: __WEBPACK_IMPORTED_MODULE_3__sidebar_index_index_component__["a" /* IndexComponent */] },
     { path: 'console-menu', outlet: 'sidebar', component: __WEBPACK_IMPORTED_MODULE_2__sidebar_console_console_menu_component__["a" /* ConsoleMenuComponent */] },
-    { path: 'statistics', outlet: 'sidebar', component: __WEBPACK_IMPORTED_MODULE_3__sidebar_statistics_statistics_component__["a" /* StatisticsComponent */] }
 ];
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
     }
     AppRoutingModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["K" /* NgModule */])({
-            //  imports: [RouterModule.forRoot(routes, { enableTracing: true })], // Just for debugging
             imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* RouterModule */].forRoot(routes)],
             exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* RouterModule */]]
         })
@@ -192,7 +197,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".app {\n  height: 100vh;\n}\n\n.component-viewer {\n  height: 100%;\n  background-color: #f5f5f5;\n}\n\n:host ::ng-deep .centered-component {\n  /* max-width: 940px; */\n  width: 100%;\n  padding: 5px 10px 5px;\n  /* background-color: #eee; */\n}\n\n@media all and (min-width: 1000px) {\n  :host ::ng-deep .centered-component {\n      /* max-width: 940px; */\n      width: 1000px;\n      padding: 20px 70px 50px;\n  }\n}\n\n\n.mat-sidenav {\n  width: 250px;\n}\n\nmat-sidenav {\n  width: 40vw;\n}\n\nmat-card {\n  margin: 12px;\n}\n\n\n.logo {\n  height: 70%;\n  padding: 10px\n}\n\n.spacer {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto;\n}\n\nmat-sidenav-container {\n  background-color: white;\n}\n\n.nav-bar {\n  color: white;\n}\n\n.nav-buttons{\n  padding-left: 20px;\n}\n\n\n@media only screen and (max-width: 1100px){\n  .nav-buttons{\n    visibility: hidden;\n    width: 0px;\n  }\n}\n\n\n:host ::ng-deep .card-information {\n  /* font-weight: lighter; */\n  font-size: 34pt;\n  color: #AAC253;\n}\n\n/* :host ::ng-deep a {\n color: #337ab7;\n text-decoration: none;\n} */\n\n:host ::ng-deep .mat-card-header-text {\n margin: 0px;\n}\n \n:host ::ng-deep .mat-card-header {\n /* margin-top: 124px;\n margin-left: -24px;\n margin-right: -24px;\n padding: 15px; */\n /* background-color: #aac253; */\n}\n\n:host ::ng-deep .mat-header-cell {\n padding: 0px 10px;\n}\n\n:host ::ng-deep .mat-cell {\n padding: 0px 10px;\n}\n\n:host ::ng-deep .mat-card-title {\n margin: 0px;\n font-size: 12pt;\n font-weight: bolder;\n}\n\n:host ::ng-deep .mat-card-content {\n padding: 15px;\n}\n\n:host ::ng-deep .mat-card-actions {\n padding: 15px;\n}", ""]);
+exports.push([module.i, ".app {\n    height: 100vh;\n}\n\n.component-viewer {\n    min-height: 100%;\n    background-color: #f5f5f5;\n}\n\n:host ::ng-deep .centered-component {\n    /* max-width: 940px; */\n    width: 100%;\n    padding: 5px 10px 5px;\n    /* background-color: #eee; */\n}\n\n/*@media all and (min-width: 1000px) {*/\n    /*:host ::ng-deep .centered-component {*/\n        /*!* max-width: 940px; *!*/\n        /*width: 1000px;*/\n        /*padding: 20px 70px 50px;*/\n    /*}*/\n/*}*/\n\n.mat-sidenav {\n    width: 250px;\n}\n\nmat-sidenav {\n    width: 40vw;\n}\n\nmat-card {\n    margin: 12px;\n}\n\n.logo {\n    height: 70%;\n    padding: 10px\n}\n\n.spacer {\n    -webkit-box-flex: 1;\n        -ms-flex: 1 1 auto;\n            flex: 1 1 auto;\n}\n\nmat-sidenav-container {\n    background-color: white;\n}\n\n.nav-bar {\n    color: white;\n}\n\n.nav-buttons {\n    padding-left: 20px;\n}\n\n@media only screen and (max-width: 1100px) {\n    .nav-buttons {\n        visibility: hidden;\n        width: 0px;\n    }\n}\n\n:host ::ng-deep .card-information {\n    /* font-weight: lighter; */\n    font-size: 34pt;\n    color: #AAC253;\n}\n\n/* :host ::ng-deep a {\n color: #337ab7;\n text-decoration: none;\n} */\n\n:host ::ng-deep .mat-card-header-text {\n    margin: 0px;\n}\n\n:host ::ng-deep .mat-card-header {\n    /* margin-top: 124px;\n    margin-left: -24px;\n    margin-right: -24px;\n    padding: 15px; */\n    /* background-color: #aac253; */\n}\n\n:host ::ng-deep .mat-header-cell {\n    padding: 0px 10px;\n}\n\n:host ::ng-deep .mat-cell {\n    padding: 0px 10px;\n}\n\n:host ::ng-deep .mat-card-title {\n    margin: 0px;\n    font-size: 12pt;\n    font-weight: bolder;\n}\n\n:host ::ng-deep .mat-card-content {\n    padding: 15px;\n}\n\n:host ::ng-deep .mat-card-actions {\n    padding: 15px;\n}", ""]);
 
 // exports
 
@@ -205,7 +210,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"app\" fxLayout=\"column\" style=\"background-color: #0d47a1\">\n  <mat-toolbar color=\"primary\" class=\"mat-elevation-z5 nav-bar\" style=\"z-index: 2\">\n\n    <button *ngIf=\"menuButtonVisible\" mat-button (click)=\"sidenav.toggle()\">\n      <mat-icon>menu</mat-icon>\n    </button>\n    <img *ngIf=\"tdmLogoVisible\" class=\"logo\" src=\"./assets/images/tdm_logo.svg\">\n    <div *ngIf=\"navigationButtonsVisible\" class=\"nav-buttons\">\n      <a #start mat-button class=\"lightupper \" (click)=\"startClicked()\">Start</a>\n      <a #tdm mat-button class=\"lightupper \" (click)=\"tdmClicked()\">Marktplatz</a>\n      <a #stats mat-button class=\"lightupper \" (click)=\"statisticsClicked()\">Statistiken</a>\n      <a #news mat-button class=\"lightupper \" (click)=\"newsClicked()\">Neuigkeiten</a>\n    </div>\n    <span class=\"spacer\"></span>\n    <app-account></app-account>\n  </mat-toolbar>\n  <mat-sidenav-container fxFlex>\n    <mat-sidenav #sidenav mode=\"side\" align=\"start\" class=\"mat-elevation-z6\" opened=\"{{menuVisible}}\">\n      <router-outlet name=\"sidebar\"></router-outlet>\n    </mat-sidenav>\n    <div class=\"component-viewer\" fxLayout=\"column\">\n      <div fxFlex=\"grow\">\n        <router-outlet></router-outlet>\n      </div>\n      <app-footer fxFlex=\"none\"></app-footer>\n    </div>\n  </mat-sidenav-container>\n</div>\n\n"
+module.exports = "<div class=\"app\" fxLayout=\"column\" style=\"background-color: #0d47a1\">\n    <mat-toolbar color=\"primary\" class=\"mat-elevation-z5 nav-bar\" style=\"z-index: 2\">\n\n        <button *ngIf=\"menuButtonVisible\" mat-button (click)=\"sidenav.toggle()\">\n            <mat-icon>menu</mat-icon>\n        </button>\n        <img *ngIf=\"tdmLogoVisible\" class=\"logo\" src=\"./assets/images/tdm_logo.svg\">\n        <div *ngIf=\"navigationButtonsVisible\" class=\"nav-buttons\">\n            <a #start mat-button class=\"lightupper \" (click)=\"startClicked()\">Start</a>\n            <a #tdm mat-button class=\"lightupper \" (click)=\"tdmClicked()\">Marktplatz</a>\n            <a #stats mat-button class=\"lightupper \" (click)=\"statisticsClicked()\">Statistiken</a>\n            <a #news mat-button class=\"lightupper \" (click)=\"newsClicked()\">Neuigkeiten</a>\n        </div>\n        <span class=\"spacer\"></span>\n        <app-account></app-account>\n    </mat-toolbar>\n    <mat-sidenav-container fxFlex>\n        <mat-sidenav #sidenav mode=\"side\" align=\"start\" class=\"mat-elevation-z6\" opened=\"{{menuVisible}}\">\n            <router-outlet name=\"sidebar\"></router-outlet>\n        </mat-sidenav>\n        <div class=\"component-viewer\" fxLayout=\"column\">\n            <div fxFlex=\"grow\">\n                <router-outlet></router-outlet>\n            </div>\n            <app-footer fxFlex=\"none\"></app-footer>\n        </div>\n    </mat-sidenav-container>\n</div>\n\n"
 
 /***/ }),
 
@@ -217,6 +222,7 @@ module.exports = "<div class=\"app\" fxLayout=\"column\" style=\"background-colo
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__console_services_user_service__ = __webpack_require__("../../../../../src/app/console/services/user.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -230,10 +236,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var AppComponent = (function () {
-    function AppComponent(router, activatedRoute) {
+    function AppComponent(router, activatedRoute, userService) {
         this.router = router;
         this.activatedRoute = activatedRoute;
+        this.userService = userService;
         this.title = 'app';
         this.menuVisible = false;
         this.menuButtonVisible = false;
@@ -283,9 +291,12 @@ var AppComponent = (function () {
                 this.router.navigate([{ outlets: { 'sidebar': ['console-menu'] } }]);
             }
             else if (path.startsWith('/statistics')) {
-                this.menuVisible = true;
-                this.menuButtonVisible = true;
-                this.router.navigate([{ outlets: { 'sidebar': ['statistics'] } }]);
+                // this.menuVisible = true;
+                // this.menuButtonVisible = true;
+                // this.router.navigate([{outlets: {'sidebar': ['statistics']}}]);
+                this.menuVisible = false;
+                this.menuButtonVisible = false;
+                this.sidenav.close();
             }
             else if (path.startsWith('/landingpage')) {
                 this.menuVisible = false;
@@ -310,8 +321,16 @@ var AppComponent = (function () {
         this.router.navigateByUrl('/landingpage');
     };
     AppComponent.prototype.tdmClicked = function () {
-        window.location.href = "/console";
-        // this.router.navigateByUrl('/console/dashboard');
+        var _this = this;
+        this.userService.isLoggedIn().subscribe(function (loggedin) {
+            if (loggedin) {
+                _this.router.navigateByUrl('/console');
+            }
+            else {
+                document.cookie = "redirectTo=/console";
+                window.location.href = "/auth/iuno";
+            }
+        });
     };
     AppComponent.prototype.statisticsClicked = function () {
         this.router.navigateByUrl('/statistics');
@@ -333,10 +352,12 @@ var AppComponent = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-root',
             template: __webpack_require__("../../../../../src/app/app.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/app.component.css")]
+            styles: [__webpack_require__("../../../../../src/app/app.component.css")],
+            providers: [__WEBPACK_IMPORTED_MODULE_3__console_services_user_service__["b" /* UserService */]]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */],
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]])
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_3__console_services_user_service__["b" /* UserService */]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -406,7 +427,7 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_4__angular_material__["j" /* MatIconModule */],
                 __WEBPACK_IMPORTED_MODULE_4__angular_material__["l" /* MatMenuModule */],
                 __WEBPACK_IMPORTED_MODULE_3__angular_flex_layout__["a" /* FlexLayoutModule */],
-                __WEBPACK_IMPORTED_MODULE_8__console_console_module__["ConsoleModule"]
+                __WEBPACK_IMPORTED_MODULE_8__console_console_module__["ConsoleModule"],
             ],
             providers: [],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_10__app_component__["a" /* AppComponent */]]
@@ -439,15 +460,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 
 
-// import { LandingComponent} from './landing/landing.component';
-// import { ConsoleComponent} from './console/console.component';
 
 
 
 
 
 var routes = [
-    { path: '', component: __WEBPACK_IMPORTED_MODULE_2__console_component__["a" /* ConsoleComponent */], children: [
+    {
+        path: '', component: __WEBPACK_IMPORTED_MODULE_2__console_component__["a" /* ConsoleComponent */], children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', component: __WEBPACK_IMPORTED_MODULE_3__dashboard_dashboard_component__["a" /* DashboardComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_6__services_user_service__["a" /* AccessGuard */]] },
             { path: 'create-recipe', component: __WEBPACK_IMPORTED_MODULE_4__create_recipe_create_recipe_component__["a" /* CreateRecipeComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_6__services_user_service__["a" /* AccessGuard */]] },
@@ -482,7 +502,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".nav-button {\n    text-align: left;\n    height: 50px;\n}\n\n.app {\n    height: 100vh;\n}\n\n.mat-sidenav {\n    width: 250px;\n}\n\n/* :host ::ng-deep .mat-card {\n    padding: 0px;\n    background-color: #fff;\n}\n */\n\n\n/* :host ::ng-deep .mat-form-field-flex {\n    background-color: #eee;\n} */\n\n", ""]);
+exports.push([module.i, ".nav-button {\n    text-align: left;\n    height: 50px;\n}\n\n.app {\n    min-height: 100vh;\n}\n\n.mat-sidenav {\n    width: 250px;\n}", ""]);
 
 // exports
 
@@ -495,7 +515,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/console/console.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <app-spinner [counter]=\"spinnerCounter\"></app-spinner>\n<section class=\"app flex-container\" fxLayout=\"column\" fxLayoutAlign=\"start stretch\">\n    <mat-toolbar color=\"primary\" class=\"mat-elevation-z5\" style=\"z-index: 2\">\n        <button mat-button (click)=\"sidenav.toggle()\">\n            <mat-icon>menu</mat-icon>\n        </button>\n        TDM-Console\n        <div fxFlex></div>\n        <button mat-button [matMenuTriggerFor]=\"menu\">\n            {{getUserDisplayName()}}\n        </button>\n        <mat-menu #menu=\"matMenu\">\n            <button mat-menu-item (click)=\"logout()\">\n                <span>Logout</span>\n            </button>\n        </mat-menu>\n    </mat-toolbar>\n\n    <mat-sidenav-container fxFlex>\n        <mat-sidenav mode=\"side\" align=\"start\" class=\"mat-elevation-z6\" opened #sidenav fxLayout=\"column\" fxLayoutAlign=\"start stretch\">\n            <div style=\"height: 8px;\"></div>\n            <button (click)=\"openDashboard()\" mat-button class=\"nav-button\">Dashboard\n                <span flex></span>\n            </button>\n            <button (click)=\"openCreateRecipe()\" mat-button class=\"nav-button\">Neues Getränk anlegen\n                <span flex></span>\n            </button>\n            <button (click)=\"openRecipes()\" mat-button class=\"nav-button\">Getränke verwalten\n                <span flex></span>\n            </button>\n        </mat-sidenav>\n        <div class=\"main-container\" fxLayout=\"column\">\n            <div class=\"component-viewer\"> -->\n    <div fxLayout=\"column\" fxLayoutAlign=\"center center\">\n    <div class=\"centered-component\" fxFlex=\"grow\">\n        <router-outlet></router-outlet>\n        </div></div>\n            <!-- </div>\n        </div>\n    </mat-sidenav-container>\n</section> -->"
+module.exports = "<div fxLayout=\"column\" fxLayoutAlign=\"center center\">\n    <div class=\"centered-component\" fxFlex=\"grow\">\n        <router-outlet></router-outlet>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -528,21 +548,21 @@ var ConsoleComponent = (function () {
         this.title = 'console';
         this.user = null;
         this.spinnerCounter = 0;
-        // if (userService.isLoggedIn()) {
-        //   console.log("LoggedIn!");
-        // } else {
-        //   console.log("Not LoggedIn!");
-        // }
+        if (userService.isLoggedIn()) {
+            console.log("LoggedIn!");
+        }
+        else {
+            console.log("Not LoggedIn!");
+        }
     }
     ConsoleComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.spinnerCounter += 1;
-        this.userService.user.subscribe(function (user) {
-            if (user != null) {
-                _this.user = user;
-                _this.spinnerCounter -= 1;
-            }
-        });
+        // this.userService.user.subscribe(user => {
+        //   if (user != null) {
+        //     this.user = user;
+        //     this.spinnerCounter -= 1;
+        //   }
+        // });
     };
     ConsoleComponent.prototype.openDashboard = function () {
         this.router.navigate(['dashboard']);
@@ -607,8 +627,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-// import { BrowserModule } from '@angular/platform-browser';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
  // still needed @see https://github.com/angular/angular/issues/19788
 // Angular Material
@@ -648,8 +666,6 @@ var ConsoleModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["b" /* HttpClientModule */],
                 __WEBPACK_IMPORTED_MODULE_5__angular_http__["a" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_7__angular_flex_layout__["a" /* FlexLayoutModule */],
-                // BrowserModule,
-                //    BrowserAnimationsModule,
                 __WEBPACK_IMPORTED_MODULE_1__angular_forms__["d" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_material__["b" /* MatButtonModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_material__["d" /* MatCheckboxModule */],
@@ -705,7 +721,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/console/create-recipe/create-recipe.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-spinner [counter]=\"spinnerCounter\"></app-spinner>\n<h1 class=\"headline\">Neues Getränk anlegen</h1>\n\n<div fxLayout=\"column\" fxLayoutGap=\"10px\">\n  <mat-card class=\"iuno-card\">\n    <!-- <mat-card fxFill class=\"iuno-card mat-elevation-z2\"> -->\n    <mat-card-header>\n      <mat-card-title>\n        <span class=\"card-title\">Produktdetails</span>\n      </mat-card-title>\n    </mat-card-header>\n    <mat-card-content fxLayout=\"column\" fxLayoutGap=\"10px\">\n      <!-- recipe title -->\n      <div fxLayout=\"row\" fxLayoutGap=\"10px\">\n        <div fxFlex=\"20\">\n          <p class=\"label\">Titel</p>\n        </div>\n        <div fxFlex=\"80\">\n          <mat-form-field fxFlexFill>\n            <input matInput [(ngModel)]=\"recipeName\" placeholder=\"\">\n          </mat-form-field>\n        </div>\n      </div>\n\n      <!-- recipe description -->\n      <div fxLayout=\"row\" fxLayoutGap=\"10px\">\n        <div fxFlex=\"20\">\n          <p class=\"label\">Beschreibung</p>\n        </div>\n        <div fxFlex=\"80\">\n          <mat-form-field fxFlexFill>\n            <textarea matInput [(ngModel)]=\"recipeDescription\" placeholder=\"\" style=\"width: 100%; height: 100px;\"></textarea>\n          </mat-form-field>\n        </div>\n      </div>\n\n      <!-- recipe license fee -->\n      <div fxLayout=\"row\" fxLayoutGap=\"10px\">\n          <div fxFlex=\"20\">\n            <p class=\"label\">Lizenzgebühr</p>\n          </div>\n          <div fxFlex=\"80\">\n            <mat-form-field>\n              <mat-select placeholder=\"\" [(ngModel)]=\"recipeLicenseFee\" name=\"licenseFee\">\n                <mat-option *ngFor=\"let fee of licenseFees\" [value]=\"fee\">\n                  {{fee}} IUNO\n                </mat-option>\n              </mat-select>\n            </mat-form-field>\n          </div>\n        </div>\n      </mat-card-content>\n<!-- </mat-card>\n<mat-card class=\"iuno-card\"> -->\n    <mat-card-header>\n        <mat-card-title>\n          <span class=\"card-title\">Rezeptur</span>\n        </mat-card-title>\n      </mat-card-header>\n    <mat-card-content>\n    <!-- recipe program -->\n          <div fxFlex=\"100\">\n            <juice-program-configurator [program]=program [components]=components></juice-program-configurator>\n          </div>\n    </mat-card-content>\n    <mat-card-actions>\n        <div fxFlex=\"100\" fxLayoutAlign=\"center center\">\n          <button (click)=\"actionSaveRecipe()\" mat-raised-button color=\"primary\" class=\"mat-elevation-z1\">Speichern</button>\n        </div>\n    </mat-card-actions>\n  </mat-card>\n\n</div>"
+module.exports = "<app-spinner [counter]=\"spinnerCounter\"></app-spinner>\n<h1 class=\"headline\">Neues Getränk anlegen</h1>\n\n<div fxLayout=\"column\" fxLayoutGap=\"10px\">\n    <mat-card class=\"iuno-card\">\n        <!-- <mat-card fxFill class=\"iuno-card mat-elevation-z2\"> -->\n        <mat-card-header>\n            <mat-card-title>\n                <span class=\"card-title\">Produktdetails</span>\n            </mat-card-title>\n        </mat-card-header>\n        <mat-card-content fxLayout=\"column\" fxLayoutGap=\"10px\">\n            <!-- recipe title -->\n            <div fxLayout=\"row\" fxLayoutGap=\"10px\">\n                <div fxFlex=\"20\">\n                    <p class=\"label\">Titel</p>\n                </div>\n                <div fxFlex=\"80\">\n                    <mat-form-field fxFlexFill>\n                        <input matInput [(ngModel)]=\"recipeName\" placeholder=\"\">\n                    </mat-form-field>\n                </div>\n            </div>\n\n            <!-- recipe description -->\n            <div fxLayout=\"row\" fxLayoutGap=\"10px\">\n                <div fxFlex=\"20\">\n                    <p class=\"label\">Beschreibung</p>\n                </div>\n                <div fxFlex=\"80\">\n                    <mat-form-field fxFlexFill>\n                        <textarea matInput [(ngModel)]=\"recipeDescription\" placeholder=\"\"\n                                  style=\"width: 100%; height: 100px;\"></textarea>\n                    </mat-form-field>\n                </div>\n            </div>\n\n            <!-- recipe license fee -->\n            <div fxLayout=\"row\" fxLayoutGap=\"10px\">\n                <div fxFlex=\"20\">\n                    <p class=\"label\">Lizenzgebühr</p>\n                </div>\n                <div fxFlex=\"80\">\n                    <mat-form-field>\n                        <mat-select placeholder=\"\" [(ngModel)]=\"recipeLicenseFee\" name=\"licenseFee\">\n                            <mat-option *ngFor=\"let fee of licenseFees\" [value]=\"fee\">\n                                {{fee}} IUNO\n                            </mat-option>\n                        </mat-select>\n                    </mat-form-field>\n                </div>\n            </div>\n        </mat-card-content>\n        <!-- </mat-card>\n        <mat-card class=\"iuno-card\"> -->\n        <mat-card-header>\n            <mat-card-title>\n                <span class=\"card-title\">Rezeptur</span>\n            </mat-card-title>\n        </mat-card-header>\n        <mat-card-content>\n            <!-- recipe program -->\n            <div fxFlex=\"100\">\n                <juice-program-configurator [program]=program [components]=components></juice-program-configurator>\n            </div>\n        </mat-card-content>\n        <mat-card-actions>\n            <div fxFlex=\"100\" fxLayoutAlign=\"center center\">\n                <button (click)=\"actionSaveRecipe()\" mat-raised-button color=\"primary\" class=\"mat-elevation-z1\">\n                    Speichern\n                </button>\n            </div>\n        </mat-card-actions>\n    </mat-card>\n\n</div>"
 
 /***/ }),
 
@@ -818,7 +834,7 @@ var CreateRecipeComponent = (function () {
                 }
                 if (valid) {
                     _this.spinnerCounter += 1;
-                    // create json    
+                    // create json
                     var jsonProgram = {}; // program
                     jsonProgram['amount-per-millisecond'] = _this.program.amountPerMillisecond;
                     var jsonSequences = []; // sequences
@@ -842,7 +858,7 @@ var CreateRecipeComponent = (function () {
                     jsonRecipe['description'] = recipe.technologydatadescription;
                     jsonRecipe['license-fee'] = recipe.licensefee;
                     jsonRecipe['program'] = jsonProgram;
-                    _this.http.post('/users/me/recipes', jsonRecipe).subscribe(function (data) {
+                    _this.http.post('/api/users/me/recipes', jsonRecipe).subscribe(function (data) {
                         _this.spinnerCounter -= 1;
                     }, function (error) {
                         _this.spinnerCounter -= 1;
@@ -888,7 +904,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".axis {\n    font: 10px sans-serif;\n  }\n  \n  .axis path,\n  .axis line {\n    fill: none;\n    stroke: #000;\n    shape-rendering: crispEdges;\n  }\n  \n  .axis-title {\n    fill: none;\n    stroke: black;\n    stroke-width: 0.5px;\n  }\n  \n  \n  .axis--x path {\n  }\n  \n  .line {\n    fill: none;\n    stroke: steelblue;\n    stroke-width: 1.5px;\n  }\n  \n  .c3-chart-lines .c3-target-Benchmark  {\n    stroke-width: 1px;\n    stroke-dasharray: 3, 3;\n  }\n  ", ""]);
+exports.push([module.i, ".axis {\n    font: 10px sans-serif;\n}\n\n.axis path,\n.axis line {\n    fill: none;\n    stroke: #000;\n    shape-rendering: crispEdges;\n}\n\n.axis-title {\n    fill: none;\n    stroke: black;\n    stroke-width: 0.5px;\n}\n\n.axis--x path {\n}\n\n.line {\n    fill: none;\n    stroke: steelblue;\n    stroke-width: 1.5px;\n}\n\n.c3-chart-lines .c3-target-Benchmark {\n    stroke-width: 1px;\n    stroke-dasharray: 3, 3;\n}\n  ", ""]);
 
 // exports
 
@@ -901,7 +917,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/console/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1 class=\"headline\">Dashboard</h1>\n<div fxLayout=\"column\" fxLayoutGap=\"10px\">\n  <!-- Chart revenue history -->\n  <div fxLayout=\"row\" fxLayout.gt-xs=\"row\" fxLayoutGap=\"10px\">\n    <mat-card fxFlex=\"100\" class=\"iuno-card mat-no-style\">\n      <mat-card-header>\n        <mat-card-title>\n          <span class=\"card-title\">Umsatz pro Getränk</span>\n        </mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <div id='chart-revenue' style=\"padding: 10px;\"></div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <div fxLayout=\"column\" fxLayout.gt-xs=\"row\" fxLayoutGap=\"10px\">\n    <!-- Revenue today, Top Recipe name -->\n    <div fxLayout=\"column\" fxFlex=\"100\" fxFlex.gt-xs=\"50\" fxLayoutGap=\"10px\">\n      <mat-card fxFlex=\"100\" class=\"iuno-card\">\n        <mat-card-header>\n          <mat-card-title>\n            <span class=\"card-title\">Umsatz heute (IUNOs)</span>\n          </mat-card-title>\n        </mat-card-header>\n        <mat-card-content fxLayoutAlign=\"center center\" style=\"height: 100%;\">\n            <span class=\"card-information\" *ngIf=\"revenueToday == null\">\n              -\n            </span>\n            <span class=\"card-information\" *ngIf=\"revenueToday != null\">\n              {{revenueToday | number:'1.2'}}\n            </span>\n        </mat-card-content>\n      </mat-card>\n\n      <mat-card fxFlex=\"100\" class=\"iuno-card\">\n        <mat-card-header>\n          <mat-card-title>\n            <span class=\"card-title\">Meistverkauftes Getränk</span>\n          </mat-card-title>\n        </mat-card-header>\n        <mat-card-content fxLayoutAlign=\"center center\" style=\"height: 100%;\">\n              <span class=\"card-information\" *ngIf=\"topRecipeName == null\">\n                  -\n                </span>\n                <span class=\"card-information\" *ngIf=\"topRecipeName != null\">\n                    {{topRecipeName}}\n                  </span>\n                  </mat-card-content>\n      </mat-card>\n    </div>\n\n    <!-- Chart top 5 -->\n    <mat-card fxFlex=\"100\" fxFlex.gt-xs=\"50\" class=\"iuno-card\">\n      <mat-card-header>\n        <mat-card-title>\n          <span class=\"card-title\">Top 5 Getränke aller Hersteller</span>\n        </mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <div id='chart-top-recipes' style=\"padding: 10px;\"></div>\n      </mat-card-content>\n    </mat-card>\n\n  </div>\n</div>\n\n<!-- <div fxLayout=\"column\" fxLayoutGap=\"10px\">\n  <div fxLayout=\"column\" fxLayout.gt-sm=\"row\" fxLayoutGap=\"10px\">\n    <mat-card fxFlex=\"100\" fxFlex.gt-sm=\"50\" class=\"iuno-card mat-no-style\">\n      <mat-card-header>\n        <mat-card-title>\n          <span class=\"card-title\">Umsatz pro Getränk</span>\n        </mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <div id='chart-revenue' style=\"padding: 10px;\"></div>\n      </mat-card-content>\n    </mat-card>\n\n    <mat-card fxFlex=\"100\" fxFlex.gt-sm=\"50\" class=\"iuno-card\">\n      <mat-card-header>\n        <mat-card-title>\n          <span class=\"card-title\">Top 5 Getränke aller Hersteller</span>\n        </mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <div id='chart-top-recipes' style=\"padding: 10px;\"></div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n\n  <div fxLayout=\"column\" fxLayout.gt-sm=\"row\" fxLayoutGap=\"10px\">\n    <mat-card fxFlex=\"100\" fxFlex.gt-sm=\"50\" class=\"iuno-card\">\n      <mat-card-header>\n        <mat-card-title>\n          <span class=\"card-title\">Umsatz heute (IUNOs)</span>\n        </mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <p>\n          <span class=\"card-title\">\n            <strong style=\"color: #AAC253\">{{revenueToday}}</strong>\n          </span>\n      </mat-card-content>\n    </mat-card>\n\n    <mat-card fxFlex=\"100\" fxFlex.gt-sm=\"50\" class=\"iuno-card\">\n      <mat-card-header>\n        <mat-card-title>\n          <span class=\"card-title\">Meistverkauftes Getränk</span>\n        </mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <p>\n          <span class=\"card-title\">\n            <strong style=\"color: #AAC253\">{{topRecipeName}}</strong>\n          </span>\n      </mat-card-content>\n    </mat-card>\n\n  </div>\n</div> -->\n"
+module.exports = "<h1 class=\"headline\">Dashboard</h1>\n\n<div fxLayout=\"column\" fxLayoutGap=\"10px\">\n    <div fxLayout.gt-md=\"row\"  fxLayoutGap=\"10px\" fxLayout=\"column\">\n        <mat-card fxFlex.gt-md=\"60\" class=\"iuno-card \">\n            <mat-card-header>\n                <mat-card-title>\n                    <span class=\"card-title\">Umsatz pro Getränk</span>\n                </mat-card-title>\n            </mat-card-header>\n            <mat-card-content>\n                <div id='chart-revenue' style=\"padding: 10px;\"></div>\n            </mat-card-content>\n        </mat-card>\n        <mat-card fxFlex.gt-md=\"39\" class=\"iuno-card\">\n            <mat-card-header>\n                <mat-card-title>\n                    <span class=\"card-title\">Top 5 Getränke aller Hersteller</span>\n                </mat-card-title>\n            </mat-card-header>\n            <mat-card-content>\n                <div id='chart-top-recipes' style=\"padding: 10px;\"></div>\n            </mat-card-content>\n        </mat-card>\n    </div>\n    <div fxLayout.gt-md=\"row\" fxLayout=\"column\" fxLayoutGap=\"10px\">\n        <mat-card fxFlex.gt-md=\"50\" class=\"iuno-card\">\n            <mat-card-header>\n                <mat-card-title>\n                    <span class=\"card-title\">Umsatz heute (IUNOs)</span>\n                </mat-card-title>\n            </mat-card-header>\n            <mat-card-content fxLayoutAlign=\"center center\" style=\"height: 100%;\">\n            <span class=\"card-information\" *ngIf=\"revenueToday == null\">\n              -\n            </span>\n                <span class=\"card-information\" *ngIf=\"revenueToday != null\">\n              {{revenueToday | number:'1.2'}}\n            </span>\n            </mat-card-content>\n        </mat-card>\n\n        <mat-card fxFlex.gt-md=\"50\" class=\"iuno-card\">\n            <mat-card-header>\n                <mat-card-title>\n                    <span class=\"card-title\">Meistverkauftes Getränk</span>\n                </mat-card-title>\n            </mat-card-header>\n            <mat-card-content fxLayoutAlign=\"center center\" style=\"height: 100%;\">\n              <span class=\"card-information\" *ngIf=\"topRecipeName == null\">\n                  -\n                </span>\n                <span class=\"card-information\" *ngIf=\"topRecipeName != null\">\n                    {{topRecipeName}}\n                  </span>\n            </mat-card-content>\n        </mat-card>\n    </div>\n</div>\n<!--<div fxLayout=\"column\"  fxLayoutGap=\"10px\">-->\n<!--&lt;!&ndash; Chart revenue history &ndash;&gt;-->\n<!--&lt;!&ndash;<div fxLayout=\"row\" fxLayout.gt-xs=\"row\" fxLayoutGap=\"10px\">&ndash;&gt;-->\n<!--&lt;!&ndash;<mat-card fxFlex=\"100\" class=\"iuno-card mat-no-style\">&ndash;&gt;-->\n<!--&lt;!&ndash;<mat-card-header>&ndash;&gt;-->\n<!--&lt;!&ndash;<mat-card-title>&ndash;&gt;-->\n<!--&lt;!&ndash;<span class=\"card-title\">Umsatz pro Getränk</span>&ndash;&gt;-->\n<!--&lt;!&ndash;</mat-card-title>&ndash;&gt;-->\n<!--&lt;!&ndash;</mat-card-header>&ndash;&gt;-->\n<!--&lt;!&ndash;<mat-card-content>&ndash;&gt;-->\n<!--&lt;!&ndash;<div id='chart-revenue' style=\"padding: 10px;\"></div>&ndash;&gt;-->\n<!--&lt;!&ndash;</mat-card-content>&ndash;&gt;-->\n<!--&lt;!&ndash;</mat-card>&ndash;&gt;-->\n<!--&lt;!&ndash;</div>&ndash;&gt;-->\n<!--<div fxLayout=\"column\" fxLayout.gt-xs=\"row\" fxLayoutGap=\"10px\">-->\n<!--&lt;!&ndash; Revenue today, Top Recipe name &ndash;&gt;-->\n<!--<div fxLayout=\"column\" fxFlex=\"100\" fxFlex.gt-xs=\"50\" fxLayoutGap=\"10px\">-->\n<!---->\n\n<!---->\n<!--</div>-->\n\n<!--&lt;!&ndash; Chart top 5 &ndash;&gt;-->\n\n\n<!--</div>-->\n<!--</div>-->"
 
 /***/ }),
 
@@ -1272,7 +1288,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/console/juice-program-configurator/add-component-dialog/add-component-dialog.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1 mat-dialog-title>Zutat hinzufügen</h1>\n\n<div mat-dialog-content>\n    <mat-list>\n        <mat-list-item *ngFor=\"let component of components\" (click)=\"componentSelected(component)\">\n            {{component.name}}\n            <!-- <button mat-button  style=\"text-align: left;\">{{component.name}}<span flex></span></button> -->\n        </mat-list-item>\n        <!-- <mat-list-option *ngFor=\"let component of components\" (click)=\"componentSelected(component)\">\n        </mat-list-option> -->\n      </mat-list>\n\n  <!-- <mat-select [(ngModel)]=\"selectedComponent\">\n    <mat-option *ngFor=\"let component of components\" [value]=\"component\">\n      {{ component.name }}\n    </mat-option>\n  </mat-select>\n</div>\n<h1>selected: {{selectedComponent}}</h1>\n<div mat-dialog-actions>\n  <button mat-button (click)=\"confirmSelection()\" color=\"primary\">\n    Okays!\n  </button>\n  <button mat-button (click)=\"dialogRef.close()\">\n    Cancel\n  </button> -->\n</div>\n<mat-dialog-actions>\n    <button mat-button mat-dialog-close>Abbrechen</button>\n</mat-dialog-actions>"
+module.exports = "<h1 mat-dialog-title>Zutat hinzufügen</h1>\n\n<div mat-dialog-content>\n    <mat-list>\n        <mat-list-item *ngFor=\"let component of components\" (click)=\"componentSelected(component)\">\n            {{component.name}}\n        </mat-list-item>\n    </mat-list>\n</div>\n<mat-dialog-actions>\n    <button mat-button mat-dialog-close>Abbrechen</button>\n</mat-dialog-actions>"
 
 /***/ }),
 
@@ -1341,7 +1357,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".tdm-program {\n    /* background-color: #eee; */\n    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n    font-size: 14px;\n    -ms-user-select: none;\n        user-select: none;\n    -moz-user-select: none;\n    -khtml-user-select: none;\n    -webkit-user-select: none;\n    -o-user-select: none;\n}\n\n/*** SEQUENCE ***/\n.tdm-sequence {\n    /* background-color: #f55; */\n    height: 40px;\n}\n.tdm-sequence-label {\n    border-bottom: 1px solid #999;\n    border-right: 1px solid #999;\n    font-weight: normal;\n    padding-left: 2px;\n}\n.tdm-sequence-remove-button {\n    margin-right: 5px;\n}\n.tdm-sequence-content {\n    border-bottom: 1px solid #999;\n    position: relative;\n}\n.tdm-sequence-total-label {\n    border-bottom: 1px solid #999;\n    border-left: 1px solid #999;\n}\n.tdm-sequence-snapline {\n    position: absolute;\n    left: 300px;\n    background-color: #aaf;\n    height: 100%;\n    width: 2px;\n}\n\n.tdm-footer-label {\n    border-right: 1px solid #999;\n    font-weight: normal;\n    padding-left: 2px;\n}\n.tdm-footer-total-label {\n    border-left: 1px solid #999;\n}\n\n.tdm-link {\n color: #337ab7;\n text-decoration: none;\n}\n\n/*** PHASE ***/\n.tdm-phase {\n    background-color: #fff;\n    margin-top: 1px;\n\theight: 37px;\n    -webkit-user-select: false;\n       -moz-user-select: false;\n        -ms-user-select: false;\n            user-select: false;\n    border: 1px solid #aaa;\n    position: absolute;\n    /* width: 100px;\n    height: 30px; */\n}\n.tdm-phase-content {\n\t/* position: absolute; */\n\t/* width: calc(100% - 30px); */\n\t/* height: 100%; */\n}\n.tdm-phase-content-label {\t\n    z-index: 101;\n\tposition: absolute;\n    color: #fff;\n\twidth: calc(100% - 29px);\n    text-align: center;\n}\n.tdm-phase-content-throughput {\n\tposition: absolute;\n\twidth: 100%;\n    background-color: #AAC253;\n}\n.tdm-phase-throughput-handle {\n    z-index: 100;\n\t/* position: absolute; */\n\t/* margin-left: calc(100% - 30px); */\n\theight: 37px;\n\tbackground: #627028;\n\t/* width: 30px; */\n\t/* vertical-align: middle; */\n\t/* text-align: center; */\n}\n\n/*** PAUSE ***/\n.tdm-pause-phase {\n    position: absolute;\n    height: 37px;\n    margin-top: 1px;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n\n    background-color: #aaa;\n}\n.tdm-pause-phase-content {\n\t/* position: absolute; */\n\t/* width: calc(100% - 30px); */\n\t/* height: 100%; */\n}\n.tdm-pause-phase-content-label {\t\n    z-index: 101;\n\tposition: absolute;\n    color: #fff;\n\twidth: 100%;\n    text-align: center;\n}\n\n/*** OTHER ***/\n.tdm-error {\n    font-weight: bold;\n    color: #f00;\n}\n.tdm-program-error {\n    text-align: center;\n    font-weight: bold;\n    color: #f00;\n}\n.tdm-empty-program-box {\n    background-color: #eee;\n    border: 1px solid #ddd;\n    height: 100px;\n}\n\n\n.pause-phase {\n    position: absolute;\n    height: 37px;\n    margin-top: 1px;\n\tvertical-align: middle;\n    -webkit-user-select: false;\n       -moz-user-select: false;\n        -ms-user-select: false;\n            user-select: false;\n\n    background-color: #aaa;\n}\n\n.pause-phase-content {\n\t/* position: absolute; */\n\t/* width: 100%; */\n\t/* height: 100%; */\n    /* text-align: center; */\n    /* vertical-align: middle; */\n}\n\n.tdm-phase-throughput-caret {\n\tdisplay: inline-block;\n    width: 0;\n    height: 0;\n    border-style: solid;\n    border-width: 7.5px 0 7.5px 13.0px;\n    border-color: transparent transparent transparent #fff;\n}\n\n.program-row {\n    height: 40px;\n    border-bottom: 1px solid #999;\n}\n\n.program-row-footer {\n    height: 40px;\n}\n\n.program-row-footer.content {\n    text-align: center;\n}\n\n.program-row-total {\n    height: 40px;\n    padding: 0px;\n    /* border-bottom: 1px solid #999; */\n    border-left: 1px solid #999;\n    /* position: absolute; */\n    text-align: center;\n    /* user-select: false; */\n    vertical-align: middle;\n}\n\n.program-pause-label {\n    font-weight: normal;\n    height: 40px;\n    border-right: 1px solid #999;\n    padding-left: 26px;\n}\n\n.program-footer-label {\n    font-weight: normal;\n    height: 40px;\n    border-right: 1px solid #999;\n    padding-left: 26px;\n}\n\n.footer {\n    border-bottom: none;\n}\n", ""]);
+exports.push([module.i, ".tdm-program {\n    /* background-color: #eee; */\n    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n    font-size: 14px;\n    -ms-user-select: none;\n        user-select: none;\n    -moz-user-select: none;\n    -khtml-user-select: none;\n    -webkit-user-select: none;\n    -o-user-select: none;\n}\n\n/*** SEQUENCE ***/\n.tdm-sequence {\n    /* background-color: #f55; */\n    height: 40px;\n}\n\n.tdm-sequence-label {\n    border-bottom: 1px solid #999;\n    border-right: 1px solid #999;\n    font-weight: normal;\n    padding-left: 2px;\n}\n\n.tdm-sequence-remove-button {\n    margin-right: 5px;\n}\n\n.tdm-sequence-content {\n    border-bottom: 1px solid #999;\n    position: relative;\n}\n\n.tdm-sequence-total-label {\n    border-bottom: 1px solid #999;\n    border-left: 1px solid #999;\n}\n\n.tdm-sequence-snapline {\n    position: absolute;\n    left: 300px;\n    background-color: #aaf;\n    height: 100%;\n    width: 2px;\n}\n\n.tdm-footer-label {\n    border-right: 1px solid #999;\n    font-weight: normal;\n    padding-left: 2px;\n}\n\n.tdm-footer-total-label {\n    border-left: 1px solid #999;\n}\n\n.tdm-link {\n    color: #337ab7;\n    text-decoration: none;\n}\n\n/*** PHASE ***/\n.tdm-phase {\n    background-color: #fff;\n    margin-top: 1px;\n    height: 37px;\n    -webkit-user-select: false;\n       -moz-user-select: false;\n        -ms-user-select: false;\n            user-select: false;\n    border: 1px solid #aaa;\n    position: absolute;\n    /* width: 100px;\n    height: 30px; */\n}\n\n.tdm-phase-content {\n    /* position: absolute; */\n    /* width: calc(100% - 30px); */\n    /* height: 100%; */\n}\n\n.tdm-phase-content-label {\n    z-index: 101;\n    position: absolute;\n    color: #fff;\n    width: calc(100% - 29px);\n    text-align: center;\n}\n\n.tdm-phase-content-throughput {\n    position: absolute;\n    width: 100%;\n    background-color: #AAC253;\n}\n\n.tdm-phase-throughput-handle {\n    z-index: 100;\n    /* position: absolute; */\n    /* margin-left: calc(100% - 30px); */\n    height: 37px;\n    background: #627028;\n    /* width: 30px; */\n    /* vertical-align: middle; */\n    /* text-align: center; */\n}\n\n/*** PAUSE ***/\n.tdm-pause-phase {\n    position: absolute;\n    height: 37px;\n    margin-top: 1px;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n\n    background-color: #aaa;\n}\n\n.tdm-pause-phase-content {\n    /* position: absolute; */\n    /* width: calc(100% - 30px); */\n    /* height: 100%; */\n}\n\n.tdm-pause-phase-content-label {\n    z-index: 101;\n    position: absolute;\n    color: #fff;\n    width: 100%;\n    text-align: center;\n}\n\n/*** OTHER ***/\n.tdm-error {\n    font-weight: bold;\n    color: #f00;\n}\n\n.tdm-program-error {\n    text-align: center;\n    font-weight: bold;\n    color: #f00;\n}\n\n.tdm-empty-program-box {\n    background-color: #eee;\n    border: 1px solid #ddd;\n    height: 100px;\n}\n\n.pause-phase {\n    position: absolute;\n    height: 37px;\n    margin-top: 1px;\n    vertical-align: middle;\n    -webkit-user-select: false;\n       -moz-user-select: false;\n        -ms-user-select: false;\n            user-select: false;\n\n    background-color: #aaa;\n}\n\n.pause-phase-content {\n    /* position: absolute; */\n    /* width: 100%; */\n    /* height: 100%; */\n    /* text-align: center; */\n    /* vertical-align: middle; */\n}\n\n.tdm-phase-throughput-caret {\n    display: inline-block;\n    width: 0;\n    height: 0;\n    border-style: solid;\n    border-width: 7.5px 0 7.5px 13.0px;\n    border-color: transparent transparent transparent #fff;\n}\n\n.program-row {\n    height: 40px;\n    border-bottom: 1px solid #999;\n}\n\n.program-row-footer {\n    height: 40px;\n}\n\n.program-row-footer.content {\n    text-align: center;\n}\n\n.program-row-total {\n    height: 40px;\n    padding: 0px;\n    /* border-bottom: 1px solid #999; */\n    border-left: 1px solid #999;\n    /* position: absolute; */\n    text-align: center;\n    /* user-select: false; */\n    vertical-align: middle;\n}\n\n.program-pause-label {\n    font-weight: normal;\n    height: 40px;\n    border-right: 1px solid #999;\n    padding-left: 26px;\n}\n\n.program-footer-label {\n    font-weight: normal;\n    height: 40px;\n    border-right: 1px solid #999;\n    padding-left: 26px;\n}\n\n.footer {\n    border-bottom: none;\n}\n", ""]);
 
 // exports
 
@@ -1354,7 +1370,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/console/juice-program-configurator/juice-program-configurator.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tdm-program\" fxLayout=\"column\" fxFlexFill>\n  <div *ngIf=\"program.sequences.length == 0\" class=\"tdm-empty-program-box\" fxLayoutAlign=\"center center\">\n    <a href=\"javascript:void(0);\" class=\"tdm-link\" (click)=\"openAddComponentDialog()\">Zutat hinzufügen</a>\n  </div>\n  <div *ngIf=\"program.sequences.length > 0\">\n    <!-- sequences -->\n    <div *ngFor=\"let sequence of program.sequences; index as sequenceIndex; first as isFirst\" class=\"tdm-sequence\" fxLayout=\"row\">\n      <!-- component name -->\n      <div class=\"tdm-sequence-label\" fxFlex=\"20\" fxFlexAlign=\"stretch\" fxLayoutAlign=\"left center\">\n        <div class=\"valign\" fxLayout=\"row\">\n          <a (click)=\"removeSequence(sequence)\" class=\"tdm-sequence-remove-button\">\n            <img src=\"/assets/images/delete-icon.png\" width=\"16px\" height=\"16px\">\n          </a>\n          <div class=\"tdm-component-label\">{{sequence.component.name}}</div>\n        </div>\n      </div>\n      <!-- phases -->\n      <div class=\"tdm-sequence-content\" fxFlex=\"70\" fxFlexAlign=\"stretch\" style=\"position: relative;\">\n        <div *ngFor=\"let phase of sequence.phases; index as phaseIndex;\" fxFlexAlign=\"stretch\" class=\"tdm-phase\" style.left=\"{{getPhaseStart(phase)}}px\"\n          style.width=\"{{getPhaseWidth(phase)}}px\" (mousedown)=\"startMouseDragPhaseStart(phase, $event)\" (touchstart)=\"startTouchDragPhaseStart(phase, $event)\"\n          (click)=\"phaseClicked(phase, $event)\" fxLayout=\"row\">\n          <div class=\"tdm-phase-content\" fxLayoutAlign=\"left center\" fxFlex=\"calc(100% - 30px);\">\n            <div class=\"tdm-phase-content-throughput\" style.height=\"{{phase.throughput}}%\"></div>\n            <div class=\"tdm-phase-content-label\">{{getPhaseAmountLabel(phase)}}</div>\n          </div>\n          <div class=\"tdm-phase-throughput-handle\" (mousedown)=\"startMouseDragThroughputHandle(phase, $event)\" (touchstart)=\"startTouchDragThroughputHandle(phase, $event)\"\n            fxLayoutAlign=\"center center\" fxFlex=\"30px\">\n            <div class=\"tdm-phase-throughput-caret\"></div>\n          </div>\n        </div>\n        <div *ngIf=\"snapLineOffset != -1\" class=\"tdm-sequence-snapline\" style.left=\"{{getSnapLineStart()}}px\"></div>\n      </div>\n      <!-- total amount of sequence -->\n      <div class=\"tdm-sequence-total-label\" fxFlex=\"10\" fxFlexAlign=\"stretch\" fxLayoutAlign=\"center center\">\n        <div class=\"valign total-label change-amount\">{{getSequenceAmountLabel(sequence)}}</div>\n      </div>\n    </div>\n\n    <!-- pauses -->\n    <div *ngIf=\"program.hasPause()\" class=\"tdm-sequence\" fxLayout=\"row\">\n      <div class=\"tdm-sequence-label\" fxFlex=\"20\" fxFlexAlign=\"stretch\" fxLayoutAlign=\"left center\">\n        <div class=\"valign\" fxLayout=\"row\">\n          <div class=\"tdm-component-label\" style=\"margin-left: 21px\">Pausen</div>\n        </div>\n      </div>\n      <!-- pause-phases -->\n      <div class=\"tdm-sequence-content\" fxFlex=\"70\" fxFlexAlign=\"stretch\" style=\"position: relative;\">\n        <div *ngFor=\"let phase of program.pauseSequence.phases; index as phaseIndex;\" fxFlexAlign=\"stretch\" class=\"tdm-pause-phase\"\n          style.left=\"{{getPhaseStart(phase)}}px\" style.width=\"{{getPhaseWidth(phase)}}px\" fxLayout=\"row\">\n          <div class=\"tdm-pause-phase-content\" fxLayoutAlign=\"left center\" fxFlex=\"calc(100% - 30px);\">\n            <div class=\"tdm-pause-phase-content-label\">{{getPausePhaseLabel(phase)}}</div>\n          </div>\n        </div>\n        <div *ngIf=\"snapLineOffset != -1\" class=\"tdm-sequence-snapline\" style.left=\"{{getSnapLineStart()}}px\"></div>\n      </div>\n      <!-- total amount of sequence -->\n      <div class=\"tdm-sequence-total-label\" fxFlex=\"10\" fxFlexAlign=\"stretch\" fxLayoutAlign=\"center center\">\n        <div class=\"valign total-label change-amount\" [ngClass]=\"{'tdm-error': hasTotalPauseError()}\">{{getTotalPauseLabel(program.pauseSequence)}}</div>\n      </div>\n    </div>\n\n    <div class=\"tdm-sequence\" fxLayout=\"row\">\n      <div class=\"tdm-footer-label\" fxFlex=\"20\" fxFlexAlign=\"stretch\" fxLayoutAlign=\"left center\">\n        <div class=\"valign\" fxLayout=\"row\">\n          <div class=\"tdm-component-label\" style=\"margin-left: 21px;\">\n            <a (click)=\"openAddComponentDialog()\" class=\"tdm-link\">Zutat hinzufügen</a>\n            <!-- <mat-form-field>\n                <mat-select placeholder=\"Zutat hinzufügen\">\n                  <mat-option *ngFor=\"let component of components\" [value]=\"component.id\">\n                    {{ component.name }}\n                  </mat-option>\n                </mat-select>\n              </mat-form-field>           -->\n          </div>\n        </div>\n      </div>\n      <!-- error messages -->\n      <div [innerHTML]=\"getErrorText()\" class=\"tdm-program-error\" fxFlex=\"70\" fxFlexAlign=\"stretch\" fxLayoutAlign=\"center center\"\n        style=\"position: relative;\">\n      </div>\n      <!-- total amount -->\n      <div class=\"tdm-footer-total-label\" fxFlex=\"10\" fxFlexAlign=\"stretch\" fxLayoutAlign=\"center center\">\n        <div class=\"total-label\" [ngClass]=\"{'tdm-error': hasMaxTotalAmountError() || hasMinTotalAmountError()}\">{{getTotalAmountLabel(program)}}</div>\n      </div>\n    </div>\n  </div>\n</div>"
+module.exports = "<div class=\"tdm-program\" fxLayout=\"column\" fxFlexFill>\n    <div *ngIf=\"program.sequences.length == 0\" class=\"tdm-empty-program-box\" fxLayoutAlign=\"center center\">\n        <a href=\"javascript:void(0);\" class=\"tdm-link\" (click)=\"openAddComponentDialog()\">Zutat hinzufügen</a>\n    </div>\n    <div *ngIf=\"program.sequences.length > 0\">\n        <!-- sequences -->\n        <div *ngFor=\"let sequence of program.sequences; index as sequenceIndex; first as isFirst\" class=\"tdm-sequence\"\n             fxLayout=\"row\">\n            <!-- component name -->\n            <div class=\"tdm-sequence-label\" fxFlex=\"20\" fxFlexAlign=\"stretch\" fxLayoutAlign=\"left center\">\n                <div class=\"valign\" fxLayout=\"row\">\n                    <a (click)=\"removeSequence(sequence)\" class=\"tdm-sequence-remove-button\">\n                        <img src=\"/assets/images/delete-icon.png\" width=\"16px\" height=\"16px\">\n                    </a>\n                    <div class=\"tdm-component-label\">{{sequence.component.name}}</div>\n                </div>\n            </div>\n            <!-- phases -->\n            <div class=\"tdm-sequence-content\" fxFlex=\"70\" fxFlexAlign=\"stretch\" style=\"position: relative;\">\n                <div *ngFor=\"let phase of sequence.phases; index as phaseIndex;\" fxFlexAlign=\"stretch\" class=\"tdm-phase\"\n                     style.left=\"{{getPhaseStart(phase)}}px\"\n                     style.width=\"{{getPhaseWidth(phase)}}px\" (mousedown)=\"startMouseDragPhaseStart(phase, $event)\"\n                     (touchstart)=\"startTouchDragPhaseStart(phase, $event)\"\n                     (click)=\"phaseClicked(phase, $event)\" fxLayout=\"row\">\n                    <div class=\"tdm-phase-content\" fxLayoutAlign=\"left center\" fxFlex=\"calc(100% - 30px);\">\n                        <div class=\"tdm-phase-content-throughput\" style.height=\"{{phase.throughput}}%\"></div>\n                        <div class=\"tdm-phase-content-label\">{{getPhaseAmountLabel(phase)}}</div>\n                    </div>\n                    <div class=\"tdm-phase-throughput-handle\" (mousedown)=\"startMouseDragThroughputHandle(phase, $event)\"\n                         (touchstart)=\"startTouchDragThroughputHandle(phase, $event)\"\n                         fxLayoutAlign=\"center center\" fxFlex=\"30px\">\n                        <div class=\"tdm-phase-throughput-caret\"></div>\n                    </div>\n                </div>\n                <div *ngIf=\"snapLineOffset != -1\" class=\"tdm-sequence-snapline\"\n                     style.left=\"{{getSnapLineStart()}}px\"></div>\n            </div>\n            <!-- total amount of sequence -->\n            <div class=\"tdm-sequence-total-label\" fxFlex=\"10\" fxFlexAlign=\"stretch\" fxLayoutAlign=\"center center\">\n                <div class=\"valign total-label change-amount\">{{getSequenceAmountLabel(sequence)}}</div>\n            </div>\n        </div>\n\n        <!-- pauses -->\n        <div *ngIf=\"program.hasPause()\" class=\"tdm-sequence\" fxLayout=\"row\">\n            <div class=\"tdm-sequence-label\" fxFlex=\"20\" fxFlexAlign=\"stretch\" fxLayoutAlign=\"left center\">\n                <div class=\"valign\" fxLayout=\"row\">\n                    <div class=\"tdm-component-label\" style=\"margin-left: 21px\">Pausen</div>\n                </div>\n            </div>\n            <!-- pause-phases -->\n            <div class=\"tdm-sequence-content\" fxFlex=\"70\" fxFlexAlign=\"stretch\" style=\"position: relative;\">\n                <div *ngFor=\"let phase of program.pauseSequence.phases; index as phaseIndex;\" fxFlexAlign=\"stretch\"\n                     class=\"tdm-pause-phase\"\n                     style.left=\"{{getPhaseStart(phase)}}px\" style.width=\"{{getPhaseWidth(phase)}}px\" fxLayout=\"row\">\n                    <div class=\"tdm-pause-phase-content\" fxLayoutAlign=\"left center\" fxFlex=\"calc(100% - 30px);\">\n                        <div class=\"tdm-pause-phase-content-label\">{{getPausePhaseLabel(phase)}}</div>\n                    </div>\n                </div>\n                <div *ngIf=\"snapLineOffset != -1\" class=\"tdm-sequence-snapline\"\n                     style.left=\"{{getSnapLineStart()}}px\"></div>\n            </div>\n            <!-- total amount of sequence -->\n            <div class=\"tdm-sequence-total-label\" fxFlex=\"10\" fxFlexAlign=\"stretch\" fxLayoutAlign=\"center center\">\n                <div class=\"valign total-label change-amount\" [ngClass]=\"{'tdm-error': hasTotalPauseError()}\">\n                    {{getTotalPauseLabel(program.pauseSequence)}}\n                </div>\n            </div>\n        </div>\n\n        <div class=\"tdm-sequence\" fxLayout=\"row\">\n            <div class=\"tdm-footer-label\" fxFlex=\"20\" fxFlexAlign=\"stretch\" fxLayoutAlign=\"left center\">\n                <div class=\"valign\" fxLayout=\"row\">\n                    <div class=\"tdm-component-label\" style=\"margin-left: 21px;\">\n                        <a (click)=\"openAddComponentDialog()\" class=\"tdm-link\">Zutat hinzufügen</a>\n                        <!-- <mat-form-field>\n                            <mat-select placeholder=\"Zutat hinzufügen\">\n                              <mat-option *ngFor=\"let component of components\" [value]=\"component.id\">\n                                {{ component.name }}\n                              </mat-option>\n                            </mat-select>\n                          </mat-form-field>           -->\n                    </div>\n                </div>\n            </div>\n            <!-- error messages -->\n            <div [innerHTML]=\"getErrorText()\" class=\"tdm-program-error\" fxFlex=\"70\" fxFlexAlign=\"stretch\"\n                 fxLayoutAlign=\"center center\"\n                 style=\"position: relative;\">\n            </div>\n            <!-- total amount -->\n            <div class=\"tdm-footer-total-label\" fxFlex=\"10\" fxFlexAlign=\"stretch\" fxLayoutAlign=\"center center\">\n                <div class=\"total-label\"\n                     [ngClass]=\"{'tdm-error': hasMaxTotalAmountError() || hasMinTotalAmountError()}\">\n                    {{getTotalAmountLabel(program)}}\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -1400,7 +1416,6 @@ var JuiceProgramConfiguratorComponent = (function () {
         this.minTotalAmount = 100;
         this.maxTotalAmount = 120;
         this.maxTotalPause = 5000;
-        // addComponentDialog: AddComponentDialogComponent;
         // dragging
         this.draggingType = null;
         this.wasDragged = false;
@@ -1895,13 +1910,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
-// import { MatSelectModule } from '@angular/material';
 
 
-// import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 // Flex-Layout
 
 
@@ -1920,7 +1932,6 @@ var JuiceProgramConfiguratorModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_3__angular_material__["f" /* MatDialogModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_material_button__["a" /* MatButtonModule */],
                 __WEBPACK_IMPORTED_MODULE_5__angular_material_list__["a" /* MatListModule */],
-                // BrowserAnimationsModule,
                 __WEBPACK_IMPORTED_MODULE_4__angular_material_input__["b" /* MatInputModule */],
             ],
             declarations: [
@@ -2167,7 +2178,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/console/juice-program-configurator/phase-dialog/phase-dialog.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form name=\"clientForm\" novalidate (ngSubmit)=\"actionChangePhase($event)\">\n<h1 mat-dialog-title>Phase bearbeiten</h1>\n\n<div mat-dialog-content>\n  <mat-form-field style=\"width: 100%\">\n    <input onfocus=\"this.select()\" matInput type=\"number\" placeholder=\"Menge in Milliliter\" value=\"{{phase.amount}}\" [formControl]=\"amountFormControl\" [(ngModel)]=\"amount\">\n    <mat-error *ngIf=\"amountFormControl.hasError('email') && !amountFormControl.hasError('required')\">\n      Please enter a valid email address\n    </mat-error>\n    <mat-error *ngIf=\"amountFormControl.hasError('required')\">\n      Email is <strong>required</strong>\n    </mat-error>\n  </mat-form-field>\n</div>\n<mat-dialog-actions>\n  <button mat-raised-button mat-dialog-close type=\"button\">Abbrechen</button>\n  <button mat-raised-button (click)=\"actionRemovePhase()\" type=\"button\">Löschen</button>\n  <button mat-raised-button (click)=\"actionSplitPhase()\" type=\"button\">Abtrennen</button>\n  <button mat-raised-button (click)=\"actionChangePhase($event)\" type=\"submit\">Menge ändern</button>\n</mat-dialog-actions>\n</form>"
+module.exports = "<form name=\"clientForm\" novalidate (ngSubmit)=\"actionChangePhase($event)\">\n    <h1 mat-dialog-title>Phase bearbeiten</h1>\n\n    <div mat-dialog-content>\n        <mat-form-field style=\"width: 100%\">\n            <input onfocus=\"this.select()\" matInput type=\"number\" placeholder=\"Menge in Milliliter\"\n                   value=\"{{phase.amount}}\" [formControl]=\"amountFormControl\" [(ngModel)]=\"amount\">\n            <mat-error *ngIf=\"amountFormControl.hasError('email') && !amountFormControl.hasError('required')\">\n                Please enter a valid email address\n            </mat-error>\n            <mat-error *ngIf=\"amountFormControl.hasError('required')\">\n                Email is <strong>required</strong>\n            </mat-error>\n        </mat-form-field>\n    </div>\n    <mat-dialog-actions>\n        <button mat-raised-button mat-dialog-close type=\"button\">Abbrechen</button>\n        <button mat-raised-button (click)=\"actionRemovePhase()\" type=\"button\">Löschen</button>\n        <button mat-raised-button (click)=\"actionSplitPhase()\" type=\"button\">Abtrennen</button>\n        <button mat-raised-button (click)=\"actionChangePhase($event)\" type=\"submit\">Menge ändern</button>\n    </mat-dialog-actions>\n</form>"
 
 /***/ }),
 
@@ -2267,7 +2278,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/console/recipes/recipes.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1 class=\"headline\">Getränke verwalten</h1>\n<div fxLayout=\"column\" fxLayoutGap=\"10px\">\n  <mat-card fxFlex=\"100\" class=\"iuno-card\">\n    <mat-card-header>\n      <mat-card-title>\n        <span class=\"card-title\">Übersicht</span>\n      </mat-card-title>\n    </mat-card-header>\n    <mat-card-content>\n      <app-message-box type=\"error\" *ngIf=\"errorMaxRecipes\">Derzeit ist die Anzahl an Rezepten pro Benutzer begrenzt. Bitte lösche ein bestehendes Rezept, falls du weitere Rezepte\n        auf dem Marktplatz veröffentlichen möchtest.</app-message-box>\n      <div *ngIf=\"dataSource.data.length == 0\" class=\"no-recipes-available\">\n        Keine Getränke vorhanden\n      </div>\n      <div *ngIf=\"dataSource.data.length > 0\">\n        <mat-table #table [dataSource]=\"dataSource\">\n\n          <ng-container matColumnDef=\"position\">\n            <mat-header-cell *matHeaderCellDef>#</mat-header-cell>\n            <mat-cell *matCellDef=\"let i = index;\"> {{i}} </mat-cell>\n          </ng-container>\n\n          <ng-container matColumnDef=\"name\">\n            <mat-header-cell *matHeaderCellDef>Getränkename</mat-header-cell>\n            <mat-cell *matCellDef=\"let recipe\"> {{recipe.technologydataname}} </mat-cell>\n          </ng-container>\n\n          <ng-container matColumnDef=\"description\">\n            <mat-header-cell *matHeaderCellDef>Beschreibung</mat-header-cell>\n            <mat-cell *matCellDef=\"let recipe\"> {{recipe.technologydatadescription}} </mat-cell>\n          </ng-container>\n\n          <ng-container matColumnDef=\"revenue\">\n            <mat-header-cell *matHeaderCellDef>Gesamtumsatz (IUNOs)</mat-header-cell>\n            <mat-cell *matCellDef=\"let recipe\"> {{recipe.revenue | number:'1.2'}} </mat-cell>\n          </ng-container>\n\n          <ng-container matColumnDef=\"licensefee\">\n            <mat-header-cell *matHeaderCellDef>Lizenzgebühr (IUNOs)</mat-header-cell>\n            <mat-cell *matCellDef=\"let recipe\"> {{(recipe.licensefee / 100000).toFixed(2)}} </mat-cell>\n          </ng-container>\n\n          <!-- <ng-container matColumnDef=\"li\">\n            <mat-header-cell *matHeaderCellDef>Lizenzgebühr <small>(IUNOs)</small></mat-header-cell>\n            <mat-cell *matCellDef=\"let recipe\"> {{(recipe.licensefee / 100000).toFixed(2)}} </mat-cell>\n          </ng-container> -->\n\n          <ng-container matColumnDef=\"action\">\n            <mat-header-cell *matHeaderCellDef>Aktion</mat-header-cell>\n            <mat-cell *matCellDef=\"let recipe\">\n              <button (click)=\"deleteRecipe(recipe)\" mat-raised-button color=\"primary\">Löschen</button>\n            </mat-cell>\n          </ng-container>\n\n          <!-- <ng-container matColumnDef=\"sales\">\n            <mat-header-cell *matHeaderCellDef>Gesamtumsatz (IUNOs)</mat-header-cell>\n            <mat-cell *matCellDef=\"let element\"> {{element.weight}} </mat-cell>\n          </ng-container>\n        \n          <ng-container matColumnDef=\"licensefee\">\n            <mat-header-cell *matHeaderCellDef>Lizenzgebühr (IUNOs)</mat-header-cell>\n            <mat-cell *matCellDef=\"let element\"> {{element.symbol}} </mat-cell>\n          </ng-container>\n        \n          <ng-container matColumnDef=\"components\">\n            <mat-header-cell *matHeaderCellDef>Komponenten</mat-header-cell>\n            <mat-cell *matCellDef=\"let element\"> {{element.symbol}} </mat-cell>\n          </ng-container>\n        \n          <ng-container matColumnDef=\"description\">\n            <mat-header-cell *matHeaderCellDef>Beschreibung</mat-header-cell>\n            <mat-cell *matCellDef=\"let element\"> {{element.symbol}} </mat-cell>\n          </ng-container>\n        \n          <ng-container matColumnDef=\"action\">\n            <mat-header-cell *matHeaderCellDef>Aktion</mat-header-cell>\n            <mat-cell *matCellDef=\"let element\"> {{element.symbol}} </mat-cell>\n          </ng-container>\n         -->\n          <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n          <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n        </mat-table>\n      </div>\n    </mat-card-content>\n  </mat-card>\n  <!-- </div> -->\n</div>\n"
+module.exports = "<h1 class=\"headline\">Getränke verwalten</h1>\n<div fxLayout=\"column\" fxLayoutGap=\"10px\">\n    <mat-card fxFlex=\"100\" class=\"iuno-card\">\n        <mat-card-header>\n            <mat-card-title>\n                <span class=\"card-title\">Übersicht</span>\n            </mat-card-title>\n        </mat-card-header>\n        <mat-card-content>\n            <app-message-box type=\"error\" *ngIf=\"errorMaxRecipes\">Derzeit ist die Anzahl an Rezepten pro Benutzer\n                begrenzt. Bitte lösche ein bestehendes Rezept, falls du weitere Rezepte\n                auf dem Marktplatz veröffentlichen möchtest.\n            </app-message-box>\n            <div *ngIf=\"dataSource.data.length == 0\" class=\"no-recipes-available\">\n                Keine Getränke vorhanden\n            </div>\n            <div *ngIf=\"dataSource.data.length > 0\">\n                <mat-table #table [dataSource]=\"dataSource\">\n\n                    <ng-container matColumnDef=\"position\">\n                        <mat-header-cell *matHeaderCellDef>#</mat-header-cell>\n                        <mat-cell *matCellDef=\"let i = index;\"> {{i}}</mat-cell>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"name\">\n                        <mat-header-cell *matHeaderCellDef>Getränkename</mat-header-cell>\n                        <mat-cell *matCellDef=\"let recipe\"> {{recipe.technologydataname}}</mat-cell>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"description\">\n                        <mat-header-cell *matHeaderCellDef>Beschreibung</mat-header-cell>\n                        <mat-cell *matCellDef=\"let recipe\"> {{recipe.technologydatadescription}}</mat-cell>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"revenue\">\n                        <mat-header-cell *matHeaderCellDef>Gesamtumsatz (IUNOs)</mat-header-cell>\n                        <mat-cell *matCellDef=\"let recipe\"> {{recipe.revenue | number:'1.2'}}</mat-cell>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"licensefee\">\n                        <mat-header-cell *matHeaderCellDef>Lizenzgebühr (IUNOs)</mat-header-cell>\n                        <mat-cell *matCellDef=\"let recipe\"> {{(recipe.licensefee / 100000).toFixed(2)}}</mat-cell>\n                    </ng-container>\n\n                    <!-- <ng-container matColumnDef=\"li\">\n                      <mat-header-cell *matHeaderCellDef>Lizenzgebühr <small>(IUNOs)</small></mat-header-cell>\n                      <mat-cell *matCellDef=\"let recipe\"> {{(recipe.licensefee / 100000).toFixed(2)}} </mat-cell>\n                    </ng-container> -->\n\n                    <ng-container matColumnDef=\"action\">\n                        <mat-header-cell *matHeaderCellDef>Aktion</mat-header-cell>\n                        <mat-cell *matCellDef=\"let recipe\">\n                            <button (click)=\"deleteRecipe(recipe)\" mat-raised-button color=\"primary\">Löschen</button>\n                        </mat-cell>\n                    </ng-container>\n\n                    <!-- <ng-container matColumnDef=\"sales\">\n                      <mat-header-cell *matHeaderCellDef>Gesamtumsatz (IUNOs)</mat-header-cell>\n                      <mat-cell *matCellDef=\"let element\"> {{element.weight}} </mat-cell>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"licensefee\">\n                      <mat-header-cell *matHeaderCellDef>Lizenzgebühr (IUNOs)</mat-header-cell>\n                      <mat-cell *matCellDef=\"let element\"> {{element.symbol}} </mat-cell>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"components\">\n                      <mat-header-cell *matHeaderCellDef>Komponenten</mat-header-cell>\n                      <mat-cell *matCellDef=\"let element\"> {{element.symbol}} </mat-cell>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"description\">\n                      <mat-header-cell *matHeaderCellDef>Beschreibung</mat-header-cell>\n                      <mat-cell *matCellDef=\"let element\"> {{element.symbol}} </mat-cell>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"action\">\n                      <mat-header-cell *matHeaderCellDef>Aktion</mat-header-cell>\n                      <mat-cell *matCellDef=\"let element\"> {{element.symbol}} </mat-cell>\n                    </ng-container>\n                   -->\n                    <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n                    <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n                </mat-table>\n            </div>\n        </mat-card-content>\n    </mat-card>\n    <!-- </div> -->\n</div>\n"
 
 /***/ }),
 
@@ -2366,7 +2377,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-// import { TdmRecipe } from 'juice-program-configurator';
 var DashboardService = (function () {
     function DashboardService(http) {
         this.http = http;
@@ -2375,7 +2385,7 @@ var DashboardService = (function () {
         var limit = 1;
         var fromDate = __WEBPACK_IMPORTED_MODULE_2_moment__().utc().year(2000).format();
         var toDate = __WEBPACK_IMPORTED_MODULE_2_moment__().utc().format();
-        var url = '/users/me/reports/recipes/top?limit=' + limit + '&from=' + fromDate + '&to=' + toDate;
+        var url = '/api/users/me/reports/recipes/top?limit=' + limit + '&from=' + fromDate + '&to=' + toDate;
         return this.http.get(url).flatMap(function (recipes) {
             if (recipes.length > 0) {
                 return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["a" /* Observable */].of(recipes[0] || 0);
@@ -2388,7 +2398,7 @@ var DashboardService = (function () {
     DashboardService.prototype.getTopRecipes = function (limit) {
         var fromDate = __WEBPACK_IMPORTED_MODULE_2_moment__().utc().year(2000).format();
         var toDate = __WEBPACK_IMPORTED_MODULE_2_moment__().utc().format();
-        var url = '/reports/recipes/top?limit=' + limit + '&from=' + fromDate + '&to=' + toDate;
+        var url = '/api/reports/recipes/top?limit=' + limit + '&from=' + fromDate + '&to=' + toDate;
         var result = this.http.get(url);
         console.log("Top Recipes:");
         console.log(result);
@@ -2398,37 +2408,15 @@ var DashboardService = (function () {
         console.log("Hallo?");
         var fromDate = __WEBPACK_IMPORTED_MODULE_2_moment__().utc().year(2000).format();
         var toDate = __WEBPACK_IMPORTED_MODULE_2_moment__().utc().endOf('day').format();
-        var url = '/users/me/reports/revenue/history?from=' + fromDate + '&to=' + toDate;
+        var url = '/api/users/me/reports/revenue/history?from=' + fromDate + '&to=' + toDate;
         console.log(url);
         var result = this.http.get(url);
         return result;
     };
-    // getTopRecipeRankingEver(limit: number) {
-    //   return this.http
-    //     .get(this.reportsUrl + '?sinceDate=' + moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&topValue=' + limit)
-    //     .toPromise()
-    //     .then(response => {
-    //       //FIXME: debug values
-    //       var ranking = [{ "technologydataname": "TRUMPF - Allerlei", "rank": 57, "revenue": "57.0000000000000000" }, { "technologydataname": "Pangalaktischer Donnergurgler", "rank": 55, "revenue": "41.2500000000000000" }, { "technologydataname": "EMOtion", "rank": 27, "revenue": "27.0000000000000000" }, { "technologydataname": "Annas Wasser", "rank": 24, "revenue": "12.0000000000000000" }, { "technologydataname": "Mangomorgana", "rank": 23, "revenue": "5.7500000000000000" }];
-    //       return ranking;
-    //     })
-    //     .catch(this.handleError);
-    // }
-    // getRevenuePerDayForUser() {
-    //   return this.http
-    //   .get(this.reportsUrl + 'revenue?sinceDate=' + moment('1970-01-01').format('YYYY-MM-DD HH:mm:ss') + '&time=day')
-    //   .toPromise()
-    //     .then(response => {
-    //       //FIXME: debug values
-    //       var revenue = [{"date":"2017-09-15T00:00:00.000Z","technologydataname":"Apfelschorle rot/weiß","revenue":"0.00"},{"date":"2017-09-15T00:00:00.000Z","technologydataname":"Bananas Temptation","revenue":"6.7500000000000000"},{"date":"2017-09-15T00:00:00.000Z","technologydataname":"Benchmark","revenue":"0.38636363636363636364"},{"date":"2017-09-17T00:00:00.000Z","technologydataname":"Apfelschorle rot/weiß","revenue":"0.00"},{"date":"2017-09-17T00:00:00.000Z","technologydataname":"Bananas Temptation","revenue":"0.00"},{"date":"2017-09-17T00:00:00.000Z","technologydataname":"Benchmark","revenue":"0.05113636363636363636"},{"date":"2017-09-18T00:00:00.000Z","technologydataname":"Apfelschorle rot/weiß","revenue":"0.00"},{"date":"2017-09-18T00:00:00.000Z","technologydataname":"Bananas Temptation","revenue":"0.00"},{"date":"2017-09-18T00:00:00.000Z","technologydataname":"Benchmark","revenue":"0.70454545454545454545"},{"date":"2017-09-19T00:00:00.000Z","technologydataname":"Apfelschorle rot/weiß","revenue":"0.00"},{"date":"2017-09-19T00:00:00.000Z","technologydataname":"Bananas Temptation","revenue":"0.75000000000000000000"},{"date":"2017-09-19T00:00:00.000Z","technologydataname":"Benchmark","revenue":"0.69318181818181818182"},{"date":"2017-09-20T00:00:00.000Z","technologydataname":"Apfelschorle rot/weiß","revenue":"0.50000000000000000000"},{"date":"2017-09-20T00:00:00.000Z","technologydataname":"Bananas Temptation","revenue":"0.75000000000000000000"},{"date":"2017-09-20T00:00:00.000Z","technologydataname":"Benchmark","revenue":"0.81818181818181818182"},{"date":"2017-09-21T00:00:00.000Z","technologydataname":"Apfelschorle rot/weiß","revenue":"0.50000000000000000000"},{"date":"2017-09-21T00:00:00.000Z","technologydataname":"Bananas Temptation","revenue":"0.75000000000000000000"},{"date":"2017-09-21T00:00:00.000Z","technologydataname":"Benchmark","revenue":"0.75568181818181818182"},{"date":"2017-09-22T00:00:00.000Z","technologydataname":"Apfelschorle rot/weiß","revenue":"0.00"},{"date":"2017-09-22T00:00:00.000Z","technologydataname":"Bananas Temptation","revenue":"1.5000000000000000"},{"date":"2017-09-22T00:00:00.000Z","technologydataname":"Benchmark","revenue":"0.53409090909090909091"},{"date":"2017-09-23T00:00:00.000Z","technologydataname":"Apfelschorle rot/weiß","revenue":"0.50000000000000000000"},{"date":"2017-09-23T00:00:00.000Z","technologydataname":"Bananas Temptation","revenue":"1.5000000000000000"},{"date":"2017-09-23T00:00:00.000Z","technologydataname":"Benchmark","revenue":"1.02272727272727272727"},{"date":"2017-10-06T00:00:00.000Z","technologydataname":"Apfelschorle rot/weiß","revenue":"0.00"},{"date":"2017-10-06T00:00:00.000Z","technologydataname":"Bananas Temptation","revenue":"0.00"},{"date":"2017-10-06T00:00:00.000Z","technologydataname":"Benchmark","revenue":"0.02272727272727272727"},{"date":"2017-10-08T00:00:00.000Z","technologydataname":"Apfelschorle rot/weiß","revenue":"0.00"},{"date":"2017-10-08T00:00:00.000Z","technologydataname":"Bananas Temptation","revenue":"0.00"},{"date":"2017-10-08T00:00:00.000Z","technologydataname":"Benchmark","revenue":"0.11931818181818181818"},{"date":"2017-10-14T00:00:00.000Z","technologydataname":"Apfelschorle rot/weiß","revenue":"0.00"},{"date":"2017-10-14T00:00:00.000Z","technologydataname":"Bananas Temptation","revenue":"0.00"},{"date":"2017-10-14T00:00:00.000Z","technologydataname":"Benchmark","revenue":"0.04545454545454545455"},{"date":"2017-10-16T00:00:00.000Z","technologydataname":"Apfelschorle rot/weiß","revenue":"0.00"},{"date":"2017-10-16T00:00:00.000Z","technologydataname":"Bananas Temptation","revenue":"0.00"},{"date":"2017-10-16T00:00:00.000Z","technologydataname":"Benchmark","revenue":"0.03409090909090909091"},{"date":"2017-10-21T00:00:00.000Z","technologydataname":"Apfelschorle rot/weiß","revenue":"0.00"},{"date":"2017-10-21T00:00:00.000Z","technologydataname":"Bananas Temptation","revenue":"0.00"},{"date":"2017-10-21T00:00:00.000Z","technologydataname":"Benchmark","revenue":"0.50000000000000000000"},{"date":"2017-10-22T00:00:00.000Z","technologydataname":"Apfelschorle rot/weiß","revenue":"0.00"},{"date":"2017-10-22T00:00:00.000Z","technologydataname":"Bananas Temptation","revenue":"0.00"},{"date":"2017-10-22T00:00:00.000Z","technologydataname":"Benchmark","revenue":"0.25000000000000000000"}];
-    //       return revenue;
-    //     })
-    //     .catch(this.handleError);
-    // }
     DashboardService.prototype.getRevenueTodayForUser = function () {
         var fromDate = __WEBPACK_IMPORTED_MODULE_2_moment__().utc().startOf('day').format();
         var toDate = __WEBPACK_IMPORTED_MODULE_2_moment__().utc().endOf('day').format();
-        var url = '/users/me/reports/revenue?from=' + fromDate + '&to=' + toDate;
+        var url = '/api/users/me/reports/revenue?from=' + fromDate + '&to=' + toDate;
         return this.http.get(url).flatMap(function (res) {
             return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["a" /* Observable */].of(res[0].revenue || 0);
         });
@@ -2478,7 +2466,7 @@ var MarketplaceService = (function () {
     }
     MarketplaceService.prototype.updateComponents = function () {
         var _this = this;
-        this.http.get('/components').subscribe(function (components) {
+        this.http.get('/api/components').subscribe(function (components) {
             _this._components.next(components);
         });
     };
@@ -2524,7 +2512,7 @@ var RecipeService = (function () {
         // This is to prevent the service clients from themselves emitting store values directly instead of calling action methods and therefore bypassing the store.
         this._recipes = new __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__["a" /* BehaviorSubject */]([]);
         this.recipes = this._recipes.asObservable();
-        this.recipesUrl = '/users/me/recipes';
+        this.recipesUrl = '/api/users/me/recipes';
         this.updateRecipes();
     }
     RecipeService.prototype.updateRecipes = function () {
@@ -2569,8 +2557,7 @@ var RecipeService = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/_esm5/BehaviorSubject.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__ = __webpack_require__("../../../../rxjs/_esm5/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__ = __webpack_require__("../../../../rxjs/_esm5/Observable.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2584,29 +2571,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-// import { setTimeout } from 'timers';
 var UserService = (function () {
     function UserService(http) {
         this.http = http;
-        this._user = new __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__["a" /* BehaviorSubject */](null);
-        this.user = this._user.asObservable();
-        this.updateUser();
     }
-    UserService.prototype.updateUser = function () {
-        var _this = this;
-        this.http.get("/users/me").subscribe(function (user) {
-            // setTimeout(() => {
-            //   console.log("Hallo!!!!!");
-            //   this._user.next(user);
-            // }, 5000);
-            _this._user.next(user);
-        }, function (error) {
-            console.log(error);
-        });
-    };
     UserService.prototype.getUser = function () {
-        return this.http.get("/users/me");
+        return this.http.get("/api/users/me");
+    };
+    UserService.prototype.isLoggedIn = function () {
+        return this.http.get("/auth/loggedin").flatMap(function (loggedin) {
+            return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["a" /* Observable */].of(loggedin);
+        });
     };
     UserService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
@@ -2625,7 +2600,7 @@ var AccessGuard = (function () {
             if (!loggedin) {
                 window.location.href = "/";
             }
-            return __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__["a" /* Observable */].of(loggedin);
+            return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["a" /* Observable */].of(loggedin);
         });
     };
     AccessGuard.prototype.guardLoggedIn = function () {
@@ -2635,7 +2610,7 @@ var AccessGuard = (function () {
             if (!loggedin) {
                 window.location.href = "/";
             }
-            return __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__["a" /* Observable */].of(loggedin);
+            return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["a" /* Observable */].of(loggedin);
         });
     };
     AccessGuard = __decorate([
@@ -2658,7 +2633,7 @@ var User = (function () {
 /***/ "../../../../../src/app/footer/footer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"footer\" fxLayout=\"row\" fxLayoutAlign=\"center center\">\n  <div class=\"inner-footer\">\n\n    <a href=\"/terms-of-service\" target=\"_blank\">Nutzungsbedingungen</a> | <a href=\"/privacy\"\n                                                                             target=\"_blank\">Datenschutz</a> | <a\n    href=\"/imprint\" target=\"_blank\">Impressum</a><br>\n    <br>\n    &copy; 2017 Trumpf Werkzeugmaschinen GmbH &amp; Co KG\n  </div>\n</div>\n"
+module.exports = "<div class=\"footer\" fxLayout=\"row\" fxLayoutAlign=\"center center\">\n    <div class=\"inner-footer\">\n\n        <a href=\"/terms-of-service\" target=\"_blank\">Nutzungsbedingungen</a> | <a href=\"/privacy\"\n                                                                                 target=\"_blank\">Datenschutz</a> | <a\n            href=\"/imprint\" target=\"_blank\">Impressum</a><br>\n        <br>\n        &copy; 2017 Trumpf Werkzeugmaschinen GmbH &amp; Co KG\n    </div>\n</div>\n"
 
 /***/ }),
 
@@ -2724,7 +2699,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".nav-button {\n  text-align: left;\n}\n", ""]);
+exports.push([module.i, ".nav-button {\n    text-align: left;\n}\n", ""]);
 
 // exports
 
@@ -2737,7 +2712,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/sidebar/console/console-menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div fxLayout=\"column\" fxLayoutAlign=\"\">\n  <button (click)=\"openDashboard()\" mat-button class=\"nav-button\">Dashboard\n    <span flex></span>\n  </button>\n  <button (click)=\"openCreateRecipe()\" mat-button class=\"nav-button\">Neues Getränk anlegen\n    <span flex></span>\n  </button>\n  <button (click)=\"openRecipes()\" mat-button class=\"nav-button\">Getränke verwalten\n    <span flex></span>\n  </button>\n</div>\n"
+module.exports = "<div fxLayout=\"column\" fxLayoutAlign=\"\">\n    <button (click)=\"openDashboard()\" mat-button class=\"nav-button\">Dashboard\n        <span flex></span>\n    </button>\n    <button (click)=\"openCreateRecipe()\" mat-button class=\"nav-button\">Neues Getränk anlegen\n        <span flex></span>\n    </button>\n    <button (click)=\"openRecipes()\" mat-button class=\"nav-button\">Getränke verwalten\n        <span flex></span>\n    </button>\n</div>\n"
 
 /***/ }),
 
@@ -2797,7 +2772,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".nav-button {\n  text-align: left;\n}\n\n.index{\n  font-size: 16px;\n  font-weight: bold;\n}\n", ""]);
+exports.push([module.i, ".nav-button {\n    text-align: left;\n}\n\n.index {\n    font-size: 16px;\n    font-weight: bold;\n}\n", ""]);
 
 // exports
 
@@ -2810,7 +2785,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/sidebar/index/index.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div fxLayout=\"column\" fxLayoutAlign=\"\">\n  <button (click)=\"openLandingPage()\" mat-button class=\"nav-button index\">Start\n    <span flex></span>\n  </button>\n  <button (click)=\"openConsole()\" mat-button class=\"nav-button index\">Marktplatz\n    <span flex></span>\n  </button>\n  <app-console-menu></app-console-menu>\n  <button (click)=\"openStatistics()\" mat-button class=\"nav-button index\">Statistiken\n    <span flex></span>\n  </button>\n  <app-statistics></app-statistics>\n  <button (click)=\"openNews()\" mat-button class=\"nav-button index\">Neuigkeiten\n    <span flex></span>\n  </button>\n</div>\n"
+module.exports = "<div fxLayout=\"column\" fxLayoutAlign=\"\">\n    <button (click)=\"openLandingPage()\" mat-button class=\"nav-button index\">Start\n        <span flex></span>\n    </button>\n    <button (click)=\"openConsole()\" mat-button class=\"nav-button index\">Marktplatz\n        <span flex></span>\n    </button>\n    <app-console-menu></app-console-menu>\n    <button (click)=\"openStatistics()\" mat-button class=\"nav-button index\">Statistiken\n        <span flex></span>\n    </button>\n    <app-statistics></app-statistics>\n    <button (click)=\"openNews()\" mat-button class=\"nav-button index\">Neuigkeiten\n        <span flex></span>\n    </button>\n</div>\n"
 
 /***/ }),
 
@@ -2918,7 +2893,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".nav-button {\n  text-align: left;\n}\n", ""]);
+exports.push([module.i, ".nav-button {\n    text-align: left;\n}\n", ""]);
 
 // exports
 
@@ -2931,7 +2906,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/sidebar/statistics/statistics.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div fxLayout=\"column\" fxLayoutAlign=\"\">\n  <button (click)=\"openOverview()\" mat-button class=\"nav-button\">Überblick\n    <span flex></span>\n  </button>\n  <button (click)=\"openRecipes()\" mat-button class=\"nav-button\">Rezepte\n    <span flex></span>\n  </button>\n  <button (click)=\"openCreators()\" mat-button class=\"nav-button\">Hersteller\n    <span flex></span>\n  </button>\n</div>\n"
+module.exports = "<div fxLayout=\"column\" fxLayoutAlign=\"\">\n    <button (click)=\"openOverview()\" mat-button class=\"nav-button\">Überblick\n        <span flex></span>\n    </button>\n    <button (click)=\"openRecipes()\" mat-button class=\"nav-button\">Rezepte\n        <span flex></span>\n    </button>\n    <button (click)=\"openCreators()\" mat-button class=\"nav-button\">Hersteller\n        <span flex></span>\n    </button>\n</div>\n"
 
 /***/ }),
 
@@ -2986,7 +2961,7 @@ var StatisticsComponent = (function () {
 /***/ "../../../../../src/app/utilities/message-box/message-box.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div [className]=\"type\" fxLayoutAlign=\"left center\">\n<ng-content></ng-content>\n</div>"
+module.exports = "<div [className]=\"type\" fxLayoutAlign=\"left center\">\n    <ng-content></ng-content>\n</div>"
 
 /***/ }),
 
@@ -3058,7 +3033,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".loading {\n    position: absolute;\n    top:0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    background-color: rgba(255, 255, 255, 0.9);\n    z-index: 1000;\n}", ""]);
+exports.push([module.i, ".loading {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    background-color: rgba(255, 255, 255, 0.9);\n    z-index: 1000;\n}", ""]);
 
 // exports
 
@@ -3071,7 +3046,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/utilities/spinner/spinner.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"counter > 0\" class=\"loading\" fxLayoutAlign=\"center center\">\n    <mat-progress-spinner mode=\"indeterminate\" diameter=\"30\" strokeWidth=\"3\"></mat-progress-spinner>\n<ng-content></ng-content></div>"
+module.exports = "<div *ngIf=\"counter > 0\" class=\"loading\" fxLayoutAlign=\"center center\">\n    <mat-progress-spinner mode=\"indeterminate\" diameter=\"30\" strokeWidth=\"3\"></mat-progress-spinner>\n    <ng-content></ng-content>\n</div>"
 
 /***/ }),
 
