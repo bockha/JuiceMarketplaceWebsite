@@ -6,13 +6,15 @@ import {RecipesComponent} from './recipes/recipes.component';
 import {CreatorsComponent} from './creators/creators.component';
 import {MatCardModule} from "@angular/material";
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 @NgModule({
     imports: [
         CommonModule,
         StatisticsRoutingModule,
         MatCardModule,
-        Ng2GoogleChartsModule
+        Ng2GoogleChartsModule,
+        FlexLayoutModule
     ],
     declarations: [OverviewComponent, RecipesComponent, CreatorsComponent]
 })
