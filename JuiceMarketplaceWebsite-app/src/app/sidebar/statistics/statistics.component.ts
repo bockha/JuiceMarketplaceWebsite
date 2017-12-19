@@ -1,27 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-statistics',
-  templateUrl: './statistics.component.html',
-  styleUrls: ['./statistics.component.css']
+    selector: 'app-statistics',
+    templateUrl: './statistics.component.html',
+    styleUrls: ['./statistics.component.css']
 })
 export class StatisticsComponent implements OnInit {
 
-  constructor(private router: Router) { }
+    constructor(private router: Router) {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
-  openOverview() {
-    this.router.navigateByUrl('/statistics/overview');
-  }
+    openOverview() {
+        this.router.navigateByUrl('/statistics/overview');
+    }
 
-  openCreators() {
-    this.router.navigateByUrl('/statistics/creators');
-  }
+    openCreators() {
+        this.router.navigateByUrl('/statistics/creators');
+    }
 
-  openRecipes() {
-    this.router.navigateByUrl('/statistics/recipes');
-  }
+    openRecipes() {
+        this.router.navigateByUrl('/statistics/recipes');
+    }
 }

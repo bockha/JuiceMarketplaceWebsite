@@ -1,17 +1,18 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 
 @Component({
-  selector: 'app-spinner',
-  templateUrl: './spinner.component.html',
-  styleUrls: ['./spinner.component.css'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-spinner',
+    templateUrl: './spinner.component.html',
+    styleUrls: ['./spinner.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class SpinnerComponent implements OnInit {
-  @Input() counter = 0;
-  
-  constructor() { }
+    @Input() counter = 0;
 
-  ngOnInit() {
-  }
+    constructor() {
+    }
+
+    ngOnInit() {
+    }
 
 }

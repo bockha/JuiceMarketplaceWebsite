@@ -1,3 +1,57 @@
 <p>
-  overview works!
+  <mat-card  class="iuno-card ">
+    <mat-card-header>
+      <mat-card-title>
+        <span class="card-title">Lizenzverkäufe im Tagesverlauf</span>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <google-chart [data]="revenuePerHourData"></google-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card  class="iuno-card ">
+    <mat-card-header>
+      <mat-card-title>
+        <span class="card-title">Lizenzverkäufe im des letzten Monats</span>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <google-chart [data]="revenuePerDayData"></google-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card  class="iuno-card ">
+    <mat-card-header>
+      <mat-card-title>
+        <span class="card-title">Die beliebtesten Zutaten</span>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <google-chart [data]="topComponentsData"></google-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card  class="iuno-card ">
+    <mat-card-header>
+      <mat-card-title>
+        <span class="card-title">Die beliebtesten Rezepte aller Zeiten</span>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <google-chart [data]="allTimeTopRecipesData"></google-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card  class="iuno-card ">
+    <mat-card-header>
+      <mat-card-title>
+        <span class="card-title">Die beliebtesten Rezepte heute</span>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <google-chart [data]="todayTopRecipesData"></google-chart>
+    </mat-card-content>
+  </mat-card>
+
 </p>

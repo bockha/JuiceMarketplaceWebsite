@@ -1,31 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-index',
-  templateUrl: './index.component.html',
-  styleUrls: ['./index.component.css']
+    selector: 'app-index',
+    templateUrl: './index.component.html',
+    styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit {
 
-  constructor(private router: Router) { }
+    constructor(private router: Router) {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
-  openLandingPage() {
-    this.router.navigateByUrl('');
-  }
+    openLandingPage() {
+        this.router.navigateByUrl('');
+    }
 
-  openConsole() {
-    this.router.navigateByUrl('/console');
-  }
+    openConsole() {
+        this.router.navigateByUrl('/console');
+    }
 
-  openStatistics() {
-    this.router.navigateByUrl('/statistics');
-  }
+    openStatistics() {
+        this.router.navigateByUrl('/statistics');
+    }
 
-  openNews() {
-    this.router.navigateByUrl('/news');
-  }
+    openNews() {
+        this.router.navigateByUrl('/news');
+    }
 }

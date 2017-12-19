@@ -1,27 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-console-menu',
-  templateUrl: './console-menu.component.html',
-  styleUrls: ['./console-menu.component.css']
+    selector: 'app-console-menu',
+    templateUrl: './console-menu.component.html',
+    styleUrls: ['./console-menu.component.css']
 })
 export class ConsoleMenuComponent implements OnInit {
 
-  constructor(private router: Router) { }
+    constructor(private router: Router) {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
-  openDashboard() {
-    this.router.navigateByUrl('/console/dashboard');
-  }
+    openDashboard() {
+        this.router.navigateByUrl('/console/dashboard');
+    }
 
-  openCreateRecipe() {
-    this.router.navigateByUrl('/console/create-recipe');
-  }
+    openCreateRecipe() {
+        this.router.navigateByUrl('/console/create-recipe');
+    }
 
-  openRecipes() {
-    this.router.navigateByUrl('/console/recipes');
-  }
+    openRecipes() {
+        this.router.navigateByUrl('/console/recipes');
+    }
 }

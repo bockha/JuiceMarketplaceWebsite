@@ -21,12 +21,14 @@ app.set('view engine', 'ejs');
 //Configure Passport
 require('./oauth/passport')(passport); // pass passport for configuration
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+
+app.use(express.static(path.join(__dirname, 'dist')));
+app.use('/api/reports', require('./routes/reports'));
 
 // -- CONFIGURE PASSPORT SESSION --
 app.use(session({
@@ -39,42 +41,30 @@ app.use(passport.session()); // persistent login sessions
 // -- PUBLIC CONTENT --
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/reports', require('./routes/reports'));
 app.use('/auth', require('./routes/auth')(passport));
-app.use('/coupon', require('./routes/coupon'));
+app.use('/api/reports', require('./routes/reports'));
+app.use('/api/coupon', require('./routes/coupon'));
 app.use('/', express.static(path.join(__dirname, 'dist')));
 
 // -- RESTRICTED CONTENT --
-app.use('/users', isLoggedIn, require('./routes/users'));
-app.use('/components', isLoggedIn, require('./routes/components'));
+app.use('/api/users', isLoggedIn, require('./routes/users'));
+app.use('/api/components', isLoggedIn, require('./routes/components'));
 
-app.get('/console/*', isLoggedIn, (req, res) => {
+app.all('*', function (req, res, next) {
+    // Just send the index.html for other files to support HTML5Mode
     res.sendFile(path.join(__dirname, 'dist/index.html'));
-});
+});function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.cookie('redirectTo', req.originalUrl);
 
-app.get('/terms-of-service', function (req, res) {
-    renderLegalPage(res, 'terms-of-service.md');
-});
-
-app.get('/privacy', function (req, res) {
-    renderLegalPage(res, 'privacy.md');
-});
-
-app.get('/contact', function (req, res) {
-    renderLegalPage(res, 'contact.md');
-});
-
-app.get('/imprint', function (req, res) {
-    renderLegalPage(res, 'imprint.md');
-});
-
-app.use('/', function (req, res, next) {
-    express.static(path.join(__dirname, 'dist'))
-});
+    res.redirect('/auth/iuno');
+}
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    const err = new Error('Not Found');
+    var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
@@ -132,13 +122,4 @@ function isLoggedIn(req, res, next) {
     }
 
     res.sendStatus(401);
-}
-
-function renderLegalPage(res, filename) {
-    const path = __dirname + '/resources/' + filename;
-    const file = fs.readFileSync(path, 'utf8');
-    const content = marked(file.toString());
-    res.render('legal', {
-        content: content
-    });
 }

@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-creators',
-  templateUrl: './creators.component.html',
-  styleUrls: ['./creators.component.css']
+    selector: 'app-creators',
+    templateUrl: './creators.component.html',
+    styleUrls: ['./creators.component.css']
 })
 export class CreatorsComponent implements OnInit {
 
-  constructor() { }
+    constructor() {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
 }
