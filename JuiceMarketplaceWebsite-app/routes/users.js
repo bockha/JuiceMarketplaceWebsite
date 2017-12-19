@@ -10,6 +10,7 @@ const programConverter = require('../services/program_converter');
 const logger = require('../global/logger');
 const helper = require('../services/helper_service');
 const encryption = require('../services/encryption_service');
+const recipeLimit = require('../services/recipe_limit_service');
 
 const CONFIG = require('../config/config_loader');
 
@@ -60,11 +61,17 @@ router.get('/:id/recipes', function (req, res, next) {
  * Returns the amount of recipes the user can still publish on the marketplace
  */
 router.get('/:id/recipes/limit', function (req, res, next) {
-    //TODO: Implement algorithm as discussed in #78
-    return res.json({limit: CONFIG.RECIPE_LIMIT_PER_USER});
+    marketplaceCore.getActivatedLicenseCountForUser(req.params['id'], req.user.token.accessToken, function (err, activatedLicenses) {
+        if (err) {
+            return next(err);
+        }
+
+        return res.json({limit: recipeLimit.calculateRecipeLimit(activatedLicenses)});
+
+    });
 });
 
-router.get('/:id/recipes/count', function(req, res, next){
+router.get('/:id/recipes/count', function (req, res, next) {
     marketplaceCore.getRecipesForUser(req.params['id'], req.user.token.accessToken, function (err, recipes) {
         if (err) {
             return next(err);
