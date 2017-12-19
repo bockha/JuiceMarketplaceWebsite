@@ -12,6 +12,8 @@ import {JuiceProgramConfiguratorComponent} from '../juice-program-configurator/j
 import {TdmRecipe} from '../juice-program-configurator/models/tdmrecipe';
 import {RecipeService} from '../services/recipe.service';
 import {AccessGuard} from '../services/user.service';
+import {Observable} from "rxjs/Observable";
+import "rxjs/add/operator/combineLatest"
 
 @Component({
     selector: 'app-create-recipe',
@@ -31,7 +33,9 @@ export class CreateRecipeComponent implements OnInit {
     recipeDescription: string = "";
     recipeLicenseFee: number = -1;
     program = new TdmProgram();
-
+    recipesLeft = 0;
+    recipeLimit = 0;
+    recipeCount = 0;
     constructor(private marketplaceService: MarketplaceService,
                 private recipeService: RecipeService,
                 private http: HttpClient,
@@ -55,10 +59,12 @@ export class CreateRecipeComponent implements OnInit {
         this.marketplaceService.components.subscribe(components => {
             this.components = components;
         })
-        // this.marketplaceService.getComponents().then(components => {
-        //   this.components = components;
-        //   this.spinnerCounter -= 1;
-        // });
+
+        var rc = this.recipeService.getRecipeCount();
+        var rl = this.recipeService.getRecipeLimit();
+        rl.subscribe(limit => this.recipeLimit = limit);
+        rc.subscribe(count => this.recipeCount = count);
+        rc.combineLatest(rl, (count, limit)=> limit-count).subscribe(result => this.recipesLeft = result);
     }
 
     actionSaveRecipe() {
@@ -139,7 +145,7 @@ export class CreateRecipeComponent implements OnInit {
                         error => {
                             this.spinnerCounter -= 1;
                             if (error.status == 201) { // this isn't an error. @see https://github.com/angular/angular/issues/18396
-                                this.router.navigateByUrl('./recipes');
+                                this.router.navigateByUrl('/console/recipes');
                             } else {
                                 alert("Es ist ein Fehler aufgetreten.\nDas Rezept konnte nicht gespeichert werden.");
                                 this.spinnerCounter -= 1;

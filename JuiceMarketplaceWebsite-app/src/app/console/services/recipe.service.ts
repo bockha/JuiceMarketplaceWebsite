@@ -5,6 +5,7 @@ import {TdmRecipe} from '../juice-program-configurator/models/tdmrecipe';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class RecipeService {
@@ -34,6 +35,20 @@ export class RecipeService {
         }).subscribe(response => {
             this.updateRecipes();
         });
+    }
+
+    getRecipeCount(): Observable<number>{
+        let url = this.recipesUrl+'/count';
+        return this.http.get(url).map((obj: any)=>{
+            return obj.count;
+        })
+    }
+
+    getRecipeLimit(): Observable<number>{
+        let url = this.recipesUrl+'/limit';
+        return this.http.get(url).map((obj: any)=>{
+            return obj.limit;
+        })
     }
 
     private handleError(error: any): Promise<any> {

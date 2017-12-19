@@ -61,13 +61,18 @@ router.get('/:id/recipes', function (req, res, next) {
  */
 router.get('/:id/recipes/limit', function (req, res, next) {
     //TODO: Implement algorithm as discussed in #78
+    return res.json({limit: CONFIG.RECIPE_LIMIT_PER_USER});
+});
+
+router.get('/:id/recipes/count', function(req, res, next){
     marketplaceCore.getRecipesForUser(req.params['id'], req.user.token.accessToken, function (err, recipes) {
         if (err) {
             return next(err);
         }
-        return res.json({limit: CONFIG.RECIPE_LIMIT_PER_USER - recipes.length});
+        return res.json({count: recipes.length});
     });
 });
+
 
 /**
  * Saves a recipe for a specific user
