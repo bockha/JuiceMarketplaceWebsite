@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>Auszahlung von Guthaben veranlassen</h2>
+<mat-dialog-content>
+    <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
+        <div fxFlexFill>
+            Es sind {{wallet.confirmed/100000}} IUNO in Ihrem Wallet zur Auszahlung bereit. Dies entspricht
+            {{wallet.confirmed
+            / 100000}} mBTC bzw. {{wallet.confirmed}} Satoshis im Bitcoin Testnet.
+        </div>
+
+        <div  *ngIf="wallet.unconfirmed!= wallet.confirmed" fxFlexFill>
+            Davon sind {{wallet.unconfirmed}} Satoshis sofort zur Auszahlung bereit. {{wallet.unconfirmed -
+            wallet.confirmed}}
+            Satoshis müssen noch in der Blockchain bestätigt werden und es wird nicht empfohlen dieses Geld jetzt
+            bereits
+            auszuzahlen, auch wenn es möglich ist.
+        </div>
+
+        <div fxFlexFill>
+            <mat-slide-toggle [(ngModel)]="unconfirmed">Unbestätigte Mittel auszahlen</mat-slide-toggle>
+        </div>
+
+        <div fxFlexFill>
+            <mat-form-field [color]="addressCorrect?'primary':'warn'" (input)="addressChanged($event)">
+
+                <input matInput placeholder="Auszahladresse" type="text" [(ngModel)]="address">
+            </mat-form-field>
+        </div>
+        <div fxFlexFill>
+            <mat-form-field>
+                <input matInput placeholder="Auszahlbetrag" type="number" min="500"
+                       max="{{unconfirmed?wallet.unconfirmed:wallet.confirmed}}" [(ngModel)]="payout"
+                       value="{{unconfirmed?wallet.unconfirmed:wallet.confirmed}}" [disabled]="emptyWallet">
+                <span matSuffix> Satoshi</span>
+                <mat-hint align="end">min. 500, max. {{unconfirmed?wallet.unconfirmed:wallet.confirmed}}</mat-hint>
+            </mat-form-field><!--{{payout/100000}}IUNO/mBTC-->
+        </div>
+        <div fxFlexFill>
+
+            <mat-slide-toggle [(ngModel)]="emptyWallet" (change)="emptyChanged($event)">Wallet leeren</mat-slide-toggle>
+        </div>
+
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-raised-button color="basic" mat-dialog-close>abbrechen</button>
+    <button mat-raised-button color="primary" (click)="accept()" [disabled]="!isPayoutEnabled()">Auszahlen!</button>
+</mat-dialog-actions>

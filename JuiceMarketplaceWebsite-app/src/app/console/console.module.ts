@@ -7,7 +7,10 @@ import {HttpClientModule} from '@angular/common/http';
 import {HttpModule} from '@angular/http'; // still needed @see https://github.com/angular/angular/issues/19788
 
 // Angular Material
-import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import {
+    MatButtonModule, MatCheckboxModule, MatDialogModule, MatSlider, MatSliderModule,
+    MatSlideToggleModule
+} from '@angular/material';
 import {MatToolbarModule} from '@angular/material';
 import {MatMenuModule} from '@angular/material';
 import {MatSidenavModule} from '@angular/material'
@@ -35,6 +38,8 @@ import {JuiceProgramConfiguratorModule} from './juice-program-configurator/juice
 import {UtilitiesModule} from '../utilities/utilities.module';
 import {AccessGuard} from './services/user.service';
 import {Ng2GoogleChartsModule} from "ng2-google-charts";
+import { VaultComponent } from './vault/vault.component';
+import { VaultPayoutDialogComponent } from './vault-payout-dialog/vault-payout-dialog.component';
 
 @NgModule({
     imports: [
@@ -60,16 +65,22 @@ import {Ng2GoogleChartsModule} from "ng2-google-charts";
         MatFormFieldModule,
         JuiceProgramConfiguratorModule,
         UtilitiesModule,
-        Ng2GoogleChartsModule
+        Ng2GoogleChartsModule,
+        MatDialogModule,
+        MatSliderModule,
+        MatSlideToggleModule
     ],
     declarations: [
         ConsoleComponent,
         CreateRecipeComponent,
         RecipesComponent,
         DashboardComponent,
+        VaultComponent,
+        VaultPayoutDialogComponent,
     ],
     providers: [AccessGuard],
     bootstrap: [ConsoleComponent],
+    entryComponents: [VaultPayoutDialogComponent]
 })
 export class ConsoleModule {
 }

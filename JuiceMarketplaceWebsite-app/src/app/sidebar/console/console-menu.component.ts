@@ -25,4 +25,7 @@ export class ConsoleMenuComponent implements OnInit {
     openRecipes() {
         this.router.navigateByUrl('/console/recipes');
     }
+    openVault() {
+        this.router.navigateByUrl('/console/vault');
+    }
 }
