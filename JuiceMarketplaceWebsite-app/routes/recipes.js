@@ -33,7 +33,7 @@ router.get('/', validate({
         params['ownerUUID'] = createdBy;
     }
 
-    marketplaceCore.getAllRecipes(req.user.token, {}, function (err, recipes) {
+    marketplaceCore.getAllRecipes(req.user.token, params, function (err, recipes) {
         if (err) {
             return next(err);
         }
