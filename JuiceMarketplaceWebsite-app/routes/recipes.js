@@ -92,5 +92,70 @@ router.get('/', validate({
 
 });
 
+router.get('/licenses/count', validate({
+    query: validation_schema.License_Count_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
+    logger.warn('[routes/components] NOT IMPLEMENTED YET');
+    res.send('NOT IMPLEMENTED YET');
+});
+
+router.get('/licenses/total', validate({
+    query: validation_schema.License_Total_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
+    logger.warn('[routes/components] NOT IMPLEMENTED YET');
+    res.send('NOT IMPLEMENTED YET');
+});
+
+router.get('/licenses/total/history', validate({
+    query: validation_schema.License_History_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
+    logger.warn('[routes/components] NOT IMPLEMENTED YET');
+    res.send('NOT IMPLEMENTED YET');
+});
+
+router.get('/:id', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Empty
+}), function (req, res, next) {
+    logger.warn('[routes/components] NOT IMPLEMENTED YET');
+    res.send('NOT IMPLEMENTED YET');
+});
+
+router.get('/:id/licenses/count', validate({
+    query: validation_schema.Recipe_License_Count_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
+    logger.warn('[routes/components] NOT IMPLEMENTED YET');
+    res.send('NOT IMPLEMENTED YET');
+});
+
+
+router.get('/:id/licenses/count/history', validate({
+    query: validation_schema.Recipe_License_History_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
+    logger.warn('[routes/components] NOT IMPLEMENTED YET');
+    res.send('NOT IMPLEMENTED YET');
+});
+
+router.get('/:id/image', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Empty
+}), function (req, res, next) {
+    logger.warn('[routes/components] NOT IMPLEMENTED YET');
+    res.send('NOT IMPLEMENTED YET');
+});
+
+router.put('/:id/image', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Recipe_Image_Body
+}), function (req, res, next) {
+    logger.warn('[routes/components] NOT IMPLEMENTED YET');
+    res.send('NOT IMPLEMENTED YET');
+});
+
 
 module.exports = router;
