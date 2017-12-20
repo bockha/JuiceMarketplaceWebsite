@@ -98,17 +98,6 @@ self.getRecipesForUser = function (userId, accessToken, callback) {
             return callback(err, null);
         }
 
-        const components = [];
-
-        if (helper.isArray(jsonData)) {
-            jsonData.forEach(function (entry) {
-                components.push(Component.CreateComponentFromJSON(entry));
-            });
-        }
-        else {
-            logger.warn('Unexpected response when retrieving components from market place core:');
-        }
-
         callback(err, jsonData);
     });
 };
@@ -164,6 +153,20 @@ self.deleteRecipe = function (token, recipeID, callback) {
         {
 
         }
+    );
+    options.headers.authorization = 'Bearer ' + token.accessToken;
+
+    doRequest(options, callback);
+};
+
+self.getAllRecipes = function(token, params, callback) {
+    const options = buildOptionsForRequest(
+        'GET',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/technologydata',
+        params
     );
     options.headers.authorization = 'Bearer ' + token.accessToken;
 
