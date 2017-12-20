@@ -168,8 +168,7 @@ export class OverviewComponent implements OnInit {
     }
 
     private drawDayReport() {
-        var x = [];
-        x[0] = 'x';
+
         var data = [];
 
 
@@ -197,8 +196,7 @@ export class OverviewComponent implements OnInit {
     }
 
     private drawComponentReports() {
-        var x = [];
-        x[0] = 'x';
+
         var data = [];
 
 
@@ -226,8 +224,6 @@ export class OverviewComponent implements OnInit {
     }
 
     private drawAllTimeTopRecipes( ) {
-        var x = [];
-        x[0] = 'x';
         var data = [];
 
 

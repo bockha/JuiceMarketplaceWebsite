@@ -34,6 +34,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {JuiceProgramConfiguratorModule} from './juice-program-configurator/juice-program-configurator.module';
 import {UtilitiesModule} from '../utilities/utilities.module';
 import {AccessGuard} from './services/user.service';
+import {Ng2GoogleChartsModule} from "ng2-google-charts";
 
 @NgModule({
     imports: [
@@ -58,7 +59,8 @@ import {AccessGuard} from './services/user.service';
         MatInputModule,
         MatFormFieldModule,
         JuiceProgramConfiguratorModule,
-        UtilitiesModule
+        UtilitiesModule,
+        Ng2GoogleChartsModule
     ],
     declarations: [
         ConsoleComponent,

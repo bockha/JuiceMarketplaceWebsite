@@ -9,7 +9,8 @@
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <div id='chart-revenue' style="padding: 10px;"></div>
+                <google-chart [data]="revenueHistoryData"></google-chart>
+                <!--<div id='chart-revenue' style="padding: 10px;"></div>-->
             </mat-card-content>
         </mat-card>
         <mat-card fxFlex.gt-md="39" class="iuno-card">
@@ -19,7 +20,8 @@
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <div id='chart-top-recipes' style="padding: 10px;"></div>
+                <google-chart [data]="topRecipesData"></google-chart>
+                <!--<div id='chart-top-recipes' style="padding: 10px;"></div>-->
             </mat-card-content>
         </mat-card>
     </div>
@@ -52,6 +54,21 @@
                 </span>
                 <span class="card-information" *ngIf="topRecipeName != null">
                     {{topRecipeName}}
+                  </span>
+            </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex.gt-md="50" class="iuno-card">
+            <mat-card-header>
+                <mat-card-title>
+                    <span class="card-title">Aktueller Kontostand</span>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content fxLayoutAlign="center center" style="height: 100%;">
+              <span class="card-information" *ngIf="vaultBalance == null">
+                  -
+                </span>
+                <span class="card-information" *ngIf="vaultBalance != null">
+                    {{vaultBalance}} IUNO
                   </span>
             </mat-card-content>
         </mat-card>
