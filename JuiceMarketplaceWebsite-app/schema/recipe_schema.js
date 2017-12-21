@@ -178,4 +178,79 @@ self.Recipe_Image_Body = {
     additionalProperties: false
 };
 
+self.Recipe_Body = {
+    type: "object",
+    properties: {
+        title: {
+            type: "string",
+            minLength: 1,
+            maxLength: 250
+        },
+        description: {
+            type: "string",
+            minLength: 1,
+            maxLength: 30000
+        },
+        "license-fee": {
+            type: "integer",
+            minimum: 0,
+            maximum: 2000
+        },
+        program: {
+            type: "object",
+            properties: {
+                "amount-per-millisecond": {
+                    type: "number",
+                    minimum: 0.001,
+                    maximum: 1
+                },
+                sequences: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {
+                            "ingredient-id": {
+                                type: "string",
+                                format: "uuid"
+                            },
+                            phases: {
+                                type: "array",
+                                items: {
+                                    type: "object",
+                                    properties: {
+                                        start: {
+                                            type: "integer",
+                                            minimum: 0,
+                                            maximum: 1000
+                                        },
+                                        amount: {
+                                            type: "integer",
+                                            minimum: 1,
+                                            maximum: 1000
+                                        },
+                                        throughput: {
+                                            type: "integer",
+                                            minimum: 1,
+                                            maximum: 100
+                                        }
+                                    },
+                                    required: ['start', 'amount', 'throughput'],
+                                    additionalProperties: false
+                                },
+                                additionalItems: false
+                            }
+                        },
+                        required: ['ingredient-id', 'phases'],
+                        additionalProperties: false
+                    }
+                }
+            },
+            required: ['amount-per-millisecond', 'sequences'],
+            additionalProperties: false
+        }
+    },
+    required: ['title', 'description', 'license-fee', 'program'],
+    additionalProperties: false
+};
+
 module.exports = self;

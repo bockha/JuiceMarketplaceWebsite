@@ -92,6 +92,7 @@ router.get('/', validate({
 
 });
 
+
 router.get('/licenses/count', validate({
     query: validation_schema.License_Count_Query,
     body: validation_schema.Empty
@@ -116,7 +117,7 @@ router.get('/licenses/total/history', validate({
     res.send('NOT IMPLEMENTED YET');
 });
 
-router.get('/:id', validate({
+router.get('/:recipe_id', validate({
     query: validation_schema.Empty,
     body: validation_schema.Empty
 }), function (req, res, next) {
@@ -124,7 +125,24 @@ router.get('/:id', validate({
     res.send('NOT IMPLEMENTED YET');
 });
 
-router.get('/:id/licenses/count', validate({
+router.put('/:recipe_id', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Recipe_Body
+}), function (req, res, next) {
+    logger.warn('[routes/recipes] NOT IMPLEMENTED YET');
+    res.send('NOT IMPLEMENTED YET');
+});
+
+router.delete('/:recipe_id', function (req, res, next) {
+    marketplaceCore.deleteRecipe(req.user.token, req.params['recipe_id'], function (err, data) {
+        if (err) {
+            return next(err);
+        }
+        res.sendStatus(200);
+    });
+});
+
+router.get('/:recipe_id/licenses/count', validate({
     query: validation_schema.Recipe_License_Count_Query,
     body: validation_schema.Empty
 }), function (req, res, next) {
@@ -133,7 +151,7 @@ router.get('/:id/licenses/count', validate({
 });
 
 
-router.get('/:id/licenses/count/history', validate({
+router.get('/:recipe_id/licenses/count/history', validate({
     query: validation_schema.Recipe_License_History_Query,
     body: validation_schema.Empty
 }), function (req, res, next) {
@@ -141,7 +159,7 @@ router.get('/:id/licenses/count/history', validate({
     res.send('NOT IMPLEMENTED YET');
 });
 
-router.get('/:id/image', validate({
+router.get('/:recipe_id/image', validate({
     query: validation_schema.Empty,
     body: validation_schema.Empty
 }), function (req, res, next) {
@@ -149,7 +167,7 @@ router.get('/:id/image', validate({
     res.send('NOT IMPLEMENTED YET');
 });
 
-router.put('/:id/image', validate({
+router.put('/:recipe_id/image', validate({
     query: validation_schema.Empty
 }), function (req, res, next) {
     logger.warn('[routes/recipes] NOT IMPLEMENTED YET');

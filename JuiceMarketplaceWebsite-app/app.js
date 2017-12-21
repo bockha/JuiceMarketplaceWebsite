@@ -43,7 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', require('./routes/auth')(passport));
 app.use('/api/reports', require('./routes/reports'));
-app.use('/api/coupon', require('./routes/coupon'));
+app.use('/coupon', require('./routes/coupon'));
 app.use('/', express.static(path.join(__dirname, 'dist')));
 
 // -- RESTRICTED CONTENT --

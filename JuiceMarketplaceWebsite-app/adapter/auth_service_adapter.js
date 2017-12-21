@@ -51,7 +51,7 @@ self.getUserInfoForToken = function (token, callback) {
 
 };
 
-self.getImageForUser = function (user, callback) {
+self.getImageForUser = function (userId, token, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -64,10 +64,10 @@ self.getImageForUser = function (user, callback) {
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
-        '/users/' + user.token.user + '/image',
+        '/users/' + userId + '/image',
         {}
     );
-    options.headers.authorization = 'Bearer ' + user.token.accessToken;
+    options.headers.authorization = 'Bearer ' + token.accessToken;
     options.encoding = null;
 
     request(options, function (e, r, imageBuffer) {
