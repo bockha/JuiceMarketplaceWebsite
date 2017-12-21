@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ViewEncapsulation} from '@angular/core'
 
-import * as c3 from 'c3';
 import * as moment from 'moment';
 
 import {DashboardService} from '../services/dashboard.service';
