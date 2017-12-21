@@ -46,19 +46,7 @@ router.get('/:id', function (req, res, next) {
 
 
 /**
- * Retrieves all recipes for the user
- */
-router.get('/:id/recipes', function (req, res, next) {
-    marketplaceCore.getRecipesForUser(req.params['id'], req.user.token.accessToken, function (err, recipes) {
-        if (err) {
-            return next(err);
-        }
-        res.send(recipes);
-    });
-});
-
-/**
- * Returns the amount of recipes the user can still publish on the marketplace
+ * Returns the limit of recipes the user can publish on the marketplace
  */
 router.get('/:id/recipes/limit', function (req, res, next) {
     marketplaceCore.getActivatedLicenseCountForUser(req.params['id'], req.user.token.accessToken, function (err, activatedLicenses) {
@@ -70,7 +58,9 @@ router.get('/:id/recipes/limit', function (req, res, next) {
 
     });
 });
-
+/**
+ * Returns the amount of recipes the user already published on the marketplace
+ */
 router.get('/:id/recipes/count', function (req, res, next) {
     marketplaceCore.getRecipesForUser(req.params['id'], req.user.token.accessToken, function (err, recipes) {
         if (err) {
@@ -79,8 +69,6 @@ router.get('/:id/recipes/count', function (req, res, next) {
         return res.json({count: recipes.length});
     });
 });
-
-
 /**
  * Saves a recipe for a specific user
  */
@@ -217,42 +205,11 @@ router.post('/:id/recipes', function (req, res, next) {
     });
 });
 
-
-/**
- * Get a specific recipe for a user
- */
-router.get('/:id/recipes/:recipe_id', function (req, res, next) {
-
-    res.send('Not implemented yet');
-});
-
-
-/**
- * Updates a specific recipe for a specific user
- */
-router.put('/:id/recipes/:recipe_id', function (req, res, next) {
-
-    res.send('Not implemented yet');
-});
-
-/**
- * Deletes a specific recipe for a specific user
- */
-router.delete('/:id/recipes/:recipe_id', function (req, res, next) {
-    marketplaceCore.deleteRecipe(req.user.token, req.params['recipe_id'], function (err, data) {
-        if (err) {
-            return next(err);
-        }
-        res.sendStatus(200);
-    });
-});
-
-
 /**
  * Retrieves the user image
  */
-router.get('/:id/image', function (req, res, next) {
-    authService.getImageForUser(req.user, function (err, data) {
+router.get('/:user_id/image', function (req, res, next) {
+    authService.getImageForUser(req.params['user_id'], req.user.token, function (err, data) {
         if (err) {
             next(err);
             return;
@@ -268,8 +225,8 @@ router.get('/:id/image', function (req, res, next) {
     });
 });
 
-/* Reports */
 
+router.get('/:user_id/recipes', require('./user_reports'));
 router.use('/:id/reports', require('./user_reports'));
 router.use('/:id/vault', require('./vault'));
 

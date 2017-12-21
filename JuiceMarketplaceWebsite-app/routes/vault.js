@@ -22,5 +22,15 @@ router.get('/wallets', function (req, res, next) {
     });
 });
 
+router.post('/wallets/:walletId/payouts', function(req, res, next){
+    var token = req.user.token;
+    marketplaceCore.createVaultPayoutForUser(req.params['id'],req.params['walletId'],token['accessToken'],req.body,function(err, payout){
+        if(err){
+            return next(err);
+        }
+        res.send(payout);
+    })
+});
+
 
 module.exports = router;

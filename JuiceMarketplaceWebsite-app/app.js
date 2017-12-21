@@ -23,7 +23,7 @@ require('./oauth/passport')(passport); // pass passport for configuration
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
 
@@ -43,39 +43,57 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', require('./routes/auth')(passport));
 app.use('/api/reports', require('./routes/reports'));
-app.use('/api/coupon', require('./routes/coupon'));
+app.use('/coupon', require('./routes/coupon'));
 app.use('/', express.static(path.join(__dirname, 'dist')));
 
 // -- RESTRICTED CONTENT --
 app.use('/api/users', isLoggedIn, require('./routes/users'));
+app.use('/api/recipes', isLoggedIn, require('./routes/recipes'));
 app.use('/api/components', isLoggedIn, require('./routes/components'));
 
 app.all('*', function (req, res, next) {
     // Just send the index.html for other files to support HTML5Mode
     res.sendFile(path.join(__dirname, 'dist/index.html'));
-});function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.cookie('redirectTo', req.originalUrl);
-
-    res.redirect('/auth/iuno');
-}
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    var err = new Error('Not Found');
+    let err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 
-if (app.get('env') !== 'development') {
-    app.use(function (err, req, res, next) {
-        //Always logout user on failure
-        req.logout();
-        next(err, req, res)
-    });
-}
+app.use(function (err, req, res, next) {
+
+    let responseData;
+
+    if (err.name === 'JsonSchemaValidationError') {
+        // Log the error however you please
+        console.log(JSON.stringify(err.validationErrors));
+
+        // Set a bad request http response status or whatever you want
+        res.status(400);
+
+        // Format the response body however you want
+        responseData = {
+            statusText: 'Bad Request',
+            jsonSchemaValidation: true,
+            validations: err.validationErrors  // All of your validation information
+        };
+
+        return res.json(responseData);
+    }
+
+    next(err);
+});
+//
+// if (app.get('env') !== 'development') {
+//     app.use(function (err, req, res, next) {
+//         //Always logout user on failure
+//         req.logout();
+//         next(err, req, res)
+//     });
+// }
 
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {

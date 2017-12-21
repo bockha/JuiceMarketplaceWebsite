@@ -18,8 +18,8 @@ export class VaultService{
         return this.http.get<Wallet[]>("/api/users/me/vault/wallets");
     }
 
-    createVaultPayout(payout: Payout): Observable<Payout>{
-        return this.http.post<Payout>('/api/user/me/vault/payouts',payout);
+    createVaultPayout(walletId: string, payout: Payout): Observable<Payout>{
+        return this.http.post<Payout>('/api/users/me/vault/wallets/'+walletId+'/payouts',payout);
     }
 
 }

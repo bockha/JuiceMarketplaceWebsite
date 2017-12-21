@@ -42,8 +42,8 @@ export class VaultPayoutDialogComponent implements OnInit{
         pObject.amount = this.payout * this.unitFactor;
         pObject.payoutAddress  = this.address;
         pObject.emptyWallet = this.emptyWallet;
-        pObject.referenceId = "Payout by JMW at: " + moment().format();
-        this.vaultService.createVaultPayout(pObject).subscribe(payout=>{
+        pObject.referenceId = "Payout by JMW";
+        this.vaultService.createVaultPayout(this.wallet.walletId,pObject).subscribe(payout=>{
             this.dialogRef.close();
         },error2 => {
 

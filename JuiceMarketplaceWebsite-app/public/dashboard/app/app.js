@@ -1,1 +1,0 @@
-var graphApp = angular.module('dashboard', ['angular-c3-simple', 'angularMoment']);

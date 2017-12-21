@@ -3,7 +3,16 @@ const router = express.Router();
 const logger = require('../global/logger');
 const captchaAdapter = require('../adapter/recaptcha_adapter');
 const couponAdapter = require('../adapter/couponserver_adapter');
-router.post('/', function (req, res, next) {
+
+const {Validator, ValidationError} = require('express-json-validator-middleware');
+const validator = new Validator({allErrors: true});
+const validate = validator.validate;
+const validation_schema = require('../schema/coupon_schema');
+
+router.post('/', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Coupon_Body
+}), function (req, res, next) {
     const captchaResponse = req.body['g-recaptcha-response'];
 
     captchaAdapter.verifyReCaptchaResponse(captchaResponse, function (err, success) {
@@ -31,18 +40,27 @@ router.post('/', function (req, res, next) {
     });
 });
 
-router.get('/:id/ios', function (req, res, next) {
+router.get('/:id/ios', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     res.set('Content-Disposition', 'attachment; filename=IUNO_Coupon.pkpass');
     couponAdapter.getIosCoupon(req.params['id'], res)
 
 });
 
-router.get('/:id/pdf', function (req, res, next) {
+router.get('/:id/pdf', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     res.set('Content-Disposition', 'attachment; filename=IUNO_Coupon.pdf');
     couponAdapter.getPdfCoupon(req.params['id'], res)
 });
 
-router.get('/faucet', function (req, res, next) {
+router.get('/faucet', validate({
+    query: validation_schema.Faucet_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     if (req.query['id']) {
         res.render('coupon/download', {
             request: req,
