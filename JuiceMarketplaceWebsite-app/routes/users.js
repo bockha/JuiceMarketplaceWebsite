@@ -226,7 +226,7 @@ router.get('/:user_id/image', function (req, res, next) {
 });
 
 
-router.get('/:user_id/recipes', require('./user_reports'));
+router.use('/:user_id/recipes', require('./recipes'));
 router.use('/:id/reports', require('./user_reports'));
 router.use('/:id/vault', require('./vault'));
 
