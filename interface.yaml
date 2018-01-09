@@ -414,8 +414,8 @@ paths:
           description: How the users are sorted
           type: string
           enum:
-            - Username-ASC
-            - Username-DESC
+            - usernameASC
+            - usernameDESC
             - RANDOM
         - name: from
           in: query
