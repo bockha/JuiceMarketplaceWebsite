@@ -266,7 +266,7 @@ router.put('/:user_id/image', validate({
 });
 
 
-router.get('/:user_id/recipes', require('./user_reports'));
+router.use('/:user_id/recipes', require('./recipes'));
 router.use('/:id/reports', require('./user_reports'));
 router.use('/:id/vault', require('./vault'));
 

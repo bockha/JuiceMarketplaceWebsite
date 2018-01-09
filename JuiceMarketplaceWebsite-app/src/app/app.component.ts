@@ -5,6 +5,8 @@ import {MatSidenav} from '@angular/material';
 import {HostListener} from '@angular/core';
 import {UserService} from "./console/services/user.service";
 
+import { NgcCookieConsentService, NgcInitializeEvent} from 'ngx-cookieconsent';
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -28,7 +30,7 @@ export class AppComponent implements OnInit {
 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private userService: UserService) {
+                private userService: UserService,private ccService: NgcCookieConsentService) {
 
 
     }
@@ -38,16 +40,6 @@ export class AppComponent implements OnInit {
         this.updateResponsiveElements();
     }
 
-    // printpath(parent: String, config: Route[]) {
-    //   for (let i = 0; i < config.length; i++) {
-    //     let r = config[i];
-    //     console.log(parent + '/' + r.path);
-    //     if (r.children && r.path) {
-    //       this.printpath(parent + '/' + r.path, r.children);
-    //     }
-    //   }
-    // }
-
     ngOnInit() {
         const self = this;
         this.routerSubscription = this.router.events.subscribe(function (s) {
@@ -55,10 +47,7 @@ export class AppComponent implements OnInit {
                 self.path = s.urlAfterRedirects;
                 self.calculateMenu(self.path);
             }
-        });
-        this.updateResponsiveElements();
-        // this.printpath('', this.router.config);
-        // console.log('configured routes: ', this.router.config);
+        })
     }
 
     private updateResponsiveElements() {

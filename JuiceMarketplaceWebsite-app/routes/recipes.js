@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({mergeParams: true});
 const marketplaceCore = require('../adapter/marketplace_core_adapter');
 const logger = require('../global/logger');
 const helper = require('../services/helper_service');
@@ -17,8 +17,13 @@ router.get('/', validate({
     body: validation_schema.Empty
 }), function (req, res, next) {
 
+
+
     const components = req.query['components'];
-    const createdBy = req.query['createdBy'];
+    let createdBy = req.query['createdBy'];
+    // if(req.params['user_id']){
+    //     createdBy = req.params['user_id'];
+    // }
     const limit = req.query['limit'];
     const orderedBy = req.query['orderBy'];
 

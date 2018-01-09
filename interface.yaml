@@ -408,15 +408,15 @@ paths:
     get:
       description: 'Returns a list of users, used for administration'
       parameters:
-        - name: sortedBy
+        - name: orderedBy
           in: query
           required: false
           description: How the users are sorted
           type: string
           enum:
-            - alph
-            - alphBack
-            - random
+            - usernameASC
+            - usernameDESC
+            - RANDOM
         - name: from
           in: query
           required: false
