@@ -28,9 +28,9 @@ export class DashboardService {
     }
 
     getTopRecipes(from: Date, to: Date, limit: number): Observable<RecipeReport[]>{
-        let fromStr = moment(from).utc().format();
-        let toStr = moment(to).utc().format();
-        let url = '/api/reports/recipes/top?from=' + fromStr + '&to=' + toStr + '&limit=' + limit;
+        let fromDate = moment.utc([from.getFullYear(),from.getMonth(), from.getDay(),from.getHours(), from.getMinutes(), from.getSeconds()]);
+        let toDate = moment.utc([to.getFullYear(),to.getMonth(), to.getDay(),to.getHours(), to.getMinutes(), to.getSeconds()]);
+        let url = '/api/reports/recipes/top?from=' + fromDate.format() + '&to=' + toDate.format() + '&limit=' + limit;
         return this.http.get(url).map((data: any[]) => {
             var reports: RecipeReport[] = data;
             return reports;
@@ -38,11 +38,12 @@ export class DashboardService {
     }
 
     getRevenueHistoryForUser(from: Date, to: Date): Observable<RevenueReport[]> {
-        var fromDate = moment(from).utc().format();
-        let toDate = moment(to).utc().format();
-        let url = '/api/users/me/reports/revenue/history?from=' + fromDate + '&to=' + toDate;
+        let fromDate = moment.utc([from.getFullYear(),from.getMonth(), from.getDate(),from.getHours(), from.getMinutes(), from.getSeconds()]);
+        let toDate = moment.utc([to.getFullYear(),to.getMonth(), to.getDate(),to.getHours(), to.getMinutes(), to.getSeconds()]);
+        let url = '/api/users/me/reports/revenue/history?from=' + fromDate.format()  + '&to=' + toDate.format()  ;
         console.log(url);
         var result = this.http.get<any[]>(url).map((data: any) => {
+
             var reports = new Array<RevenueReport>(data.length);
             for (var i in data) {
                 let r = new RevenueReport();
@@ -58,8 +59,8 @@ export class DashboardService {
     }
 
     getRevenueForUser(from: Date, to: Date) {
-        var fromDate = moment(from).utc().format();
-        let toDate = moment(to).utc().format();
+        let fromDate = moment.utc([from.getFullYear(),from.getMonth(), from.getDay(),from.getHours(), from.getMinutes(), from.getSeconds()]);
+        let toDate = moment.utc([to.getFullYear(),to.getMonth(), to.getDay(),to.getHours(), to.getMinutes(), to.getSeconds()]);
         let url = '/api/users/me/reports/revenue?from=' + fromDate + '&to=' + toDate;
         return this.http.get(url).flatMap(res => {
             return Observable.of(res[0].revenue || 0);

@@ -5,23 +5,25 @@
         <mat-card fxFlex.gt-md="60" class="iuno-card ">
             <mat-card-header>
                 <mat-card-title>
-                    <span class="card-title">Lizenzeinnahnmen pro Getränk</span>
+                    <span class="card-title">Lizenzeinnahmen pro Getränk</span>
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <google-chart [data]="revenueHistoryData"></google-chart>
+                <google-chart *ngIf="revenueHistory.length>0;else no_revenue_history" [data]="revenueHistoryData"></google-chart>
+
+                <ng-template #no_revenue_history><p class="nodata">Keine Daten vorhanden</p></ng-template>
                 <!--<div id='chart-revenue' style="padding: 10px;"></div>-->
             </mat-card-content>
         </mat-card>
-        <mat-card fxFlex.gt-md="39" class="iuno-card">
+        <mat-card fxFlex.gt-md="40" class="iuno-card">
             <mat-card-header>
                 <mat-card-title>
                     <span class="card-title">Top 5 Getränke aller Hersteller</span>
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <google-chart [data]="topRecipesData"></google-chart>
-                <!--<div id='chart-top-recipes' style="padding: 10px;"></div>-->
+                <google-chart *ngIf="topRecipes.length>0;else no_top_recipes" [data]="topRecipesData"></google-chart>
+                <ng-template #no_top_recipes><p class="nodata">Keine Daten vorhanden</p></ng-template>
             </mat-card-content>
         </mat-card>
     </div>
@@ -65,7 +67,7 @@
             </mat-card-header>
             <mat-card-content fxLayoutAlign="center center" style="height: 100%;">
               <span class="card-information" *ngIf="vaultBalance == null">
-                  -
+                  -x1
                 </span>
                 <span class="card-information" *ngIf="vaultBalance != null">
                     {{vaultBalance}} IUNO
@@ -74,30 +76,3 @@
         </mat-card>
     </div>
 </div>
-<!--<div fxLayout="column"  fxLayoutGap="10px">-->
-<!--&lt;!&ndash; Chart revenue history &ndash;&gt;-->
-<!--&lt;!&ndash;<div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="10px">&ndash;&gt;-->
-<!--&lt;!&ndash;<mat-card fxFlex="100" class="iuno-card mat-no-style">&ndash;&gt;-->
-<!--&lt;!&ndash;<mat-card-header>&ndash;&gt;-->
-<!--&lt;!&ndash;<mat-card-title>&ndash;&gt;-->
-<!--&lt;!&ndash;<span class="card-title">Umsatz pro Getränk</span>&ndash;&gt;-->
-<!--&lt;!&ndash;</mat-card-title>&ndash;&gt;-->
-<!--&lt;!&ndash;</mat-card-header>&ndash;&gt;-->
-<!--&lt;!&ndash;<mat-card-content>&ndash;&gt;-->
-<!--&lt;!&ndash;<div id='chart-revenue' style="padding: 10px;"></div>&ndash;&gt;-->
-<!--&lt;!&ndash;</mat-card-content>&ndash;&gt;-->
-<!--&lt;!&ndash;</mat-card>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--<div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">-->
-<!--&lt;!&ndash; Revenue today, Top Recipe name &ndash;&gt;-->
-<!--<div fxLayout="column" fxFlex="100" fxFlex.gt-xs="50" fxLayoutGap="10px">-->
-<!---->
-
-<!---->
-<!--</div>-->
-
-<!--&lt;!&ndash; Chart top 5 &ndash;&gt;-->
-
-
-<!--</div>-->
-<!--</div>-->

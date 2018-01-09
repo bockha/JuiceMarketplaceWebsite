@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit {
         });
 
 
-        let from = moment().year(2000).toDate();
+        let from = moment().startOf('day').subtract(1, 'month').toDate();
         let to = moment().endOf('day').toDate();
         this.dashboardService.getRevenueHistoryForUser(from, to).subscribe(revenues => {
             this.revenueHistory = revenues;
@@ -76,36 +76,11 @@ export class DashboardComponent implements OnInit {
             this.drawTopRecipes();
         })
 
-        this.vaultService.getVaultBalance().subscribe(balance=>{
+        this.vaultService.getVaultBalance().subscribe(balance => {
             this.vaultBalance = balance / 100000;
         }, error2 => console.log(error2));
 
-        // this.loadTopRecipesChart();
-        // this.loadRevenueChart();
     }
-
-    // private loadTopRecipesChart() {
-    //     this.dashboardService.getTopRecipes(5).subscribe(ranking => {
-    //         var keys = ['x'];
-    //         var values = ['value'];
-    //         var cs: any[] = [];
-    //
-    //         ranking.forEach(function (info: any) {
-    //             cs.push([info.technologydataname, info.amount]);
-    //             keys.push(info.technologydataname);
-    //             values.push(info.amount);
-    //         }, this);
-    //
-    //         this.chartTopRecipes = c3.generate({
-    //             bindto: "#chart-top-recipes",
-    //             data: {
-    //                 type: 'pie',
-    //                 empty: {label: {text: "Keine Daten vorhanden"}},
-    //                 columns: cs,
-    //             },
-    //         });
-    //     });
-    // }
 
     private drawTopRecipes() {
         var data = [];
@@ -143,9 +118,14 @@ export class DashboardComponent implements OnInit {
         var self = this;
         columns[0] = ["Datum"];
         async.each(this.revenueHistory, function (revenue: RevenueReport, callback) {
-            if (!self.contains(columns[0], moment(revenue.endDate).format("DD.MM."))) {
-                columns[0].push(moment(revenue.endDate).format("DD.MM."));
+            if (-1 == columns[0].findIndex((element) => {
+                    return element.getTime && element.getTime() == moment(revenue.startDate).toDate().getTime()
+                })) {
+                columns[0].push(moment(revenue.startDate).toDate());
             }
+            // if (!self.contains(columns[0], moment(revenue.endDate).milliseconds())) {
+            //     columns[0].push(moment(revenue.endDate).milliseconds());
+            // }
             if (!self.contains(techNames, revenue.technologydataname)) {
                 techNames.push(revenue.technologydataname);
                 techcount += 1;
@@ -156,8 +136,9 @@ export class DashboardComponent implements OnInit {
                     series[(techcount).toString()] = {type: 'area'};
                 }
 
-                columns[techcount].push(revenue.revenue);
             }
+
+            columns[techcount].push(revenue.revenue);
             callback();
         }, function (err) {
 
@@ -183,7 +164,9 @@ export class DashboardComponent implements OnInit {
             options: {
                 axisTitlesPosition: 'in',
                 legend: {position: 'bottom'},
-
+                hAxis: {
+                    format: 'dd.MM.'
+                },
                 series: series
             }
 
