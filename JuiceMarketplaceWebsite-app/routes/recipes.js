@@ -138,7 +138,10 @@ router.put('/:recipe_id', validate({
     res.send('NOT IMPLEMENTED YET');
 });
 
-router.delete('/:recipe_id', function (req, res, next) {
+router.delete('/:recipe_id', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     marketplaceCore.deleteRecipe(req.user.token, req.params['recipe_id'], function (err, data) {
         if (err) {
             return next(err);
