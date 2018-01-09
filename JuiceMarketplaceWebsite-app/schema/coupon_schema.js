@@ -23,7 +23,6 @@ self.Faucet_Query = {
     properties: {
         id: {
             type: 'string',
-
         }
     },
     required: [],

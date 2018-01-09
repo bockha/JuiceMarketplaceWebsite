@@ -1,9 +1,17 @@
-var express = require('express');
-var router = express.Router();
-var marketplaceCore = require('../adapter/marketplace_core_adapter');
+const express = require('express');
+const router = express.Router();
+const marketplaceCore = require('../adapter/marketplace_core_adapter');
 const authService = require('../adapter/auth_service_adapter');
 
-router.get('/revenue', function (req, res, next) {
+const {Validator, ValidationError} = require('express-json-validator-middleware');
+const validator = new Validator({allErrors: true});
+const validate = validator.validate;
+const validation_schema = require('../schema/reports_schema');
+
+router.get('/revenue', validate({
+    query: validation_schema.Revenue_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     authService.getPublicToken(function (err, token) {
         if (err) {
             return next(err);
@@ -26,7 +34,10 @@ router.get('/revenue', function (req, res, next) {
     });
 });
 
-router.get('/recipes/history', function (req, res, next) {
+router.get('/recipes/history', validate({
+    query: validation_schema.History_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     authService.getPublicToken(function (err, token) {
         if (err) {
             return next(err);
@@ -48,7 +59,10 @@ router.get('/recipes/history', function (req, res, next) {
     });
 });
 
-router.get('/recipes/top', function (req, res, next) {
+router.get('/recipes/top', validate({
+    query: validation_schema.Top_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     authService.getPublicToken(function (err, token) {
         if (err) {
             return next(err);
@@ -71,7 +85,10 @@ router.get('/recipes/top', function (req, res, next) {
     });
 });
 
-router.get('/components/top', function (req, res, next) {
+router.get('/components/top', validate({
+    query: validation_schema.Top_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     authService.getPublicToken(function (err, token) {
         if (err) {
             return next(err);
