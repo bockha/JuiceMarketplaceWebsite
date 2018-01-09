@@ -11,7 +11,7 @@ self.Coupon_Body = {
     properties: {
         'g-recaptcha-response': {
             type: 'string',
-            format: 'uuid'
+            pattern: '[A-Za-z0-9_-]+'
         }
     },
     required: ['g-recaptcha-response'],
@@ -23,6 +23,7 @@ self.Faucet_Query = {
     properties: {
         id: {
             type: 'string',
+            format: 'uuid'
         }
     },
     required: [],
