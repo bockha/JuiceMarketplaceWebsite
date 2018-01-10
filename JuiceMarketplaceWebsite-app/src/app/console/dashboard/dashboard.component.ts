@@ -55,12 +55,16 @@ export class DashboardComponent implements OnInit {
             } else {
                 this.topRecipeName = null;
             }
+        }, error2 => {
+            console.log(error2);
         });
 
         let fromToday = moment().startOf('day').toDate();
         let toToday = moment().endOf('day').toDate();
         this.dashboardService.getRevenueForUser(fromToday, toToday).subscribe(revenue => {
             this.revenueToday = revenue;
+        }, error2 => {
+            console.log(error2);
         });
 
 
@@ -69,11 +73,15 @@ export class DashboardComponent implements OnInit {
         this.dashboardService.getRevenueHistoryForUser(from, to).subscribe(revenues => {
             this.revenueHistory = revenues;
             this.drawRevenueChart();
+        }, error2 => {
+            console.log(error2);
         });
 
         this.dashboardService.getTopRecipes(from, to, 5).subscribe(recipes => {
             this.topRecipes = recipes;
             this.drawTopRecipes();
+        }, error2 => {
+            console.log(error2);
         })
 
         this.vaultService.getVaultBalance().subscribe(balance => {

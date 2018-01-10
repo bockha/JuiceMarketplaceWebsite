@@ -9,7 +9,7 @@
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <google-chart *ngIf="revenueHistory.length>0;else no_revenue_history" [data]="revenueHistoryData"></google-chart>
+                <google-chart *ngIf="revenueHistory && revenueHistory.length>0;else no_revenue_history" [data]="revenueHistoryData"></google-chart>
 
                 <ng-template #no_revenue_history><p class="nodata">Keine Daten vorhanden</p></ng-template>
                 <!--<div id='chart-revenue' style="padding: 10px;"></div>-->
@@ -22,7 +22,7 @@
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <google-chart *ngIf="topRecipes.length>0;else no_top_recipes" [data]="topRecipesData"></google-chart>
+                <google-chart *ngIf="topRecipes && topRecipes.length>0;else no_top_recipes" [data]="topRecipesData"></google-chart>
                 <ng-template #no_top_recipes><p class="nodata">Keine Daten vorhanden</p></ng-template>
             </mat-card-content>
         </mat-card>

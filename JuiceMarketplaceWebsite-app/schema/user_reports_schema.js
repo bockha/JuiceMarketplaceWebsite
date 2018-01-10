@@ -28,8 +28,7 @@ self.Revenue_Query = {
     },
     required: [
         'from',
-        'to',
-        'userId'
+        'to'
     ],
     additionalProperties: false
 };
@@ -58,8 +57,7 @@ self.Top_Query = {
     required: [
         'from',
         'to',
-        'limit',
-        'userId'
+        'limit'
     ],
     additionalProperties: false
 };

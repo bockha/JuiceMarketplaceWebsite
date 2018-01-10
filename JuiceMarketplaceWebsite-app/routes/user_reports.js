@@ -26,6 +26,21 @@ router.get('/revenue', validate({
         });
 });
 
+router.get('/revenue/history', function (req, res, next) {
+    var token = req.user.token;
+
+    marketplaceCore.getRevenueHistory(
+        token['accessToken'],
+        req.query['from'],
+        req.query['to'],
+        function (err, recipes) {
+            if (err) {
+                return next(err);
+            }
+            res.send(recipes);
+        });
+});
+
 
 router.get('/recipes/top', validate({
     query: validation_schema.Top_Query,
