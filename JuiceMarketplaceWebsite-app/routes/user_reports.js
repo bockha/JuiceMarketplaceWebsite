@@ -26,7 +26,10 @@ router.get('/revenue', validate({
         });
 });
 
-router.get('/revenue/history', function (req, res, next) {
+router.get('/revenue/history', validate({
+    query: validation_schema.Revenue_History_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     var token = req.user.token;
 
     marketplaceCore.getRevenueHistory(
