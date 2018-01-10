@@ -31,7 +31,7 @@ export class StatisticsService {
                 r.amount = Number.parseInt(data[i].amount);
                 r.revenue = Number.parseFloat(data[i].revenue);
                 if(byHour){
-                    r.startDate = moment(data[i].date).add(Number.parseInt(data[i].hour), 'hour').toDate();
+                    r.startDate = moment(data[i].date).toDate();
                     r.endDate = moment(r.startDate).add(1, 'hour').toDate();
                 }else{
                     r.startDate = moment(data[i].date).toDate();

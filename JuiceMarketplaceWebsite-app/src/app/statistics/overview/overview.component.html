@@ -1,29 +1,31 @@
 <div class="overview"  fxLayout="column" fxLayoutGap="10px" >
-    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px" fxLayoutAlign="center center" >
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px" f >
         <mat-card fxFlex.gt-md="49"  class="iuno-card ">
             <mat-card-header>
                 <mat-card-title>
                     <span class="card-title">Lizenzverkäufe im Tagesverlauf</span>
                 </mat-card-title>
             </mat-card-header>
-            <mat-card-content>
-                <google-chart [data]="revenuePerHourData"></google-chart>
+            <mat-card-content >
+                <google-chart *ngIf="hourreports && hourreports.length > 0; else no_hour_reports" [data]="revenuePerHourData"></google-chart>
+                <ng-template #no_hour_reports><p class="nodata">Keine Daten vorhanden</p></ng-template>
             </mat-card-content>
         </mat-card>
 
         <mat-card fxFlex.gt-md="49" class="iuno-card ">
             <mat-card-header>
                 <mat-card-title>
-                    <span class="card-title">Lizenzverkäufe im des letzten Monats</span>
+                    <span class="card-title">Lizenzverkäufe im letzten Monat</span>
                 </mat-card-title>
             </mat-card-header>
-            <mat-card-content>
-                <google-chart [data]="revenuePerDayData"></google-chart>
+            <mat-card-content >
+                <google-chart *ngIf="dayreports && dayreports.length > 0; else no_day_reports" [data]="revenuePerDayData"></google-chart>
+                <ng-template #no_day_reports><p class="nodata">Keine Daten vorhanden</p></ng-template>
             </mat-card-content>
         </mat-card>
 
     </div>
-    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px" fxLayoutAlign="center center">
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px" >
 
         <mat-card fxFlex.gt-md="32" class="iuno-card ">
             <mat-card-header>
@@ -32,7 +34,8 @@
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <google-chart [data]="topComponentsData"></google-chart>
+                <google-chart *ngIf="componentreports && componentreports.length > 0; else no_top_components" [data]="topComponentsData"></google-chart>
+                <ng-template #no_top_components><p class="nodata">Keine Daten vorhanden</p></ng-template>
             </mat-card-content>
         </mat-card>
 
@@ -43,7 +46,8 @@
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <google-chart [data]="allTimeTopRecipesData"></google-chart>
+                <google-chart *ngIf="allTimeTopRecipes && allTimeTopRecipes.length > 0; else no_all_time_top_recipes" [data]="allTimeTopRecipesData"></google-chart>
+                <ng-template #no_all_time_top_recipes><p class="nodata">Keine Daten vorhanden</p></ng-template>
             </mat-card-content>
         </mat-card>
         <mat-card fxFlex.gt-md="33" class="iuno-card ">
@@ -53,7 +57,8 @@
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <google-chart [data]="todayTopRecipesData"></google-chart>
+                <google-chart  *ngIf="todayTopRecipes && todayTopRecipes.length > 0; else no_today_top_recipes" [data]="todayTopRecipesData"></google-chart>
+                <ng-template #no_today_top_recipes><p class="nodata">Keine Daten vorhanden</p></ng-template>
             </mat-card-content>
         </mat-card>
     </div>
