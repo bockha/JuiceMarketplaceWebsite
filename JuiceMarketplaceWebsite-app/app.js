@@ -3,6 +3,7 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
+const queryParser = require('express-query-int');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('cookie-session');
@@ -23,6 +24,7 @@ require('./oauth/passport')(passport); // pass passport for configuration
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
+app.use(queryParser());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
