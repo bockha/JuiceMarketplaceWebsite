@@ -216,7 +216,7 @@ router.post('/:id/recipes', validate({
         coreData.technologyData = encryptedProgram;
         coreData.technologyDataDescription = description;
         coreData.technologyUUID = CONFIG.TECHNOLOGY_UUID;
-        coreData.licenseFee = licenseFee * 100000;
+        coreData.licenseFee = licenseFee;
         coreData.componentList = componentsIds;
 
         marketplaceCore.saveRecipeForUser(req.user.token, coreData, function (err, recipeId) {

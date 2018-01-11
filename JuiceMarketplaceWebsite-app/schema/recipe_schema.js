@@ -194,7 +194,7 @@ self.Recipe_Body = {
         "license-fee": {
             type: "integer",
             minimum: 0,
-            maximum: 2000
+            maximum: Number.MAX_SAFE_INTEGER
         },
         program: {
             type: "object",

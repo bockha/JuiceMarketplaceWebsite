@@ -136,7 +136,7 @@ export class CreateRecipeComponent implements OnInit {
 
                     jsonRecipe['title'] = recipe.technologydataname;
                     jsonRecipe['description'] = recipe.technologydatadescription;
-                    jsonRecipe['license-fee'] = recipe.licensefee;
+                    jsonRecipe['license-fee'] = recipe.licensefee * 100000;
                     jsonRecipe['program'] = jsonProgram;
                     this.http.post('/api/users/me/recipes', jsonRecipe).subscribe(
                         data => {
