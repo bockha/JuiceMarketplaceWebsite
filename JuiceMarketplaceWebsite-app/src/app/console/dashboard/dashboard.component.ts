@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
         let fromToday = moment().startOf('day').toDate();
         let toToday = moment().endOf('day').toDate();
         this.dashboardService.getRevenueForUser(fromToday, toToday).subscribe(revenue => {
-            this.revenueToday = revenue;
+            this.revenueToday = revenue / 100000;
         }, error2 => {
             console.log(error2);
         });
@@ -146,7 +146,7 @@ export class DashboardComponent implements OnInit {
 
             }
 
-            columns[techcount].push(revenue.revenue);
+            columns[techcount].push(revenue.revenue / 100000);
             callback();
         }, function (err) {
 
