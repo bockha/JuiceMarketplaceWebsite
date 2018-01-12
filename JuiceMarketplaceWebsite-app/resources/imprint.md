@@ -1,6 +1,6 @@
 # Imprint
 
-## Betreiber der Websiten
+## Betreiber der Webseiten
 
 ### TRUMPF GmbH + Co. KG (Holding)
 Johann-Maus-Straße 2
