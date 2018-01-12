@@ -4,7 +4,7 @@
 
 Die TRUMPF GmbH + Co. KG freut sich über Ihren Besuch auf unserer Webseite und Ihr Interesse an unserem Unternehmen und unseren Produkten und Dienstleistungen. Der Schutz Ihrer personenbezogenen Daten bei der Verarbeitung während des gesamten Geschäftsprozesses ist für uns ein wichtiges Anliegen und wir möchten, dass Sie sich beim Besuch unserer Internetseiten sicher fühlen.
 
-Im Folgenden erläutern wir, welche Informationen wir auf unseren Webseiten während Ihres Besuches erfassen und wie diese genutzt werden. Die TRUMPF GmbH + Co. KG ist die Betreiberin des gesamten internationalen Webauftritts von TRUMPF und angegliederter Webapplikationen. Diese Datenschutzerklärung gilt für alle von TRUMPF betriebenen Websites. Die Internet-Seiten, zu denen unsere externen Links führen, sind darin nicht enthalten.
+Im Folgenden erläutern wir, welche Informationen wir auf unseren Webseiten während Ihres Besuches erfassen und wie diese genutzt werden. Die TRUMPF GmbH + Co. KG ist die Betreiberin des gesamten internationalen Webauftritts von TRUMPF und angegliederter Webapplikationen. Diese Datenschutzerklärung gilt für die IUNO Technologiedatenmarktplatz Webseite. Die Internet-Seiten, zu denen unsere externen Links führen, sind darin nicht enthalten.
 
 ## Personenbezogene Daten
 
