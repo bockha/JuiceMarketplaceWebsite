@@ -14,10 +14,19 @@ const recipeLimit = require('../services/recipe_limit_service');
 
 const CONFIG = require('../config/config_loader');
 
+const {Validator, ValidationError} = require('express-json-validator-middleware');
+const validator = new Validator({allErrors: true});
+const validate = validator.validate;
+const validation_schema = require('../schema/users_schema');
+const validation_schema_recipe = require('../schema/recipe_schema');
+
 /**
  * Retrieves the user information for the logged in user
  */
-router.get('/me', function (req, res, next) {
+router.get('/me', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Empty
+}), function (req, res, next) {
 
     authService.getUserInfoForToken(req.user.token.accessToken, function (err, data) {
         if (err) {
@@ -31,36 +40,40 @@ router.get('/me', function (req, res, next) {
 
 router.all('/me/*', function (req, res, next) {
 
-    var redirectPath = req.originalUrl.replace('/me/', '/' + req.user.token.user + '/');
+    const redirectPath = req.originalUrl.replace('/me/', '/' + req.user.token.user + '/');
 
     res.redirect(307, redirectPath);
+});
+
+router.get('/', validate({
+    query: validation_schema.Users_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
+
+    logger.warn('[routes/recipes] NOT IMPLEMENTED YET');
+    res.send('NOT IMPLEMENTED YET');
 });
 
 /**
  * Retrieves the user information for a specific user
  */
-router.get('/:id', function (req, res, next) {
+router.get('/:id', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Empty
+}), function (req, res, next) {
 
-    res.send('Not implemented yet');
+    logger.warn('[routes/recipes] NOT IMPLEMENTED YET');
+    res.send('NOT IMPLEMENTED YET');
 });
 
 
 /**
- * Retrieves all recipes for the user
+ * Returns the limit of recipes the user can publish on the marketplace
  */
-router.get('/:id/recipes', function (req, res, next) {
-    marketplaceCore.getRecipesForUser(req.params['id'], req.user.token.accessToken, function (err, recipes) {
-        if (err) {
-            return next(err);
-        }
-        res.send(recipes);
-    });
-});
-
-/**
- * Returns the amount of recipes the user can still publish on the marketplace
- */
-router.get('/:id/recipes/limit', function (req, res, next) {
+router.get('/:id/recipes/limit', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     marketplaceCore.getActivatedLicenseCountForUser(req.params['id'], req.user.token.accessToken, function (err, activatedLicenses) {
         if (err) {
             return next(err);
@@ -70,8 +83,13 @@ router.get('/:id/recipes/limit', function (req, res, next) {
 
     });
 });
-
-router.get('/:id/recipes/count', function (req, res, next) {
+/**
+ * Returns the amount of recipes the user already published on the marketplace
+ */
+router.get('/:id/recipes/count', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     marketplaceCore.getRecipesForUser(req.params['id'], req.user.token.accessToken, function (err, recipes) {
         if (err) {
             return next(err);
@@ -79,14 +97,15 @@ router.get('/:id/recipes/count', function (req, res, next) {
         return res.json({count: recipes.length});
     });
 });
-
-
 /**
  * Saves a recipe for a specific user
  */
-router.post('/:id/recipes', function (req, res, next) {
-    console.log("recieved following recipe:");
-    console.log(req.body);
+router.post('/:id/recipes', validate({
+    query: validation_schema.Empty,
+    body: validation_schema_recipe.Recipe_Body
+}), function (req, res, next) {
+    logger.debug("[routes/users] Creating following recipe:");
+    logger.debug(req.body);
     // Check if user can still publish recipes or if his limit is reached.
     marketplaceCore.getRecipesForUser(req.params['id'], req.user.token.accessToken, function (err, recipes) {
         if (err) {
@@ -197,7 +216,7 @@ router.post('/:id/recipes', function (req, res, next) {
         coreData.technologyData = encryptedProgram;
         coreData.technologyDataDescription = description;
         coreData.technologyUUID = CONFIG.TECHNOLOGY_UUID;
-        coreData.licenseFee = licenseFee * 100000;
+        coreData.licenseFee = licenseFee;
         coreData.componentList = componentsIds;
 
         marketplaceCore.saveRecipeForUser(req.user.token, coreData, function (err, recipeId) {
@@ -217,42 +236,14 @@ router.post('/:id/recipes', function (req, res, next) {
     });
 });
 
-
-/**
- * Get a specific recipe for a user
- */
-router.get('/:id/recipes/:recipe_id', function (req, res, next) {
-
-    res.send('Not implemented yet');
-});
-
-
-/**
- * Updates a specific recipe for a specific user
- */
-router.put('/:id/recipes/:recipe_id', function (req, res, next) {
-
-    res.send('Not implemented yet');
-});
-
-/**
- * Deletes a specific recipe for a specific user
- */
-router.delete('/:id/recipes/:recipe_id', function (req, res, next) {
-    marketplaceCore.deleteRecipe(req.user.token, req.params['recipe_id'], function (err, data) {
-        if (err) {
-            return next(err);
-        }
-        res.sendStatus(200);
-    });
-});
-
-
 /**
  * Retrieves the user image
  */
-router.get('/:id/image', function (req, res, next) {
-    authService.getImageForUser(req.user, function (err, data) {
+router.get('/:user_id/image', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Empty
+}), function (req, res, next) {
+    authService.getImageForUser(req.params['user_id'], req.user.token, function (err, data) {
         if (err) {
             next(err);
             return;
@@ -267,9 +258,15 @@ router.get('/:id/image', function (req, res, next) {
         res.send(data.imageBuffer);
     });
 });
+router.put('/:user_id/image', validate({
+    query: validation_schema.Empty
+}), function (req, res, next) {
+    logger.warn('[routes/recipes] NOT IMPLEMENTED YET');
+    res.send('NOT IMPLEMENTED YET');
+});
 
-/* Reports */
 
+router.use('/:user_id/recipes', require('./recipes'));
 router.use('/:id/reports', require('./user_reports'));
 router.use('/:id/vault', require('./vault'));
 

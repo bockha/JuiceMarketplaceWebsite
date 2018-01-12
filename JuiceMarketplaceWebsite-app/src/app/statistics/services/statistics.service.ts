@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import 'rxjs/add/operator/map'
 import {ComponentReport} from "../models/ComponentReport";
 import {RecipeReport} from "../models/RecipeReport";
+import {by} from "protractor";
 
 @Injectable()
 export class StatisticsService {
@@ -29,8 +30,14 @@ export class StatisticsService {
                 let r = new RevenueReport();
                 r.amount = Number.parseInt(data[i].amount);
                 r.revenue = Number.parseFloat(data[i].revenue);
-                r.startDate = moment(data[i].date).add(Number.parseInt(data[i].hour), 'hour').toDate();
-                r.endDate = moment(r.startDate).add(1, 'hour').toDate();
+                if(byHour){
+                    r.startDate = moment(data[i].date).toDate();
+                    r.endDate = moment(r.startDate).add(1, 'hour').toDate();
+                }else{
+                    r.startDate = moment(data[i].date).toDate();
+                    r.endDate = moment(r.startDate).endOf('day').toDate();
+                }
+
                 reports[i] = r;
             }
             return reports;

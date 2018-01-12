@@ -35,10 +35,13 @@ mat-card {
 }
 
 .logo {
-    height: 70%;
-    padding: 10px
+    /*width: 100%;*/
+    height: 100%;
 }
 
+.logobutton {
+    padding: 0
+}
 .spacer {
     flex: 1 1 auto;
 }

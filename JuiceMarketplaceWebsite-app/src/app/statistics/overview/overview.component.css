@@ -1,3 +1,8 @@
 .overview {
     padding-top: 10px
 }
+
+.nodata{
+    text-align: center;
+    color: darkgray;
+}

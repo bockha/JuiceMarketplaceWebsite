@@ -5,26 +5,37 @@ const express = require('express');
 const logger = require('../global/logger');
 const config = require('../config/config_loader');
 
+const {Validator, ValidationError} = require('express-json-validator-middleware');
+const validator = new Validator({allErrors: true});
+const validate = validator.validate;
+const validation_schema = require('../schema/auth_schema');
+
 module.exports = function (passport) {
     var router = express.Router();
 
     // LOGOUT ==============================
-    router.get('/logout', function (req, res) {
+    router.get('/logout', validate({
+        query: validation_schema.Empty,
+        body: validation_schema.Empty
+    }), function (req, res) {
         req.logout();
 
         const hostUrl = req.protocol + '://' + req.get('host');
 
         const authServerLogout =
-            config.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL
-            + '://' + config.HOST_SETTINGS.OAUTH_SERVER.HOST
-            + ':' + config.HOST_SETTINGS.OAUTH_SERVER.PORT
+            config.HOST_SETTINGS.OAUTH_SERVER_EXTERNAL.PROTOCOL
+            + '://' + config.HOST_SETTINGS.OAUTH_SERVER_EXTERNAL.HOST
+            + ':' + config.HOST_SETTINGS.OAUTH_SERVER_EXTERNAL.PORT
             + '/passport/logout?redirect='
             + encodeURIComponent(hostUrl);
 
         res.redirect(authServerLogout);
     });
 
-    router.get('/loggedin', function (req, res) {
+    router.get('/loggedin', validate({
+        query: validation_schema.Empty,
+        body: validation_schema.Empty
+    }), function (req, res) {
         res.status(200);
         if (req.isAuthenticated()) {
             res.send('true');
@@ -37,13 +48,18 @@ module.exports = function (passport) {
     // AUTHENTICATE (IUNO) ==================================================
     // =============================================================================
 
-    router.get('/iuno', function (req, res, next) {
+    router.get('/iuno', validate({
+        query: validation_schema.Empty,
+        body: validation_schema.Empty
+    }), function (req, res, next) {
         logger.info('iuno login');
 
         passport.authenticate('iuno')(req, res, next);
     });
-    router.get('/iuno/callback', function (req, res, next) {
-        logger.info('iuno callback');
+    router.get('/iuno/callback', validate({
+        query: validation_schema.IUNO_Callback_Query,
+        body: validation_schema.Empty
+    }), function (req, res, next) {
 
         passport.authenticate('iuno', {
             successRedirect: '/console',

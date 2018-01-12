@@ -9,7 +9,6 @@ const logger = require('../global/logger');
 const CONFIG = require('../config/config_loader');
 const request = require('request');
 const Component = require('../model/component');
-const Recipe = require('../model/recipe');
 const helper = require('../services/helper_service');
 
 //<editor-fold desc="Build Options">
@@ -25,6 +24,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
         }
     }
 }
+
 //</editor-fold>
 
 //<editor-fold desc="Components">
@@ -43,9 +43,7 @@ self.getAllComponents = function (accessToken, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/components',
-        {
-
-        }
+        {}
     );
     options.headers.authorization = 'Bearer ' + accessToken;
 
@@ -98,17 +96,6 @@ self.getRecipesForUser = function (userId, accessToken, callback) {
             return callback(err, null);
         }
 
-        const components = [];
-
-        if (helper.isArray(jsonData)) {
-            jsonData.forEach(function (entry) {
-                components.push(Component.CreateComponentFromJSON(entry));
-            });
-        }
-        else {
-            logger.warn('Unexpected response when retrieving components from market place core:');
-        }
-
         callback(err, jsonData);
     });
 };
@@ -128,9 +115,7 @@ self.saveRecipeForUser = function (token, recipeData, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata',
-        {
-
-        }
+        {}
     );
     options.headers.authorization = 'Bearer ' + token.accessToken;
 
@@ -161,9 +146,28 @@ self.deleteRecipe = function (token, recipeID, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/technologydata/' + recipeID + '/delete',
-        {
+        {}
+    );
+    options.headers.authorization = 'Bearer ' + token.accessToken;
 
-        }
+    doRequest(options, callback);
+};
+
+self.getAllRecipes = function (token, params, callback) {
+    if (!params) {
+        params = {};
+    }
+
+    params['technology'] = CONFIG.TECHNOLOGY_UUID;
+
+
+    const options = buildOptionsForRequest(
+        'GET',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/technologydata',
+        params
     );
     options.headers.authorization = 'Bearer ' + token.accessToken;
 
@@ -199,7 +203,7 @@ self.getTopComponents = function (from, to, limit, token, callback) {
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
         '/reports/components/top',
         {
-            from: from ,
+            from: from,
             to: to,
             limit: limit
         }
@@ -310,28 +314,42 @@ self.getTopTechnologyDataForUser = function (user, accessToken, from, to, limit,
 //</editor-fold>
 
 
-
-self.getCumulatedVaultBalanceForUser = function(user, accessToken, callback){
+self.getCumulatedVaultBalanceForUser = function (user, accessToken, callback) {
     const options = buildOptionsForRequest(
         'GET',
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
-        '/vault/users/'+user+'/balance',
+        '/vault/users/' + user + '/balance',
         null);
     options.headers.authorization = 'Bearer ' + accessToken;
 
     doRequest(options, callback);
 };
 
-self.getVaultWalletsForUser = function(user, accessToken, callback){
+self.getVaultWalletsForUser = function (user, accessToken, callback) {
     const options = buildOptionsForRequest(
         'GET',
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
         CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
-        '/vault/users/'+user+'/wallets',
+        '/vault/users/' + user + '/wallets',
         null);
+    options.headers.authorization = 'Bearer ' + accessToken;
+
+    doRequest(options, callback);
+};
+
+
+self.createVaultPayoutForUser = function (user, walletId, accessToken, payout, callback) {
+    const options = buildOptionsForRequest(
+        'POST',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/vault/users/' + user + '/wallets/' + walletId + '/payouts',
+        null);
+    options.body = payout;
     options.headers.authorization = 'Bearer ' + accessToken;
 
     doRequest(options, callback);
@@ -356,7 +374,6 @@ self.getActivatedLicenseCountForUser = function (user, accessToken, callback) {
 };
 
 module.exports = self;
-
 
 
 // --- FUNCTIONS ---

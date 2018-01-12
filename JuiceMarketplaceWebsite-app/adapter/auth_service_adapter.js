@@ -33,9 +33,9 @@ self.getUserInfoForToken = function (token, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.PROTOCOL,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.PORT,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PORT,
         '/userinfo',
         {
             access_token: token
@@ -51,7 +51,7 @@ self.getUserInfoForToken = function (token, callback) {
 
 };
 
-self.getImageForUser = function (user, callback) {
+self.getImageForUser = function (userId, token, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -61,13 +61,13 @@ self.getImageForUser = function (user, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
-        '/users/' + user.token.user + '/image',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PORT,
+        '/users/' + userId + '/image',
         {}
     );
-    options.headers.authorization = 'Bearer ' + user.token.accessToken;
+    options.headers.authorization = 'Bearer ' + token.accessToken;
     options.encoding = null;
 
     request(options, function (e, r, imageBuffer) {
@@ -104,9 +104,9 @@ self.refreshTokenForUser = function (user, callback) {
     // Refresh access token
     var options = buildOptionsForRequest(
         'POST',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PORT,
         '/oauth/token',
         {}
     );
@@ -137,9 +137,9 @@ self.getPublicToken = function (callback) {
 
     var options = buildOptionsForRequest(
         'POST',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PORT,
         '/oauth/token',
         {}
     );

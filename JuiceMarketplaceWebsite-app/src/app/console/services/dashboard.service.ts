@@ -4,6 +4,9 @@ import * as moment from 'moment';
 import {TdmRecipe} from '../juice-program-configurator/models/tdmrecipe';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/mergeMap';
+import {RevenueReport} from "../models/RevenueReport";
+import {RecipeReport} from "../models/RecipeReport";
+
 
 @Injectable()
 export class DashboardService {
@@ -24,34 +27,47 @@ export class DashboardService {
         });
     }
 
-    getTopRecipes(limit: number): Observable<TdmRecipe[]> {
-        var fromDate = moment().utc().year(2000).format();
-        var toDate = moment().utc().format();
-        var url = '/api/reports/recipes/top?limit=' + limit + '&from=' + fromDate + '&to=' + toDate;
-        var result = this.http.get<TdmRecipe[]>(url);
-        console.log("Top Recipes:");
-        console.log(result);
-        return result;
+    getTopRecipes(from: Date, to: Date, limit: number): Observable<RecipeReport[]>{
+        let fromDate = moment.utc([from.getFullYear(),from.getMonth(), from.getDate(),from.getHours(), from.getMinutes(), from.getSeconds()]);
+        let toDate = moment.utc([to.getFullYear(),to.getMonth(), to.getDate(),to.getHours(), to.getMinutes(), to.getSeconds()]);
+        let url = '/api/reports/recipes/top?from=' + fromDate.format() + '&to=' + toDate.format() + '&limit=' + limit;
+        return this.http.get(url).map((data: any[]) => {
+            var reports: RecipeReport[] = data;
+            return reports;
+        })
     }
 
-    getRevenueHistoryForUser() {
-        console.log("Hallo?");
-        var fromDate = moment().utc().year(2000).format();
-        let toDate = moment().utc().endOf('day').format();
-        let url = '/api/users/me/reports/revenue/history?from=' + fromDate + '&to=' + toDate;
+    getRevenueHistoryForUser(from: Date, to: Date): Observable<RevenueReport[]> {
+        let fromDate = moment.utc([from.getFullYear(),from.getMonth(), from.getDate(),from.getHours(), from.getMinutes(), from.getSeconds()]);
+        let toDate = moment.utc([to.getFullYear(),to.getMonth(), to.getDate(),to.getHours(), to.getMinutes(), to.getSeconds()]);
+        let url = '/api/users/me/reports/revenue/history?from=' + fromDate.format()  + '&to=' + toDate.format()  ;
         console.log(url);
-        var result = this.http.get<any[]>(url);
+        var result = this.http.get<any[]>(url).map((data: any) => {
+
+            var reports = new Array<RevenueReport>(data.length);
+            for (var i in data) {
+                let r = new RevenueReport();
+                r.revenue = Number.parseFloat(data[i].revenue);
+                r.startDate = moment(data[i].date).startOf('day').toDate();
+                r.endDate = moment(r.startDate).endOf('day').toDate();
+                r.technologydataname = data[i].technologydataname;
+                reports[i] = r;
+            }
+            return reports;
+        });
         return result;
     }
 
-    getRevenueTodayForUser() {
-        let fromDate = moment().utc().startOf('day').format();
-        let toDate = moment().utc().endOf('day').format();
-        let url = '/api/users/me/reports/revenue?from=' + fromDate + '&to=' + toDate;
+    getRevenueForUser(from: Date, to: Date) {
+        let fromDate = moment.utc([from.getFullYear(),from.getMonth(), from.getDate(),from.getHours(), from.getMinutes(), from.getSeconds()]);
+        let toDate = moment.utc([to.getFullYear(),to.getMonth(), to.getDate(),to.getHours(), to.getMinutes(), to.getSeconds()]);
+        let url = '/api/users/me/reports/revenue?from=' + fromDate.format() + '&to=' + toDate.format();
         return this.http.get(url).flatMap(res => {
             return Observable.of(res[0].revenue || 0);
         });
     }
+
+
 
 
     private handleError(error: any): Promise<any> {

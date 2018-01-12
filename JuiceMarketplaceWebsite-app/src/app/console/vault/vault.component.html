@@ -1,0 +1,35 @@
+<h1>Guthaben verwalten</h1>
+<mat-card>
+    <mat-card-header>
+        Guthaben im Bitcoin Vault
+    </mat-card-header>
+    <mat-card-content>
+        <div *ngIf="dataSource.data.length == 0">
+            Kein Guthaben im Bitcoin Vault gespeichert.
+        </div>
+        <div *ngIf="dataSource.data.length > 0">
+            <mat-table #table [dataSource]="dataSource">
+                <ng-container matColumnDef="walletid">
+                    <mat-header-cell *matHeaderCellDef>Wallet ID</mat-header-cell>
+                    <mat-cell *matCellDef="let wallet">{{wallet.walletId}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="unconfirmed">
+                    <mat-header-cell *matHeaderCellDef>unbestätigt (IUNO)</mat-header-cell>
+                    <mat-cell *matCellDef="let wallet">{{wallet.unconfirmed / 100000}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="confirmed">
+                    <mat-header-cell *matHeaderCellDef>bestätigt (IUNO)</mat-header-cell>
+                    <mat-cell *matCellDef="let wallet">{{wallet.confirmed / 100000}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef>Aktion</mat-header-cell>
+                    <mat-cell *matCellDef="let wallet">
+                        <button (click)="payout(wallet)" mat-raised-button color="primary">Auszahlung</button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </div>
+    </mat-card-content>
+</mat-card>

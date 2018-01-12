@@ -1,31 +1,4 @@
-.axis {
-    font: 10px sans-serif;
+.nodata{
+    text-align: center;
+    color: darkgray;
 }
-
-.axis path,
-.axis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
-}
-
-.axis-title {
-    fill: none;
-    stroke: black;
-    stroke-width: 0.5px;
-}
-
-.axis--x path {
-}
-
-.line {
-    fill: none;
-    stroke: steelblue;
-    stroke-width: 1.5px;
-}
-
-.c3-chart-lines .c3-target-Benchmark {
-    stroke-width: 1px;
-    stroke-dasharray: 3, 3;
-}
-  

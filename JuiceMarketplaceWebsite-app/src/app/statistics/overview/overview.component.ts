@@ -6,6 +6,7 @@ import {RevenueReport} from "../models/RevenueReport";
 import {ComponentReport} from "../models/ComponentReport";
 import {RecipeReport} from "../models/RecipeReport";
 import { EventManager } from '@angular/platform-browser';
+import * as async from "async";
 
 @Component({
     selector: 'app-overview',
@@ -83,8 +84,9 @@ export class OverviewComponent implements OnInit {
     todayTopRecipesData: any;
 
     ngOnInit() {
-        let from = moment().utc().startOf('day').toDate();
-        let to = moment().utc().endOf('day').toDate();
+        let from = moment().startOf('day').hours(8).toDate();
+        let to = moment().startOf('day').hours(20).toDate();
+        // let to = moment().utc().endOf('day').toDate();
         this.statisticsService.getRevenueReport(from, to, true).subscribe(reports => {
             this.hourreports = reports;
             this.drawHourReports();
@@ -146,7 +148,7 @@ export class OverviewComponent implements OnInit {
         // var regions = [{start: reports.length - 1}];
         for (var i in this.hourreports) {
 
-            var time = moment(this.hourreports[i].endDate).format("HH:mm");
+            var time = this.hourreports[i].startDate;
             data.push([time, this.hourreports[i].amount]);
 
         }
@@ -161,6 +163,9 @@ export class OverviewComponent implements OnInit {
                     minValue: 0,
                     gridlines: {count: -1}
 
+                },
+                hAxis:{
+                    format: "HH:mm"
                 }
             }
         };
@@ -168,8 +173,7 @@ export class OverviewComponent implements OnInit {
     }
 
     private drawDayReport() {
-        var x = [];
-        x[0] = 'x';
+
         var data = [];
 
 
@@ -177,7 +181,7 @@ export class OverviewComponent implements OnInit {
         // var regions = [{start: reports.length - 1}];
         for (var i in this.dayreports) {
 
-            var time = moment(this.dayreports[i].endDate).format("DD.MM.");
+            var time = this.dayreports[i].startDate;
             data.push([time, this.dayreports[i].amount]);
 
         }
@@ -191,14 +195,16 @@ export class OverviewComponent implements OnInit {
                     minValue: 0,
                     gridlines: {count: -1}
 
+                },
+                hAxis: {
+                    format: 'dd.MM.'
                 }
             }
         };
     }
 
     private drawComponentReports() {
-        var x = [];
-        x[0] = 'x';
+
         var data = [];
 
 
@@ -226,8 +232,6 @@ export class OverviewComponent implements OnInit {
     }
 
     private drawAllTimeTopRecipes( ) {
-        var x = [];
-        x[0] = 'x';
         var data = [];
 
 

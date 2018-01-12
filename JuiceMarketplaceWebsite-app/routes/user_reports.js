@@ -2,7 +2,15 @@ const express = require('express');
 const router = express.Router({mergeParams: true});
 const marketplaceCore = require('../adapter/marketplace_core_adapter');
 
-router.get('/revenue', function (req, res, next) {
+const {Validator, ValidationError} = require('express-json-validator-middleware');
+const validator = new Validator({allErrors: true});
+const validate = validator.validate;
+const validation_schema = require('../schema/user_reports_schema');
+
+router.get('/revenue', validate({
+    query: validation_schema.Revenue_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     var token = req.user.token;
 
     marketplaceCore.getRevenueForUser(
@@ -18,7 +26,10 @@ router.get('/revenue', function (req, res, next) {
         });
 });
 
-router.get('/revenue/history', function (req, res, next) {
+router.get('/revenue/history', validate({
+    query: validation_schema.Revenue_History_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     var token = req.user.token;
 
     marketplaceCore.getRevenueHistory(
@@ -33,7 +44,11 @@ router.get('/revenue/history', function (req, res, next) {
         });
 });
 
-router.get('/recipes/top', function (req, res, next) {
+
+router.get('/recipes/top', validate({
+    query: validation_schema.Top_Query,
+    body: validation_schema.Empty
+}), function (req, res, next) {
     var token = req.user.token;
 
     marketplaceCore.getTopTechnologyDataForUser(
