@@ -41,7 +41,7 @@ Auf schriftliche Anfrage werden Sie von uns darüber informiert, welche Daten wi
 
 Wenn Sie Fragen hinsichtlich der Verarbeitung Ihrer persönlichen Daten haben, können Sie sich an den Datenschutzbeauftragten der TRUMPF GmbH + Co. KG wenden, der mit seinem Team auch im Falle von Auskunftsersuchen, Anregungen oder Beschwerden zur Verfügung steht.
 
-Bitte richten Sie Ihre Fragen an folgende E-Mail Adresse: datenschutz@de.TRUMPF.com.
+Bitte richten Sie Ihre Fragen an folgende E-Mail Adresse: <datenschutz@de.TRUMPF.com>.
 
 TRUMPF behält sich das Recht vor, die Inhalte dieser Datenschutzerklärung ohne vorherige Ankündigung zu ändern. Sobald eine Modifizierung erfolgt, werden wir Ihnen die aktuelle Fassung auf dieser Seite zur Verfügung stellen.
 
