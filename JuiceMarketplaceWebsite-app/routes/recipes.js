@@ -21,9 +21,9 @@ router.get('/', validate({
 
     const components = req.query['components'];
     let createdBy = req.query['createdBy'];
-    // if(req.params['user_id']){
-    //     createdBy = req.params['user_id'];
-    // }
+    if(req.params['user_id']){
+        createdBy = req.params['user_id'];
+    }
     const limit = req.query['limit'];
     const orderedBy = req.query['orderBy'];
 

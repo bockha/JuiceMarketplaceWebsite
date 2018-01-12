@@ -33,9 +33,9 @@ self.getUserInfoForToken = function (token, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.PROTOCOL,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.PORT,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PORT,
         '/userinfo',
         {
             access_token: token
@@ -61,9 +61,9 @@ self.getImageForUser = function (userId, token, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PORT,
         '/users/' + userId + '/image',
         {}
     );
@@ -104,9 +104,9 @@ self.refreshTokenForUser = function (user, callback) {
     // Refresh access token
     var options = buildOptionsForRequest(
         'POST',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PORT,
         '/oauth/token',
         {}
     );
@@ -137,9 +137,9 @@ self.getPublicToken = function (callback) {
 
     var options = buildOptionsForRequest(
         'POST',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PORT,
         '/oauth/token',
         {}
     );

@@ -19,14 +19,14 @@ module.exports = function (passport) {
     logger.debug('Configure iuno auth');
 
     const authServerUrl = '{0}://{1}:{2}'.format(
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT);
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_EXTERNAL.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_EXTERNAL.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_EXTERNAL.PORT);
 
     const authServerUrl_token = '{0}://{1}:{2}'.format(
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.PROTOCOL,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.PORT);
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PORT);
 
     passport.use('iuno', new OAuthStrategy({
             authorizationURL: authServerUrl + '/oauth/authorise',
