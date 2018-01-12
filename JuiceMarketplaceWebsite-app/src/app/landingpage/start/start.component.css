@@ -66,7 +66,7 @@ hr {
 .start-section {
     margin-bottom: 20px;
     margin-top: 20px;
-    max-width: 920px;
+    max-width: 1080px;
     width: 100%;
 }
 
@@ -78,12 +78,13 @@ hr {
 
 .start-section-image img {
 
-    max-height: 200px;
-
+    max-height: 250px;
+    min-height: 200px;
 }
 
 .start-section-text {
     padding: 30px;
+    font-size: larger;
 }
 
 .news-card {
@@ -91,11 +92,13 @@ hr {
 }
 
 .news-text {
-    padding: 10px
+    padding: 10px;
+    font-size: larger;
 }
 
 .news-card img {
-    padding: 10px
+    padding: 10px;
+    max-height: 120px;
 }
 
 .text-headline {
@@ -106,6 +109,16 @@ hr {
     text-transform: uppercase;
 }
 
-article {
+.article {
     padding: 20px;
+}
+
+.github-logo {
+    width: 50px;
+    box-shadow: 3px 3px 5px #888;
+    border-radius: 25px;
+}
+
+.logo-env {
+    text-align: center;
 }
