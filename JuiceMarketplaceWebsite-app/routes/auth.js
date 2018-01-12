@@ -23,9 +23,9 @@ module.exports = function (passport) {
         const hostUrl = req.protocol + '://' + req.get('host');
 
         const authServerLogout =
-            config.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL
-            + '://' + config.HOST_SETTINGS.OAUTH_SERVER.HOST
-            + ':' + config.HOST_SETTINGS.OAUTH_SERVER.PORT
+            config.HOST_SETTINGS.OAUTH_SERVER_EXTERNAL.PROTOCOL
+            + '://' + config.HOST_SETTINGS.OAUTH_SERVER_EXTERNAL.HOST
+            + ':' + config.HOST_SETTINGS.OAUTH_SERVER_EXTERNAL.PORT
             + '/passport/logout?redirect='
             + encodeURIComponent(hostUrl);
 
