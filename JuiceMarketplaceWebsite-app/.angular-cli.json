@@ -21,7 +21,8 @@
       "styles": [
         "styles.css",
         "iuno-theme.scss",
-        "../node_modules/cookieconsent/build/cookieconsent.min.css"
+        "../node_modules/cookieconsent/build/cookieconsent.min.css",
+        "../node_modules/prismjs/themes/prism-okaidia.css"
       ],
       "scripts": ["../node_modules/cookieconsent/build/cookieconsent.min.js"],
       "environmentSource": "environments/environment.ts",

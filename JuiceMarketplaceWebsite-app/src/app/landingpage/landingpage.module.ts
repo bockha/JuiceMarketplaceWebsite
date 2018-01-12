@@ -4,6 +4,9 @@ import {StartComponent} from './start/start.component';
 import {LandingpageRoutingModule} from './landingpage-routing.module';
 import {MatButtonModule, MatCardModule} from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import { PrivacyComponent } from './privacy/privacy.component';
+import { ImprintComponent } from './imprint/imprint.component';
+import { MarkdownModule } from 'ngx-md';
 
 @NgModule({
     imports: [
@@ -11,9 +14,10 @@ import {FlexLayoutModule} from '@angular/flex-layout';
         LandingpageRoutingModule,
         FlexLayoutModule,
         MatButtonModule,
-        MatCardModule
+        MatCardModule,
+        MarkdownModule.forRoot(),
     ],
-    declarations: [StartComponent]
+    declarations: [StartComponent, PrivacyComponent, ImprintComponent]
 })
 export class LandingpageModule {
 }
