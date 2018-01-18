@@ -146,8 +146,13 @@ export class CreateRecipeComponent implements OnInit {
                             this.spinnerCounter -= 1;
                             if (error.status == 201) { // this isn't an error. @see https://github.com/angular/angular/issues/18396
                                 this.router.navigateByUrl('/console/recipes');
-                            } else {
-                                alert("Es ist ein Fehler aufgetreten.\nDas Rezept konnte nicht gespeichert werden.");
+                            }
+                            else if(error.status == 409) {
+                                alert("Ein Rezept mit diesem Namen existiert bereits");
+                                this.spinnerCounter -= 1;
+                            }
+                            else {
+                                alert("Es ist ein Fehler aufgetreten.\nDas Rezept konnte nicht gespeichert werden. Fehler: " +  error.message);
                                 this.spinnerCounter -= 1;
                             }
                         }
