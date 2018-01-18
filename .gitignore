@@ -40,3 +40,4 @@ jspm_packages
 
 .idea
 JuiceMarketplaceWebsite-app/.vscode/launch.json
+JuiceMarketplaceWebsite-app/dist

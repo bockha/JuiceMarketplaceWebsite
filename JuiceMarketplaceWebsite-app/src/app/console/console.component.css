@@ -1,0 +1,12 @@
+.nav-button {
+    text-align: left;
+    height: 50px;
+}
+
+.app {
+    min-height: 100vh;
+}
+
+.mat-sidenav {
+    width: 250px;
+}
