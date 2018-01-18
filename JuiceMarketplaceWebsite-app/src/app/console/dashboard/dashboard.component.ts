@@ -77,12 +77,14 @@ export class DashboardComponent implements OnInit {
             console.log(error2);
         });
 
+        from = moment().startOf('day').subtract(1, 'month').toDate();
+        to = moment().endOf('day').toDate();
         this.dashboardService.getTopRecipes(from, to, 5).subscribe(recipes => {
             this.topRecipes = recipes;
             this.drawTopRecipes();
         }, error2 => {
             console.log(error2);
-        })
+        });
 
         this.vaultService.getVaultBalance().subscribe(balance => {
             this.vaultBalance = balance / 100000;
