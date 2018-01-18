@@ -46,6 +46,7 @@
     "morgan": "~1.9.0",
     "ng2-google-charts": "^3.3.0",
     "ngx-cookieconsent": "^1.0.1",
+    "ngx-md": "^3.1.0",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
     "passport-local": "^1.0.0",
