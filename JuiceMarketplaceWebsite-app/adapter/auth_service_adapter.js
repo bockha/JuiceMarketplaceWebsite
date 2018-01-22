@@ -112,7 +112,7 @@ self.refreshTokenForUser = function (user, callback) {
 
         callback(err, {
             id: user.id,
-            token: data
+            token: data.access_token
         });
     });
 };
