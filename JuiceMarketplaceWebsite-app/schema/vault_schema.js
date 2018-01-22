@@ -19,7 +19,7 @@ self.Payout_Body = {
         },
         payoutAddress: {
             type: 'string',
-            pattern: '^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$'
+            pattern: '^[mn2][a-km-zA-HJ-NP-Z1-9]{33}$'
         },
         amount: {
             type: 'integer',

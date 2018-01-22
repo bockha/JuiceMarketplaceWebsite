@@ -32,7 +32,7 @@
                            max="{{(unconfirmed?wallet.unconfirmed:wallet.confirmed)/unitFactor}}"
                            [(ngModel)]="payout"
                            (ngModelChange)="payoutChanged($event)"
-                           [disabled]="emptyWallet">
+                           [disabled]="emptyWallet || ( wallet.unconfirmed == 0 && !unconfirmed)">
                     <mat-hint align="start">min. {{500/unitFactor | number: '1.0-8'}}, max.
                         {{(unconfirmed?wallet.unconfirmed:wallet.confirmed)/unitFactor | number: '1.0-8'}}
                     </mat-hint>
