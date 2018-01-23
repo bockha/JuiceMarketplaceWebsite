@@ -85,7 +85,7 @@ module.exports = function (passport) {
     // used to deserialize the user
     passport.deserializeUser(function (id, done) {
         logger.debug('Deserialize User: ' + JSON.stringify(id));
-        var user = userStore[id];
+        const user = userStore[id];
 
         authServer.refreshTokenForUser(user, function (err, updatedUser) {
             if (err) {
@@ -96,6 +96,8 @@ module.exports = function (passport) {
                 done(null, false);
             }
             else {
+
+                userStore[id] = updatedUser;
                 done(err, updatedUser);
             }
         });
