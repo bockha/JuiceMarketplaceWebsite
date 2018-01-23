@@ -12,7 +12,7 @@ import {VaultService} from "../services/vault.service";
     styleUrls: ['./vault-payout-dialog.component.scss'],
     providers: [VaultService]
 })
-export class VaultPayoutDialogComponent implements OnInit{
+export class VaultPayoutDialogComponent implements OnInit {
 
     wallet: Wallet;
     unconfirmed = false;
@@ -40,46 +40,61 @@ export class VaultPayoutDialogComponent implements OnInit{
     accept() {
         var pObject = new Payout();
         pObject.amount = this.payout * this.unitFactor;
-        pObject.payoutAddress  = this.address;
+        pObject.payoutAddress = this.address;
         pObject.emptyWallet = this.emptyWallet;
         pObject.referenceId = "Payout by JMW";
-        this.vaultService.createVaultPayout(this.wallet.walletId,pObject).subscribe(payout=>{
+        this.vaultService.createVaultPayout(this.wallet.walletId, pObject).subscribe(payout => {
             this.dialogRef.close();
-        },error2 => {
+        }, error2 => {
 
-            this.errorText = error2.message;
+            if (error2.status == 409) {
+                this.errorText = "Das Guthaben ist für diese Aktion zu gering. Beachten Sie, dass für" +
+                    " eine Bitcointransaktion auch Transaktionsgebühren verrichtet werden müssen.";
+                if (error2.error && error2.error.message) {
+                    this.errorText +=  "\n(" + error2.error.message+ ")";
+                }
+            } else {
+                if (error2.error && error2.error.message) {
+                    this.errorText =  error2.error.message;
+                } else {
+                    this.errorText = error2.message;
+                }
+
+            }
+
+
         })
 
     }
 
-    emptyChanged(e: any){
-        if(this.emptyWallet){
-            this.payout = (this.unconfirmed ? this.wallet.unconfirmed : this.wallet.confirmed)/this.unitFactor;
+    emptyChanged(e: any) {
+        if (this.emptyWallet) {
+            this.payout = (this.unconfirmed ? this.wallet.unconfirmed : this.wallet.confirmed) / this.unitFactor;
             this.payoutChanged(null);
         }
     }
 
-    addressChanged(e: any){
-        this.addressCorrect = this. regex.test(this.address);
+    addressChanged(e: any) {
+        this.addressCorrect = this.regex.test(this.address);
         console.log("address is now " + this.addressCorrect);
     }
 
-    payoutChanged(e: any){
+    payoutChanged(e: any) {
         var rv = false;
-        if((this.payout >= 500/this.unitFactor) && (this.payout <= (this.unconfirmed ? this.wallet.unconfirmed : this.wallet.confirmed)/this.unitFactor)){
+        if ((this.payout >= 500 / this.unitFactor) && (this.payout <= (this.unconfirmed ? this.wallet.unconfirmed : this.wallet.confirmed) / this.unitFactor)) {
             rv = true;
         }
         this.payoutCorrect = rv;
     }
 
-    unitChanged(e: any){
-        switch(e.value){
+    unitChanged(e: any) {
+        switch (e.value) {
             case "mbtc":
                 this.unitFactor = 100000;
                 this.unitName = "mBTC";
                 break;
             case "btc":
-                this.unitFactor =100000000;
+                this.unitFactor = 100000000;
                 this.unitName = "BTC";
                 break;
             case "satoshi":
