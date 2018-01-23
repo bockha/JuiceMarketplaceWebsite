@@ -15,15 +15,20 @@ self.HOST_SETTINGS = {
         HOST: 'localhost',
         PORT: 3002
     },
-    OAUTH_SERVER: {
+    OAUTH_SERVER_EXTERNAL: {
         PROTOCOL: 'HTTP',
         HOST: 'localhost',
         PORT: 3005
     },
-    OAUTH_SERVER_SECURE: {
+    OAUTH_SERVER_INTERNAL: {
         PROTOCOL: 'HTTP',
         HOST: 'localhost',
         PORT: 3006
+    },
+    COUPON_SERVER: {
+        PROTOCOL: 'HTTP',
+        HOST: 'localhost',
+        PORT: 3010
     }
 };
 
@@ -43,5 +48,9 @@ self.PUBLIC_USER = {
 self.PUBLIC_KEY_FILE_FOR_ENCRYPTION = 'resources/public_key_encryption.pem';
 
 self.RECIPE_LIMIT_PER_USER = 2;
+
+self.SESSION_SECRET = 'lbfifiou23bgofr2g18f12345121421pokdfsjga302lbfl2hbfdskb2o78gf324ougf232vksjhdvfakfviy3263972i';
+
+self.G_RE_CAPTCHA_SECRET = '';
 
 module.exports = self;

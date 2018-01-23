@@ -25,7 +25,7 @@
         <% include ./partials/sidebar %>
         <div id="main">
             <header>
-                <% include ./partials/header %>
+                <%- include("./partials/header", {pageName: 'Dashboard'}); %>
             </header>
             <div ng-controller='MyReportsController' class="row align-items-star">
                 <div class="container">
@@ -82,5 +82,5 @@
                 <% include ./partials/footer %>
             </footer>
         </div>
-    </body>
+        </div> </body>
 </html>

@@ -33,9 +33,9 @@ self.getUserInfoForToken = function (token, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER_SECURE.PORT,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PORT,
         '/userinfo',
         {
             access_token: token
@@ -51,7 +51,7 @@ self.getUserInfoForToken = function (token, callback) {
 
 };
 
-self.getImageForUser = function (user, callback) {
+self.getImageForUser = function (userId, token, callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
@@ -61,13 +61,13 @@ self.getImageForUser = function (user, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
-        '/users/' + user.token.user + '/image',
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PORT,
+        '/users/' + userId + '/image',
         {}
     );
-    options.headers.authorization = 'Bearer ' + user.token.accessToken;
+    options.headers.authorization = 'Bearer ' + token.accessToken;
     options.encoding = null;
 
     request(options, function (e, r, imageBuffer) {
@@ -81,12 +81,22 @@ self.getImageForUser = function (user, callback) {
 };
 
 self.refreshTokenForUser = function (user, callback) {
+    if (!user) {
+        callback(new Error('Missing argument'));
+        return;
+    }
+
+    if (!user.token) {
+        callback(new Error('Missing oauth token'));
+        return;
+    }
+
     if (new Date(user.token.accessTokenExpiresAt) > new Date()) {
         callback(null, user);
         return;
     }
 
-    if (new Date(user.token.refreshTokenExpiresAt) > new Date()) {
+    if (!user.token.refreshTokenExpiresAt || new Date(user.token.refreshTokenExpiresAt) < new Date()) {
         callback(new Error('RefreshTokenExpired'));
         return;
     }
@@ -94,9 +104,9 @@ self.refreshTokenForUser = function (user, callback) {
     // Refresh access token
     var options = buildOptionsForRequest(
         'POST',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PORT,
         '/oauth/token',
         {}
     );
@@ -127,9 +137,9 @@ self.getPublicToken = function (callback) {
 
     var options = buildOptionsForRequest(
         'POST',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PROTOCOL,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.HOST,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER_INTERNAL.PORT,
         '/oauth/token',
         {}
     );
@@ -144,10 +154,12 @@ self.getPublicToken = function (callback) {
     request(options, function (e, r, data) {
         var err = logger.logRequestAndResponse(e, options, r, data);
 
-        const _token = data.access_token;
+        if (!err && data) {
+            const _token = data.access_token;
 
-        if (_token) {
-            self.publicToken = _token;
+            if (_token) {
+                self.publicToken = _token;
+            }
         }
 
         callback(err, self.publicToken);

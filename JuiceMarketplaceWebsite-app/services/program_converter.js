@@ -2,7 +2,7 @@ var self = {};
 // ******************************************
 //   Conversion Utilities
 // ******************************************
-var milliliterPerMillisecond = 0.05;
+var amountPerMillisecond = 0.05;
 
 self.convertProgramToMachineProgram = function(program) {
     function log(string) {
@@ -11,8 +11,8 @@ self.convertProgramToMachineProgram = function(program) {
     var convertedJson = {};
     var sequences = {};
 
-    var milliliterPerMillisecond = program['milliliter-per-millisecond'];
-    log("milliliterPerMillisecond = " + milliliterPerMillisecond);
+    var amountPerMillisecond = program['amount-per-millisecond'];
+    log("amountPerMillisecond = " + amountPerMillisecond);
 	log("Converter started...");
     log("Program: "+program);
 
@@ -196,7 +196,7 @@ self.convertProgramToMachineProgram = function(program) {
         // setup line
         var jsonLine = {};
         var jsonComponents = [];
-        var pauseMs = pause / milliliterPerMillisecond;
+        var pauseMs = pause / amountPerMillisecond;
         log("line timing = "+targetMode+", sleep = "+pauseMs);
         jsonLine['timing'] = targetMode;
         jsonLine['sleep'] = pauseMs;

@@ -1,0 +1,124 @@
+.header-background {
+    background-color: #1976d2;
+    background: linear-gradient(95deg, #42a5f5, #0d47a1);
+    color: #fff;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    min-height: 480px;
+    height: 80vh;
+    max-height: 560px;
+    overflow: visible;
+    transform: skewY(5deg);
+    transform-origin: 100%;
+    box-sizing: border-box;
+}
+
+@media only screen and (max-width: 599px) {
+    .header-background {
+        background: linear-gradient(180deg, #42a5f5, #0d47a1);
+        transform: skewY(0deg);
+    }
+}
+
+.intro {
+    height: 480px;
+    position: relative;
+    color: white;
+}
+
+.intro-logo {
+    padding: 10px;
+}
+
+.intro-logo img {
+    width: 100%;
+    height: 100%;
+
+}
+
+.intro-text {
+    padding: 10px;
+    text-align: center;
+}
+
+.intro-text h1 {
+    font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif !important;
+    text-transform: uppercase !important;
+    font-size: 30px !important;
+    font-weight: 200 !important;
+    letter-spacing: 2px !important;
+}
+
+@media only screen and (max-width: 400px) {
+    .intro-text h1 {
+        font-size: 7.5vw !important;
+    }
+}
+
+hr {
+    border: none;
+    background: #dbdbdb;
+    height: 1px;
+    width: 100%;
+}
+
+.start-section {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    max-width: 1080px;
+    width: 100%;
+}
+
+.start-section-image {
+    padding: 30px;
+    max-width: 100%;
+
+}
+
+.start-section-image img {
+
+    max-height: 250px;
+    min-height: 200px;
+}
+
+.start-section-text {
+    padding: 30px;
+    font-size: larger;
+}
+
+.news-card {
+    max-width: 500px;
+}
+
+.news-text {
+    padding: 10px;
+    font-size: larger;
+}
+
+.news-card img {
+    padding: 10px;
+    max-height: 120px;
+}
+
+.text-headline {
+    font-size: 20px;
+    font-weight: 500;
+    color: #1976d2;
+    margin-top: 10px;
+    text-transform: uppercase;
+}
+
+.article {
+    padding: 20px;
+}
+
+.github-logo {
+    width: 50px;
+    box-shadow: 3px 3px 5px #888;
+    border-radius: 25px;
+}
+
+.logo-env {
+    text-align: center;
+}

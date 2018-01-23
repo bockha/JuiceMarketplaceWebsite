@@ -1,0 +1,78 @@
+<h1 class="headline">Dashboard</h1>
+
+<div fxLayout="column" fxLayoutGap="10px">
+    <div fxLayout.gt-md="row"  fxLayoutGap="10px" fxLayout="column">
+        <mat-card fxFlex.gt-md="60" class="iuno-card ">
+            <mat-card-header>
+                <mat-card-title>
+                    <span class="card-title">Lizenzeinnahmen im letzten Monat</span>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <google-chart *ngIf="revenueHistory && revenueHistory.length>0;else no_revenue_history" [data]="revenueHistoryData"></google-chart>
+
+                <ng-template #no_revenue_history><p class="nodata">Keine Daten vorhanden</p></ng-template>
+                <!--<div id='chart-revenue' style="padding: 10px;"></div>-->
+            </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex.gt-md="40" class="iuno-card">
+            <mat-card-header>
+                <mat-card-title>
+                    <span class="card-title">Top 5 im letzten Monat</span>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <google-chart *ngIf="topRecipes && topRecipes.length>0;else no_top_recipes" [data]="topRecipesData"></google-chart>
+                <ng-template #no_top_recipes><p class="nodata">Keine Daten vorhanden</p></ng-template>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxLayout.gt-md="row" fxLayout="column" fxLayoutGap="10px">
+        <mat-card fxFlex.gt-md="50" class="iuno-card">
+            <mat-card-header>
+                <mat-card-title>
+                    <span class="card-title">Lizenzeinnahmen heute (IUNOs)</span>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content fxLayoutAlign="center center" style="height: 100%;">
+            <span class="card-information" *ngIf="revenueToday == null">
+              -
+            </span>
+                <span class="card-information" *ngIf="revenueToday != null">
+              {{revenueToday | number:'1.2'}}
+            </span>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card fxFlex.gt-md="50" class="iuno-card">
+            <mat-card-header>
+                <mat-card-title>
+                    <span class="card-title">Meistverkauftes Getränk</span>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content fxLayoutAlign="center center" style="height: 100%;">
+              <span class="card-information" *ngIf="topRecipeName == null">
+                  -
+                </span>
+                <span class="card-information" *ngIf="topRecipeName != null">
+                    {{topRecipeName}}
+                  </span>
+            </mat-card-content>
+        </mat-card>
+        <mat-card fxFlex.gt-md="50" class="iuno-card">
+            <mat-card-header>
+                <mat-card-title>
+                    <span class="card-title">Aktueller Kontostand</span>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content fxLayoutAlign="center center" style="height: 100%;">
+              <span class="card-information" *ngIf="vaultBalance == null">
+                  -x1
+                </span>
+                <span class="card-information" *ngIf="vaultBalance != null">
+                    {{vaultBalance}} IUNO
+                  </span>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
