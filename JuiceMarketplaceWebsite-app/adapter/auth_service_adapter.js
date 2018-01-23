@@ -120,9 +120,14 @@ self.refreshTokenForUser = function (user, callback) {
     request(options, function (e, r, data) {
         var err = logger.logRequestAndResponse(e, options, r, data);
 
+        const _token = data.access_token;
+
+        _token.refreshToken = user.token.refreshToken;
+        _token.refreshTokenExpiresAt = user.token.refreshTokenExpiresAt;
+
         callback(err, {
             id: user.id,
-            token: data.access_token
+            token: _token
         });
     });
 };
