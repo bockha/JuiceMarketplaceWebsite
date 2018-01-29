@@ -46,5 +46,18 @@ router.post('/wallets/:walletId/payouts', validate({
     })
 });
 
+router.post('/wallets/:walletId/payouts/check', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Payout_Body
+}), function(req, res, next){
+    const token = req.user.token;
+    marketplaceCore.createVaultPayoutForUser(req.params['id'],req.params['walletId'],token['accessToken'],req.body,function(err, payoutcheck){
+        if(err){
+            return next(err);
+        }
+        res.send(payoutcheck);
+    })
+});
+
 
 module.exports = router;

@@ -355,6 +355,20 @@ self.createVaultPayoutForUser = function (user, walletId, accessToken, payout, c
     doRequest(options, callback);
 };
 
+self.checkVaultPayoutForUser = function (user, walletId, accessToken, payout, callback) {
+    const options = buildOptionsForRequest(
+        'POST',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/vault/users/' + user + '/wallets/' + walletId + '/payouts/check',
+        null);
+    options.body = payout;
+    options.headers.authorization = 'Bearer ' + accessToken;
+
+    doRequest(options, callback);
+};
+
 self.getActivatedLicenseCountForUser = function (user, accessToken, callback) {
 
     const options = buildOptionsForRequest(
