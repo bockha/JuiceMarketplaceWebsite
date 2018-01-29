@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Auszahlung von Guthaben veranlassen</h2>
 <mat-dialog-content>
-    <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
+    <div fxLayout="column" fxLayoutGap="15px" fxLayoutAlign="center center">
         <div fxFlexFill>
             Es sind {{wallet.confirmed/100000}} IUNO in Ihrem Wallet zur Auszahlung bereit.<br>
             Dies entspricht {{wallet.confirmed / unitFactor}} {{unitName}} im Bitcoin Testnet.
@@ -29,12 +29,12 @@
             <div fxFlex="*">
                 <mat-form-field [color]="payoutCorrect?'primary':'warn'" >
                     <input matInput placeholder="Auszahlbetrag" type="number" min="{{500 / unitFactor}}"
-                           max="{{(unconfirmed?wallet.unconfirmed:wallet.confirmed)/unitFactor}}"
+                           max="{{((unconfirmed?wallet.unconfirmed:wallet.confirmed)-transactionFee)/unitFactor}}"
                            [(ngModel)]="payout"
                            (ngModelChange)="payoutChanged($event)"
                            [disabled]="emptyWallet || ( wallet.confirmed == 0 && !unconfirmed)">
                     <mat-hint align="start">min. {{500/unitFactor | number: '1.0-8'}}, max.
-                        {{(unconfirmed?wallet.unconfirmed:wallet.confirmed)/unitFactor | number: '1.0-8'}}
+                        {{((unconfirmed?wallet.unconfirmed:wallet.confirmed)-transactionFee)/unitFactor | number: '1.0-8'}}
                     </mat-hint>
                 </mat-form-field>
 
@@ -48,17 +48,21 @@
                         <mat-option value="satoshi">Satoshis</mat-option>
 
                     </mat-select>
-                    <mat-hint align="start" *ngIf="unit=='mbtc'">{{payout * 100000}} Satoshi / {{payout / 1000 | number: '1.0-8'}} BTC
+                    <mat-hint align="start" *ngIf="unit=='mbtc'">{{payout * 100000| number: '1.0-0'}}&nbsp;Satoshi / {{payout / 1000 | number: '1.0-8'}}&nbsp;BTC
                     </mat-hint>
-                    <mat-hint align="start" *ngIf="unit=='satoshi'">{{payout / 100000 | number: '1.0-5'}} mBTC / {{payout / 100000000 | number: '1.0-8'}}
+                    <mat-hint align="start" *ngIf="unit=='satoshi'">{{payout / 100000 | number: '1.0-5'}}&nbsp;mBTC / {{payout / 100000000 | number: '1.0-8'}}&nbsp;BTC
                         BTC
                     </mat-hint>
-                    <mat-hint align="start" *ngIf="unit=='btc'">{{payout * 100000000}} Satoshi / {{payout * 1000}}
+                    <mat-hint align="start" *ngIf="unit=='btc'">{{payout * 100000000| number: '1.0-0'}}&nbsp;Satoshi / {{payout * 1000}}&nbsp;mBTC
                         mBTC
                     </mat-hint>
                 </mat-form-field>
 
             </div>
+        </div>
+        <div fxFlex="">
+            Die Transaktionsgebühr beträgt {{transactionFee / unitFactor}}&nbsp;{{unitName}}<br>
+            und das Restguthaben im Wallet {{remaining / unitFactor}}&nbsp;{{unitName}}
         </div>
         <div fxFlexFill>
 

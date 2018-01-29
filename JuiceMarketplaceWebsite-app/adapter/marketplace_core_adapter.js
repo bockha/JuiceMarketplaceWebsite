@@ -339,6 +339,18 @@ self.getVaultWalletsForUser = function (user, accessToken, callback) {
 
     doRequest(options, callback);
 };
+self.getVaultWalletForUserAndWalletId = function (user, walletId, accessToken, callback) {
+    const options = buildOptionsForRequest(
+        'GET',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/vault/users/' + user + '/wallets/' + walletId,
+        null);
+    options.headers.authorization = 'Bearer ' + accessToken;
+
+    doRequest(options, callback);
+};
 
 
 self.createVaultPayoutForUser = function (user, walletId, accessToken, payout, callback) {
