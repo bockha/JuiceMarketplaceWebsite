@@ -7,17 +7,13 @@
         </div>
 
         <div *ngIf="wallet.unconfirmed!= wallet.confirmed" fxFlexFill>
-            Davon sind {{wallet.unconfirmed / unitFactor | number: '1.0-8'}} {{unitName}} sofort zur Auszahlung bereit.
-            {{(wallet.unconfirmed -
-            wallet.confirmed)/unitFactor | number: '1.0-8'}}
-            {{unitName}} müssen noch in der Blockchain bestätigt werden und es wird nicht empfohlen dieses Geld jetzt
-            bereits auszuzahlen, auch wenn es möglich ist.
+            Aktuell sind davon noch {{(wallet.unconfirmed-wallet.confirmed) / unitFactor | number: '1.0-8'}} {{unitName}} unbestätigt.
+            Sobald diese Transaktionen in der Blockchain bestätigt sind, kann man auch dieses Guthaben auszahlen.
         </div>
-
         <div fxFlexFill>
-            <mat-slide-toggle [(ngModel)]="unconfirmed">Unbestätigte Mittel auszahlen</mat-slide-toggle>
-        </div>
 
+            <mat-slide-toggle [(ngModel)]="emptyWallet" (change)="emptyChanged($event)">Wallet leeren</mat-slide-toggle>
+        </div>
         <div fxFlexFill>
             <mat-form-field class="address-input" [color]="addressCorrect?'primary':'warn'"
                             (input)="addressChanged($event)">
@@ -28,13 +24,13 @@
         <div fxFlexFill fxLayoutAlign="row" class="amount-input" >
             <div fxFlex="*">
                 <mat-form-field [color]="payoutCorrect?'primary':'warn'" >
-                    <input matInput placeholder="Auszahlbetrag" type="number" min="{{500 / unitFactor}}"
-                           max="{{((unconfirmed?wallet.unconfirmed:wallet.confirmed)-transactionFee)/unitFactor}}"
+                    <input matInput placeholder="Auszahlbetrag" type="number" min="{{6000 / unitFactor}}"
+                           max="{{(wallet.confirmed-transactionFee)/unitFactor}}"
                            [(ngModel)]="payout"
                            (ngModelChange)="payoutChanged($event)"
-                           [disabled]="emptyWallet || ( wallet.confirmed == 0 && !unconfirmed)">
-                    <mat-hint align="start">min. {{500/unitFactor | number: '1.0-8'}}, max.
-                        {{((unconfirmed?wallet.unconfirmed:wallet.confirmed)-transactionFee)/unitFactor | number: '1.0-8'}}
+                           [disabled]="emptyWallet || ( wallet.confirmed == 0)">
+                    <mat-hint align="start">min. {{6000/unitFactor | number: '1.0-8'}}, max.
+                        {{(wallet.confirmed-transactionFee)/unitFactor | number: '1.0-8'}}
                     </mat-hint>
                 </mat-form-field>
 
@@ -60,14 +56,11 @@
 
             </div>
         </div>
-        <div fxFlex="">
+        <div fxFlexFill *ngIf="wallet.confirmed > 0">
             Die Transaktionsgebühr beträgt {{transactionFee / unitFactor}}&nbsp;{{unitName}}<br>
             und das Restguthaben im Wallet {{remaining / unitFactor}}&nbsp;{{unitName}}
         </div>
-        <div fxFlexFill>
 
-            <mat-slide-toggle [(ngModel)]="emptyWallet" (change)="emptyChanged($event)">Wallet leeren</mat-slide-toggle>
-        </div>
         <div class="error-text" *ngIf="errorText">
             {{errorText}}
         </div>

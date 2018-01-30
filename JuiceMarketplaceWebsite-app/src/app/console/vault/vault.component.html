@@ -24,7 +24,7 @@
                 <ng-container matColumnDef="action">
                     <mat-header-cell *matHeaderCellDef>Aktion</mat-header-cell>
                     <mat-cell *matCellDef="let wallet">
-                        <button (click)="payout(wallet)" mat-raised-button color="primary">Auszahlung</button>
+                        <button [disabled]="wallet.unconfirmed == 0" (click)="payout(wallet)" mat-raised-button color="primary">Auszahlung</button>
                     </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
