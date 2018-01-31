@@ -10,12 +10,38 @@ const session = require('cookie-session');
 const fs = require('fs');
 const marked = require('marked');
 const contentTypeValidation = require('./services/content_type_validation');
+const uaParser = require('ua-parser');
 
 const config = require('./config/config_loader');
 
 const app = express();
 
 app.use('/', contentTypeValidation);
+app.use('*', function (req, res, next) {
+    let r = uaParser.parse(req.headers['user-agent']);
+    // console.log(r.ua.toString());        // -> "Safari 5.0.1" 
+    // console.log(r.ua.toVersionString()); // -> "5.0.1" 
+    // console.log(r.ua.family)             // -> "Safari" 
+    // console.log(r.ua.major);             // -> "5" 
+    // console.log(r.ua.minor);             // -> "0" 
+    // console.log(r.ua.patch);             // -> "1" 
+    
+    // console.log(r.os.toString());        // -> "iOS 5.1" 
+    // console.log(r.os.toVersionString()); // -> "5.1" 
+    // console.log(r.os.family)             // -> "iOS" 
+    // console.log(r.os.major);             // -> "5" 
+    // console.log(r.os.minor);             // -> "1" 
+    // console.log(r.os.patch);             // -> null 
+    
+    // console.log(r.device.family);        // -> "iPhone" 
+
+    // IE <= 11 is not supported
+    if (r.ua.family == 'IE' && r.ua.major <= 11) {
+        res.sendFile(path.join(__dirname, 'browser_not_supported.html'));
+    } else {
+        return next();
+    }
+});
 
 app.set('view engine', 'ejs');
 
@@ -41,7 +67,7 @@ app.use(passport.session()); // persistent login sessions
 
 
 // -- PUBLIC CONTENT --
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', require('./routes/auth')(passport));
 app.use('/api/reports', require('./routes/reports'));
