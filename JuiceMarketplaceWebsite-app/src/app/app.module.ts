@@ -23,7 +23,7 @@ import {NgcCookieConsentConfig, NgcCookieConsentModule} from 'ngx-cookieconsent'
 
 const cookieConfig: NgcCookieConsentConfig = {
     "cookie": {
-        "domain": "localhost"
+        "domain": "iuno.axoom.cloud"
     },
     "position": "bottom-right",
     "theme": "classic",
