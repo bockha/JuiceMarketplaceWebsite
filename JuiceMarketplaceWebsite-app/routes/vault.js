@@ -33,6 +33,19 @@ router.get('/wallets', validate({
     });
 });
 
+router.get('/wallets/:walletId', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Empty
+}), function (req, res, next) {
+    const token = req.user.token;
+    marketplaceCore.getVaultWalletForUserAndWalletId(req.params['id'],req.params['walletId'],token['accessToken'], function (err, wallet) {
+        if (err) {
+            return next(err);
+        }
+        res.send(wallet);
+    });
+});
+
 router.post('/wallets/:walletId/payouts', validate({
     query: validation_schema.Empty,
     body: validation_schema.Payout_Body
@@ -43,6 +56,19 @@ router.post('/wallets/:walletId/payouts', validate({
             return next(err);
         }
         res.send(payout);
+    })
+});
+
+router.post('/wallets/:walletId/payouts/check', validate({
+    query: validation_schema.Empty,
+    body: validation_schema.Payout_Body
+}), function(req, res, next){
+    const token = req.user.token;
+    marketplaceCore.checkVaultPayoutForUser(req.params['id'],req.params['walletId'],token['accessToken'],req.body,function(err, payoutcheck){
+        if(err){
+            return next(err);
+        }
+        res.send(payoutcheck);
     })
 });
 

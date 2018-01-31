@@ -637,6 +637,33 @@ paths:
             $ref: '#/definitions/Payout'
         '404':
           description: the user in unknown in the vault or this is not the user's wallet
+        '409':
+          description: the wallet balance is too low
+  '/users/{userId}/vault/wallets/{walletId}/payouts/check':
+      post:
+        description: check the payout
+        parameters:
+          - name: userId
+            in: path
+            required: true
+            type: string
+            format: uuid
+          - name: walletId
+            in: path
+            required: true
+            type: string
+            format: uuid
+        responses:
+          '200':
+            description: the payout
+            schema:
+              $ref: '#/definitions/PayoutCheck'
+          '404':
+            description: the user in unknown in the vault or this is not the user's wallet
+          '409':
+            description: the wallet balance is too low
+            schema:
+              $ref: '#/definitions/PayoutCheck'
   '/users/{userId}/reports/revenue':
     get:
       description: Route to get the total revenue of a user
@@ -940,6 +967,18 @@ definitions:
       referenceId:
         type: string
         required: false
+
+
+  PayoutCheck:
+    description: 'The result object of payout checks'
+      type: object
+      properties:
+        fee:
+          type: integer
+          format: long
+        remaining:
+          type: integer
+          format: long
   User:
     type: object
     properties:
