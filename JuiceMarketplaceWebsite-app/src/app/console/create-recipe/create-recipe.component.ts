@@ -27,8 +27,6 @@ export class CreateRecipeComponent implements OnInit {
     components: TdmComponent[];
     licenseFees: number[] = [0.25, 0.5, 0.75, 1.00];
     spinnerCounter = 0;
-
-    maxRecipeCount = 3;
     recipeName: string = "";
     recipeDescription: string = "";
     recipeLicenseFee: number = -1;
@@ -47,24 +45,22 @@ export class CreateRecipeComponent implements OnInit {
 
     ngOnInit() {
         this.spinnerCounter += 1;
-        this.recipeService.recipes.subscribe(recipes => {
-            this.spinnerCounter -= 1;
-            if (recipes.length >= this.maxRecipeCount) {
-                this.router.navigate(['../recipes', {errorMaxRecipes: true}], {relativeTo: this.activatedRoute});
-            }
-        });
-        this.recipeService.updateRecipes();
-
         // this.spinnerCounter += 1;
         this.marketplaceService.components.subscribe(components => {
             this.components = components;
-        })
+        });
 
         var rc = this.recipeService.getRecipeCount();
         var rl = this.recipeService.getRecipeLimit();
         rl.subscribe(limit => this.recipeLimit = limit);
         rc.subscribe(count => this.recipeCount = count);
-        rc.combineLatest(rl, (count, limit)=> limit-count).subscribe(result => this.recipesLeft = result);
+        rc.combineLatest(rl, (count, limit)=> limit-count).subscribe(result => {
+            this.recipesLeft = result;
+            this.spinnerCounter -= 1;
+            if (this.recipesLeft <= 0) {
+                this.router.navigate(['../recipes', {errorMaxRecipes: true}], {relativeTo: this.activatedRoute});
+            }
+        });
     }
 
     actionSaveRecipe() {

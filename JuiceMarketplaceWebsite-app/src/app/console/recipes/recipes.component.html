@@ -7,9 +7,8 @@
             </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <app-message-box type="error" *ngIf="errorMaxRecipes">Derzeit ist die Anzahl an Rezepten pro Benutzer
-                begrenzt. Bitte lösche ein bestehendes Rezept, falls du weitere Rezepte
-                auf dem Marktplatz veröffentlichen möchtest.
+            <app-message-box type="error" *ngIf="errorMaxRecipes == true">Derzeit ist die Anzahl an Rezepten pro Benutzer
+                begrenzt. Bitte lösche ein bestehendes Rezept, falls du weitere auf dem Marktplatz veröffentlichen möchtest.
             </app-message-box>
             <div *ngIf="dataSource.data.length == 0" class="no-recipes-available">
                 Keine Getränke vorhanden
