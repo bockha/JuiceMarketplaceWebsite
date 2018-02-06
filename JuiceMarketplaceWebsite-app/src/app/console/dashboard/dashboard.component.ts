@@ -23,7 +23,7 @@ import {VaultService} from "../services/vault.service";
 })
 
 export class DashboardComponent implements OnInit {
-    revenueToday: number = null;
+    amountToday: number = null;
     topRecipe: TdmRecipe = null;
     topRecipeName: string = null;
 
@@ -61,8 +61,8 @@ export class DashboardComponent implements OnInit {
 
         let fromToday = moment().startOf('day').toDate();
         let toToday = moment().endOf('day').toDate();
-        this.dashboardService.getRevenueForUser(fromToday, toToday).subscribe(revenue => {
-            this.revenueToday = revenue / 100000;
+        this.dashboardService.getLicenseCountForUser(fromToday, toToday).subscribe(amount => {
+            this.amountToday = amount;
         }, error2 => {
             console.log(error2);
         });
