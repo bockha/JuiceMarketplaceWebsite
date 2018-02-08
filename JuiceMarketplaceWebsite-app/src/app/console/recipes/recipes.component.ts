@@ -40,6 +40,7 @@ export class RecipesComponent implements OnInit {
     deleteRecipe(recipe: TdmRecipe) {
         this.accessGuard.guardLoggedIn().subscribe(loggedIn => {
             if (loggedIn) {
+                this.errorMaxRecipes = false;
                 this.recipeService.deleteRecipe(recipe);
             }
         });
