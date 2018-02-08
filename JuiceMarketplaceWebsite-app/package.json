@@ -60,7 +60,8 @@
     "systemjs": "0.19.40",
     "ua-parser": "^0.3.5",
     "winston": "^2.3.1",
-    "zone.js": "^0.8.14"
+    "zone.js": "^0.8.14",
+    "copy-webpack-plugin": "4.3.1"
   },
   "snyk": true,
   "devDependencies": {
