@@ -23,7 +23,7 @@ export class VaultPayoutDialogComponent implements OnInit, OnDestroy {
     payout = 0;
     emptyWallet = false;
     address = "";
-    regex = new RegExp('([2mn][a-km-zA-HJ-NP-Z0-9]{26,34})');
+    regex = new RegExp('^[mn2][a-km-zA-HJ-NP-Z1-9]{33}$');
     addressCorrect = false;
     payoutCorrect = false;
     unit = "mbtc";
