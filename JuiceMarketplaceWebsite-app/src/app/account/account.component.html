@@ -1,7 +1,9 @@
 <div *ngIf="loggedin && user != null" fxLayout="row">
     <button mat-button class="lightupper" [matMenuTriggerFor]="menu">
-            {{getUserDisplayName()}}
-        <img fxHide.xs class="userImg" src="{{getUserAvatar()}}">
+        <span class="userButton">
+            <span fxHide.xs >{{getUserDisplayName()}}</span>
+            <img class="userImg" src="{{getUserAvatar()}}">
+        </span>
     </button>
 
     <!-- <img class="userImg" src="./assets/images/1.jpg"/> -->

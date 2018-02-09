@@ -7,3 +7,8 @@ img.userImg {
     margin-left: 1em;
     object-fit: cover;
 }
+
+span.userButton {
+    display: flex;
+    flex-direction: row;
+}
