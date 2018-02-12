@@ -1,0 +1,83 @@
+
+.recipe-image-container {
+  width: 100%;
+    height: 100%;
+}
+
+.picker-card{
+  /*max-width: 100%;*/
+  /*max-height: 100%;*/
+    /*width: 50vh;*/
+    /*height: 50vh;*/
+  /*padding: 70px;*/
+    height: 90%;
+}
+.recipe-image{
+  width: 100%;
+  height: 100%;
+}
+
+.image-div{
+  padding: 10px;
+  border-radius: 10px;
+  position: relative;
+}
+.vertical-div{
+  width: 100%;
+  height: 100%;
+}
+
+
+.upper-arrow{
+  height: 100%;
+}
+
+.lower-arrow{
+  height: 100%;
+  transform: rotate(180deg);
+}
+
+.right-arrow{
+  width: 100%;
+  transform: rotate(90deg);
+}
+.left-arrow{
+  width: 100%;
+  transform: rotate(-90deg);
+}
+
+
+.color-field{
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid black;
+  display: inline-block;
+  margin-left: 2px;
+  margin-right: 2px;
+
+}
+
+.color-dice{
+
+  width: 44px;
+  height: 44px;
+}
+
+.color-div{
+  width: 100%;
+}
+
+.colors-scrollable{
+  overflow-x: scroll ;
+  white-space : nowrap
+}
+
+
+.image-dice{
+  position: absolute;
+  bottom: 0;
+  width: 50px;
+  height: 50px;
+  right: 0;
+}

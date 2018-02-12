@@ -1,0 +1,38 @@
+<div class="recipe-image-container">
+  <mat-card class="picker-card">
+    <div class="vertical-div" fxLayout="column" fxLayoutAlign="center stretch">
+      <div class="upper-div" fxFlex="50px" fxLayout="row" fxLayoutAlign="center center">
+        <img class="upper-arrow" src="assets/images/arrow.svg" (click)="upClick()">
+      </div>
+      <div class="middle-div" fxFlex fxLayout="row" fxLayoutAlign="center stretch">
+        <div class="left-div" fxFlex="50px" fxLayout="columns" fxLayoutAlign="center stretch">
+          <img class="left-arrow" src="assets/images/arrow.svg" (click)="leftClick()">
+        </div>
+        <div class="image-div" fxFlex="*" [style.background-color]="backgroundColor">
+
+          <img class="recipe-image" src="assets/images/drinks/{{images[imagerow][imagecolumn]}}.svg">
+
+          <img src="assets/images/dice.svg" class="image-dice" (click)="randomImage()">
+        </div>
+        <div class="right-div" fxFlex="50px" fxLayout="columns" fxLayoutAlign="center stretch">
+          <img class="right-arrow" src="assets/images/arrow.svg" (click)="rightClick()">
+        </div>
+      </div>
+      <div class="lower-div" fxFlex="50px" fxLayout="row" fxLayoutAlign="center stretch">
+
+        <div fxLayout="row" fxLayoutAlign="center stretch">
+          <img class="lower-arrow" src="assets/images/arrow.svg" (click)="downClick()">
+        </div>
+      </div>
+      <div fxFlex="50px" fxLayout="row" fxLayoutGap="5px" class="color-div">
+        <div fxFlex="44px">
+          <img class="color-dice" src="assets/images/dice.svg" (click)="randomBackgroundColor()">
+        </div>
+        <div fxFlex="90" class="colors-scrollable">
+            <div class="color-field" *ngFor="let color of colors" [style.background-color]="color"
+                 (click)="setColor(color)"></div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>
