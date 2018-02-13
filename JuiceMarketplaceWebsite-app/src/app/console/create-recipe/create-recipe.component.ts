@@ -134,8 +134,8 @@ export class CreateRecipeComponent implements OnInit {
                     jsonRecipe['description'] = recipe.technologydatadescription;
                     jsonRecipe['license-fee'] = recipe.licensefee * 100000;
                     jsonRecipe['program'] = jsonProgram;
-                    jsonRecipe['image'] = this.recipeImagePicker.getImage();
-                    jsonRecipe['background-color'] = this.recipeImagePicker.backgroundColor;
+                    jsonRecipe['imageRef'] = this.recipeImagePicker.getSelectedImage();
+                    jsonRecipe['backgroundColor'] = this.recipeImagePicker.backgroundColor;
 
                     this.http.post('/api/users/me/recipes', jsonRecipe).subscribe(
                         data => {

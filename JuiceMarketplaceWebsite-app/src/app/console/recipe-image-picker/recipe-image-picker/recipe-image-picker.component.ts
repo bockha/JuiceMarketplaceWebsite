@@ -102,7 +102,7 @@ export class RecipeImagePickerComponent implements OnInit {
         return a;
     }
 
-    getImage() {
+    getSelectedImage() {
         return this.images[this.imagerow][this.imagecolumn];
     }
 }

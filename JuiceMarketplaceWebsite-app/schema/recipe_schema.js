@@ -247,6 +247,16 @@ self.Recipe_Body = {
             },
             required: ['amount-per-millisecond', 'sequences'],
             additionalProperties: false
+        },
+        imageRef: {
+            type: 'string',
+            maxLength: 10,
+            minLength: 1
+        },
+        backgroundColor: {
+            type: 'string',
+            maxLength: 9,
+            pattern: '^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{4}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$'
         }
     },
     required: ['title', 'description', 'license-fee', 'program'],
