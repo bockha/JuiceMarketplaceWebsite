@@ -28,7 +28,7 @@
                 <div fxFlex="44px">
                     <img class="color-dice" src="assets/images/dice.svg" (click)="randomBackgroundColor()">
                 </div>
-                <div fxFlex="90" class="colors-scrollable">
+                <div fxFlex="90" class="color-picker-div">
                     <div class="color-field" *ngFor="let color of colors" [style.background-color]="color"
                          (click)="setColor(color)">
                     </div>
