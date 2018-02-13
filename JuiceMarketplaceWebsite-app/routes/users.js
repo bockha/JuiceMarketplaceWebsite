@@ -222,6 +222,7 @@ router.post('/:id/recipes', validate({
             coreData.technologyUUID = CONFIG.TECHNOLOGY_UUID;
             coreData.licenseFee = licenseFee;
             coreData.componentList = componentsIds;
+            // coreData.backgroundColor = '#000000'; //TODO: Add background color here
 
             marketplaceCore.saveRecipeForUser(req.user.token, coreData, function (err, recipeId) {
                 if (err && err.statusCode === 409) {

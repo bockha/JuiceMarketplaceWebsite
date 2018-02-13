@@ -3,8 +3,12 @@ img.userImg {
     height: 30px;
     border: 1px solid grey;
     border-radius: 50%;
-    float: left;
-    margin-right: 1em;
+    float: right;
+    margin-left: 1em;
     object-fit: cover;
+}
 
+span.userButton {
+    display: flex;
+    flex-direction: row;
 }

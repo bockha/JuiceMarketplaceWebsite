@@ -16,8 +16,7 @@ import {VaultService} from "../services/vault.service";
     encapsulation: ViewEncapsulation.None,
     templateUrl: './dashboard.component.html',
     styleUrls: [
-        './dashboard.component.css',
-        '../../../../node_modules/c3/c3.css'
+        './dashboard.component.css'
     ],
     providers: [DashboardService, VaultService]
 })
@@ -141,9 +140,9 @@ export class DashboardComponent implements OnInit {
                 techcount += 1;
                 columns.push([revenue.technologydataname]);
                 if (revenue.technologydataname === "Benchmark") {
-                    series[(techcount).toString()] = {type: 'line'};
+                    series[(techcount - 1).toString()] = {type: 'line', lineDashStyle: [8,8], lineWidth: 4};
                 } else {
-                    series[(techcount).toString()] = {type: 'area'};
+                    series[(techcount - 1).toString()] = {type: 'area'};
                 }
 
             }
@@ -164,24 +163,25 @@ export class DashboardComponent implements OnInit {
 
 
             console.log("fertsch");
+            self.revenueHistoryData = {
+                chartType: 'ComboChart',
+                dataTable: data,
+                options: {
+                    axisTitlesPosition: 'in',
+                    legend: {position: 'bottom'},
+                    hAxis: {
+                        format: 'dd.MM.'
+                    },
+                    series: series
+                }
+
+
+            }
 
         });
 
 
-        this.revenueHistoryData = {
-            chartType: 'ComboChart',
-            dataTable: data,
-            options: {
-                axisTitlesPosition: 'in',
-                legend: {position: 'bottom'},
-                hAxis: {
-                    format: 'dd.MM.'
-                },
-                series: series
-            }
 
-
-        }
 
 
     }

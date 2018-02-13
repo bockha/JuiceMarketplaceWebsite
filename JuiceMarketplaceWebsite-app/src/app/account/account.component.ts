@@ -50,6 +50,13 @@ export class AccountComponent implements OnInit {
         return displayName;
     }
 
+    getUserAvatar() {
+        if (this.user != null) {
+            return '/api/users/me/image';
+        }
+        return '';
+    }
+
     logout() {
         window.location.href = "/auth/logout";
     }
