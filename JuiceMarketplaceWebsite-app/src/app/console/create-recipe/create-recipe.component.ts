@@ -1,19 +1,17 @@
-import {Injectable} from '@angular/core';
+import {Injectable, ViewChild} from '@angular/core';
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router, ActivatedRoute} from '@angular/router';
 import * as $ from 'jquery';
 
 import {MarketplaceService} from '../services/marketplace.service';
-// import * as jsRecipe from '../../assets/juice-configurator/js/recipe.js';
 import {TdmComponent} from '../juice-program-configurator/models/tdmcomponent';
 import {TdmProgram} from '../juice-program-configurator/models/tdmprogram';
-import {JuiceProgramConfiguratorComponent} from '../juice-program-configurator/juice-program-configurator.component';
 import {TdmRecipe} from '../juice-program-configurator/models/tdmrecipe';
 import {RecipeService} from '../services/recipe.service';
 import {AccessGuard} from '../services/user.service';
-import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/combineLatest"
+import {RecipeImagePickerComponent} from "../recipe-image-picker/recipe-image-picker/recipe-image-picker.component";
 
 @Component({
     selector: 'app-create-recipe',
@@ -24,6 +22,8 @@ import "rxjs/add/operator/combineLatest"
 
 @Injectable()
 export class CreateRecipeComponent implements OnInit {
+    @ViewChild(RecipeImagePickerComponent) recipeImagePicker: RecipeImagePickerComponent;
+
     components: TdmComponent[];
     licenseFees: number[] = [0.25, 0.5, 0.75, 1.00];
     spinnerCounter = 0;
@@ -134,6 +134,9 @@ export class CreateRecipeComponent implements OnInit {
                     jsonRecipe['description'] = recipe.technologydatadescription;
                     jsonRecipe['license-fee'] = recipe.licensefee * 100000;
                     jsonRecipe['program'] = jsonProgram;
+                    jsonRecipe['image'] = this.recipeImagePicker.getImage();
+                    jsonRecipe['background-color'] = this.recipeImagePicker.backgroundColor;
+
                     this.http.post('/api/users/me/recipes', jsonRecipe).subscribe(
                         data => {
                             this.spinnerCounter -= 1;
