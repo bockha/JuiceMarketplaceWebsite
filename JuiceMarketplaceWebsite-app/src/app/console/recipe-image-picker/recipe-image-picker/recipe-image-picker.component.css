@@ -37,6 +37,7 @@
 }
 
 .lower-div {
+
 }
 
 .color-div {
@@ -63,14 +64,13 @@
 }
 
 .color-field {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 5px;
     border: 2px solid black;
     display: inline-block;
     margin-left: 2px;
     margin-right: 2px;
-
 }
 
 .color-dice {
@@ -81,7 +81,8 @@
 
 .colors-scrollable {
     overflow-x: scroll;
-    white-space: nowrap
+    white-space: nowrap;
+    height: 50px;
 }
 
 .image-dice {
