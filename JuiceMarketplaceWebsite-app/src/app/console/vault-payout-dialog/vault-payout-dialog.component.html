@@ -4,6 +4,7 @@
         <div fxFlexFill>
             Es sind {{wallet.confirmed/100000}} IUNO in Ihrem Wallet zur Auszahlung bereit.<br>
             Dies entspricht {{wallet.confirmed / unitFactor}} {{unitName}} im Bitcoin Testnet.
+            <mat-icon (click)="testnetHelp()">help_outline</mat-icon>
         </div>
 
         <div *ngIf="wallet.unconfirmed!= wallet.confirmed" fxFlexFill>
@@ -19,6 +20,7 @@
                             (input)="addressChanged($event)">
 
                 <input matInput placeholder="Auszahladresse" type="text" [(ngModel)]="address">
+                <mat-hint *ngIf="isMainnetAddress">⚡️Dies ist eine Mainnet Bitcoin Adresse!</mat-hint>
             </mat-form-field>
         </div>
         <div fxFlexFill fxLayoutAlign="row" class="amount-input" >

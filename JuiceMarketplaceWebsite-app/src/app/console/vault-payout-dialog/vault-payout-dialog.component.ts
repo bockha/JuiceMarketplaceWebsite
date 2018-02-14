@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from "@angular/material";
+import {MatDialogRef, MAT_DIALOG_DATA, MatDialog} from "@angular/material";
 import {Wallet} from "../models/Wallet";
 import {Payout} from "../models/Payout";
 
@@ -8,6 +8,9 @@ import {VaultService} from "../services/vault.service";
 import {Observable} from "rxjs/Rx";
 import {Subscription} from "rxjs/Rx";
 import 'rxjs/add/observable/fromEvent';
+
+import * as bs58check from 'bs58check';
+import {VaultTestnetHelpDialogComponent} from "../vault-testnet-help-dialog/vault-testnet-help-dialog.component";
 
 @Component({
     selector: 'app-vault-payout-dialog',
@@ -24,7 +27,9 @@ export class VaultPayoutDialogComponent implements OnInit, OnDestroy {
     emptyWallet = false;
     address = "";
     regex = new RegExp('^[mn2][a-km-zA-HJ-NP-Z1-9]{33}$');
+    mainnetRegex = new RegExp('^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$');
     addressCorrect = false;
+    isMainnetAddress = false;
     payoutCorrect = false;
     unit = "mbtc";
     unitFactor = 100000;
@@ -34,8 +39,26 @@ export class VaultPayoutDialogComponent implements OnInit, OnDestroy {
     transactionFee = 0;
     remaining = 0;
 
+    helpDialogRef: MatDialogRef<VaultTestnetHelpDialogComponent> | null;
+    helptDialogConfig = {
+        disableClose: false,
+        panelClass: 'custom-overlay-pane-class',
+        hasBackdrop: true,
+        backdropClass: '',
+        width: '',
+        height: '',
+        position: {
+            top: '',
+            bottom: '',
+            left: '',
+            right: ''
+        }
+    };
 
-    constructor(public dialogRef: MatDialogRef<VaultPayoutDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private vaultService: VaultService) {
+    constructor(public dialogRef: MatDialogRef<VaultPayoutDialogComponent>,
+                @Inject(MAT_DIALOG_DATA) public data: any,
+                private vaultService: VaultService,
+                private dialog: MatDialog) {
         this.wallet = data.wallet;
     }
 
@@ -102,8 +125,20 @@ export class VaultPayoutDialogComponent implements OnInit, OnDestroy {
     }
 
     addressChanged(e: any) {
-        this.addressCorrect = this.regex.test(this.address);
-        console.log("address is now " + this.addressCorrect);
+
+        let validbs58 = false;
+        try{
+            const decoded = bs58check.decode(this.address);
+            validbs58 = true;
+        } catch(e) {
+        }
+
+        if(validbs58) {
+            this.addressCorrect = this.regex.test(this.address);
+            this.isMainnetAddress = this.mainnetRegex.test(this.address);
+
+        }
+
         this.reloadWalletInfo();
     }
 
@@ -179,6 +214,10 @@ export class VaultPayoutDialogComponent implements OnInit, OnDestroy {
         }
 
         this.payoutCorrect = rv;
+    }
+
+    testnetHelp(){
+        this.helpDialogRef = this.dialog.open(VaultTestnetHelpDialogComponent, this.helptDialogConfig);
     }
 
 }
