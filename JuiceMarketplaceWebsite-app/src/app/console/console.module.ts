@@ -41,6 +41,7 @@ import {Ng2GoogleChartsModule} from "ng2-google-charts";
 import { VaultComponent } from './vault/vault.component';
 import { VaultPayoutDialogComponent } from './vault-payout-dialog/vault-payout-dialog.component';
 import {RecipeImagePickerModule} from "./recipe-image-picker/recipe-image-picker.module";
+import {VaultTestnetHelpDialogComponent} from "./vault-testnet-help-dialog/vault-testnet-help-dialog.component";
 
 @NgModule({
     imports: [
@@ -79,10 +80,11 @@ import {RecipeImagePickerModule} from "./recipe-image-picker/recipe-image-picker
         DashboardComponent,
         VaultComponent,
         VaultPayoutDialogComponent,
+        VaultTestnetHelpDialogComponent
     ],
     providers: [AccessGuard],
     bootstrap: [ConsoleComponent],
-    entryComponents: [VaultPayoutDialogComponent]
+    entryComponents: [VaultPayoutDialogComponent,VaultTestnetHelpDialogComponent]
 })
 export class ConsoleModule {
 }
