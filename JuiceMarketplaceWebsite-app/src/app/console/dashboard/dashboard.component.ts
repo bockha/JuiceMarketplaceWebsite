@@ -109,7 +109,7 @@ export class DashboardComponent implements OnInit {
             options: {
                 legend: {position: 'none'},
                 hAxis: {
-                    textPosition: 'none'
+                    textPosition: 'out'
 
                 },
                 bars: 'horizontal',
