@@ -18,7 +18,7 @@ router.get('/balance', validate({
         }
 
         if (!income) {
-            res.sendStatus(404);
+            return res.sendStatus(404);
         }
         res.send(income.toString());
     });
