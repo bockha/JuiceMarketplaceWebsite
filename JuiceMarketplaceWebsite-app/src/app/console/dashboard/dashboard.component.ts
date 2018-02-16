@@ -140,7 +140,7 @@ export class DashboardComponent implements OnInit {
                 techcount += 1;
                 columns.push([revenue.technologydataname]);
                 if (revenue.technologydataname === "Benchmark") {
-                    series[(techcount - 1).toString()] = {type: 'line', lineDashStyle: [8,8], lineWidth: 4};
+                    series[(techcount - 1).toString()] = {type: 'line', lineDashStyle: [8, 8], lineWidth: 4};
                 } else {
                     series[(techcount - 1).toString()] = {type: 'area'};
                 }
@@ -179,9 +179,6 @@ export class DashboardComponent implements OnInit {
             }
 
         });
-
-
-
 
 
     }
