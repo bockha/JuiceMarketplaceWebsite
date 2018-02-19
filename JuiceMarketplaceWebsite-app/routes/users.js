@@ -11,6 +11,7 @@ const logger = require('../global/logger');
 const helper = require('../services/helper_service');
 const encryption = require('../services/encryption_service');
 const recipeLimitService = require('../services/recipe_limit_service');
+const imageService = require('../services/image_service');
 
 const CONFIG = require('../config/config_loader');
 
@@ -222,6 +223,8 @@ router.post('/:id/recipes', validate({
             coreData.technologyUUID = CONFIG.TECHNOLOGY_UUID;
             coreData.licenseFee = licenseFee;
             coreData.componentList = componentsIds;
+            coreData.backgroundColor = recipe.backgroundColor;
+            coreData.image = recipe.imageRef ? imageService.loadImage(recipe.imageRef + '.svg'): undefined;
 
             marketplaceCore.saveRecipeForUser(req.user.token, coreData, function (err, recipeId) {
                 if (err && err.statusCode === 409) {

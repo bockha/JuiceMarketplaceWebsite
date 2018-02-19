@@ -31,15 +31,15 @@
         <mat-card fxFlex.gt-md="50" class="iuno-card">
             <mat-card-header>
                 <mat-card-title>
-                    <span class="card-title">Lizenzeinnahmen heute (IUNOs)</span>
+                    <span class="card-title">Lizenzverkäufe heute</span>
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content fxLayoutAlign="center center" style="height: 100%;">
-            <span class="card-information" *ngIf="revenueToday == null">
+            <span class="card-information" *ngIf="amountToday == null">
               -
             </span>
-                <span class="card-information" *ngIf="revenueToday != null">
-              {{revenueToday | number:'1.2'}}
+                <span class="card-information" *ngIf="amountToday != null">
+              {{amountToday | number:'1.0'}}
             </span>
             </mat-card-content>
         </mat-card>

@@ -1,7 +1,11 @@
 <div *ngIf="loggedin && user != null" fxLayout="row">
     <button mat-button class="lightupper" [matMenuTriggerFor]="menu">
-        {{getUserDisplayName()}}
+        <span class="userButton">
+            <span fxHide.xs >{{getUserDisplayName()}}</span>
+            <img class="userImg" src="{{getUserAvatar()}}">
+        </span>
     </button>
+
     <!-- <img class="userImg" src="./assets/images/1.jpg"/> -->
     <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="logout()">

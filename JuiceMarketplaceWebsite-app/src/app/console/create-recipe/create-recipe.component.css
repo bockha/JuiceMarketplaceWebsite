@@ -1,3 +1,16 @@
 .productdetails {
-    width: 700px;
+    /*width: 700px;*/
+}
+
+app-recipe-image-picker{
+    width: 85%;
+    max-height: 100%;
+    /*width: 50vh;*/
+    height: 50vh;
+}
+
+@media only screen and (min-width: 960px){
+    .left-div{
+        max-width: 30vw;
+    }
 }

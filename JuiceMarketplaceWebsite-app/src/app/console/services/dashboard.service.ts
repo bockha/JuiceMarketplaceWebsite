@@ -67,6 +67,15 @@ export class DashboardService {
         });
     }
 
+    getLicenseCountForUser(from: Date, to: Date) {
+        let fromDate = moment.utc([from.getFullYear(),from.getMonth(), from.getDate(),from.getHours(), from.getMinutes(), from.getSeconds()]);
+        let toDate = moment.utc([to.getFullYear(),to.getMonth(), to.getDate(),to.getHours(), to.getMinutes(), to.getSeconds()]);
+        let url = '/api/users/me/reports/revenue?from=' + fromDate.format() + '&to=' + toDate.format();
+        return this.http.get(url).flatMap(res => {
+            return Observable.of(res[0].amount || 0);
+        });
+    }
+
 
 
 

@@ -7,15 +7,24 @@ const queryParser = require('express-query-int');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('cookie-session');
-const fs = require('fs');
-const marked = require('marked');
 const contentTypeValidation = require('./services/content_type_validation');
+const uaParser = require('ua-parser');
 
 const config = require('./config/config_loader');
 
 const app = express();
 
 app.use('/', contentTypeValidation);
+app.use('*', function (req, res, next) {
+    let r = uaParser.parse(req.headers['user-agent']);
+
+    // IE <= 11 is not supported
+    if (r.ua.family === 'IE' && r.ua.major <= 11) {
+        res.sendFile(path.join(__dirname, 'browser_not_supported.html'));
+    } else {
+        return next();
+    }
+});
 
 app.set('view engine', 'ejs');
 
@@ -41,8 +50,6 @@ app.use(passport.session()); // persistent login sessions
 
 
 // -- PUBLIC CONTENT --
-app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/auth', require('./routes/auth')(passport));
 app.use('/api/reports', require('./routes/reports'));
 app.use('/coupon', require('./routes/coupon'));

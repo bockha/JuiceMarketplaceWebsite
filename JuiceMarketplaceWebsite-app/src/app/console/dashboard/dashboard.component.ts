@@ -16,14 +16,13 @@ import {VaultService} from "../services/vault.service";
     encapsulation: ViewEncapsulation.None,
     templateUrl: './dashboard.component.html',
     styleUrls: [
-        './dashboard.component.css',
-        '../../../../node_modules/c3/c3.css'
+        './dashboard.component.css'
     ],
     providers: [DashboardService, VaultService]
 })
 
 export class DashboardComponent implements OnInit {
-    revenueToday: number = null;
+    amountToday: number = null;
     topRecipe: TdmRecipe = null;
     topRecipeName: string = null;
 
@@ -61,8 +60,8 @@ export class DashboardComponent implements OnInit {
 
         let fromToday = moment().startOf('day').toDate();
         let toToday = moment().endOf('day').toDate();
-        this.dashboardService.getRevenueForUser(fromToday, toToday).subscribe(revenue => {
-            this.revenueToday = revenue / 100000;
+        this.dashboardService.getLicenseCountForUser(fromToday, toToday).subscribe(amount => {
+            this.amountToday = amount;
         }, error2 => {
             console.log(error2);
         });
@@ -110,7 +109,7 @@ export class DashboardComponent implements OnInit {
             options: {
                 legend: {position: 'none'},
                 hAxis: {
-                    textPosition: 'none'
+                    textPosition: 'out'
 
                 },
                 bars: 'horizontal',
@@ -141,9 +140,9 @@ export class DashboardComponent implements OnInit {
                 techcount += 1;
                 columns.push([revenue.technologydataname]);
                 if (revenue.technologydataname === "Benchmark") {
-                    series[(techcount).toString()] = {type: 'line'};
+                    series[(techcount - 1).toString()] = {type: 'line', lineDashStyle: [8, 8], lineWidth: 4};
                 } else {
-                    series[(techcount).toString()] = {type: 'area'};
+                    series[(techcount - 1).toString()] = {type: 'area'};
                 }
 
             }
@@ -164,24 +163,22 @@ export class DashboardComponent implements OnInit {
 
 
             console.log("fertsch");
+            self.revenueHistoryData = {
+                chartType: 'ComboChart',
+                dataTable: data,
+                options: {
+                    axisTitlesPosition: 'in',
+                    legend: {position: 'bottom'},
+                    hAxis: {
+                        format: 'dd.MM.'
+                    },
+                    series: series
+                }
 
-        });
 
-
-        this.revenueHistoryData = {
-            chartType: 'ComboChart',
-            dataTable: data,
-            options: {
-                axisTitlesPosition: 'in',
-                legend: {position: 'bottom'},
-                hAxis: {
-                    format: 'dd.MM.'
-                },
-                series: series
             }
 
-
-        }
+        });
 
 
     }

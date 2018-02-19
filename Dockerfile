@@ -20,7 +20,7 @@ COPY JuiceMarketplaceWebsite-app /usr/src/app
 RUN npm install
 RUN npm install -g @angular/cli
 
-RUN ng build
+RUN ng build --prod
 
 
 EXPOSE 3004
