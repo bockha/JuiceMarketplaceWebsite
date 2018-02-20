@@ -15,11 +15,11 @@
                 </ng-container>
                 <ng-container matColumnDef="unconfirmed">
                     <mat-header-cell *matHeaderCellDef>Guthaben (incl. unbestätigte Mittel) (IUNO)</mat-header-cell>
-                    <mat-cell *matCellDef="let wallet">{{wallet.unconfirmed / 100000}}</mat-cell>
+                    <mat-cell *matCellDef="let wallet">{{wallet.unconfirmed / 100000 | number:'1.0-5'}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="confirmed">
                     <mat-header-cell *matHeaderCellDef>bestätigtes Guthaben (IUNO)</mat-header-cell>
-                    <mat-cell *matCellDef="let wallet">{{wallet.confirmed / 100000}}</mat-cell>
+                    <mat-cell *matCellDef="let wallet">{{wallet.confirmed / 100000 | number:'1.0-5'}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="action">
                     <mat-header-cell *matHeaderCellDef>Aktion</mat-header-cell>

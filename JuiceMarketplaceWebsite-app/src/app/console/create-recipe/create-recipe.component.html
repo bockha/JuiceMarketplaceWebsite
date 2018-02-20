@@ -27,7 +27,7 @@
                        <mat-form-field fxFlexFill>
                            <mat-select placeholder="Lizenzgebühr" [(ngModel)]="recipeLicenseFee" name="licenseFee">
                                <mat-option *ngFor="let fee of licenseFees" [value]="fee">
-                                   {{fee}} IUNO
+                                   {{fee | number:'1.2-2'}} IUNO
                                </mat-option>
                            </mat-select>
                        </mat-form-field>

@@ -38,7 +38,7 @@
 
                     <ng-container matColumnDef="licensefee">
                         <mat-header-cell *matHeaderCellDef>Lizenzgebühr (IUNOs)</mat-header-cell>
-                        <mat-cell *matCellDef="let recipe"> {{(recipe.licensefee / 100000).toFixed(2)}}</mat-cell>
+                        <mat-cell *matCellDef="let recipe"> {{(recipe.licensefee / 100000).toFixed(2)  | number:'1.2'}}</mat-cell>
                     </ng-container>
 
                     <!-- <ng-container matColumnDef="li">
