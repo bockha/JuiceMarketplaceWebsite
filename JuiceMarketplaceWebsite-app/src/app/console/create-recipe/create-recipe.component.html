@@ -46,10 +46,15 @@
             </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <!-- recipe program -->
-            <div fxFlex="100">
-                <juice-program-configurator [program]=program [components]=components></juice-program-configurator>
+            <div fxLayout="row">
+                <app-component-list></app-component-list>
+                <beaker [cocktail]="cocktail"></beaker>
+                <ingredients-listing [cocktail]="cocktail"></ingredients-listing>
             </div>
+            <!-- recipe program -->
+            <!-- <div fxFlex="100">
+                <juice-program-configurator [program]=program [components]=components></juice-program-configurator>
+            </div> -->
         </mat-card-content>
         <mat-card-actions>
             <div fxFlex="100" fxLayoutAlign="center center">

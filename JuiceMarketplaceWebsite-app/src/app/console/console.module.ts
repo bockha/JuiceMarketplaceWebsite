@@ -43,6 +43,8 @@ import { VaultPayoutDialogComponent } from './vault-payout-dialog/vault-payout-d
 import {RecipeImagePickerModule} from "./recipe-image-picker/recipe-image-picker.module";
 import {VaultTestnetHelpDialogComponent} from "./vault-testnet-help-dialog/vault-testnet-help-dialog.component";
 
+import {CocktailConfiguratorModule, ComponentService} from 'cocktail-configurator'
+
 @NgModule({
     imports: [
         CommonModule,
@@ -71,7 +73,8 @@ import {VaultTestnetHelpDialogComponent} from "./vault-testnet-help-dialog/vault
         Ng2GoogleChartsModule,
         MatDialogModule,
         MatSliderModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        CocktailConfiguratorModule
     ],
     declarations: [
         ConsoleComponent,
@@ -82,7 +85,7 @@ import {VaultTestnetHelpDialogComponent} from "./vault-testnet-help-dialog/vault
         VaultPayoutDialogComponent,
         VaultTestnetHelpDialogComponent
     ],
-    providers: [AccessGuard],
+    providers: [AccessGuard, ComponentService],
     bootstrap: [ConsoleComponent],
     entryComponents: [VaultPayoutDialogComponent,VaultTestnetHelpDialogComponent]
 })

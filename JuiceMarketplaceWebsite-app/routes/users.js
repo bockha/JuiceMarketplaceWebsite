@@ -123,20 +123,14 @@ router.post('/:id/recipes', validate({
                 return res.send('Sie haben bereits ihr Limit von ' + limit + ' Rezepten am Marktplatz erreicht.');
             }
 
-            const minPhaseAmount = 10;
-            const minTotalAmount = 99;
-            const maxTotalAmount = 121;
-            const maxTotalPause = 5001;
-
             // Save recipe for user
             const recipe = req.body;
-            const program = recipe['program'];
 
             // recipe information for further processing
             const title = recipe['title'].trim();
             const description = recipe['description'].trim();
             const licenseFee = recipe['license-fee'];
-            const machineProgram = programConverter.convertProgramToMachineProgram(program);
+            const machineProgram = recipe['program'];
             const machineProgramString = JSON.stringify(machineProgram);
 
             // check metadata

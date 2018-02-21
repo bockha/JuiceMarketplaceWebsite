@@ -13,6 +13,12 @@ import {AccessGuard} from '../services/user.service';
 import "rxjs/add/operator/combineLatest"
 import {RecipeImagePickerComponent} from "../recipe-image-picker/recipe-image-picker/recipe-image-picker.component";
 
+import {Cocktail} from 'cocktail-configurator'
+import {CocktailComponent} from 'cocktail-configurator'
+import {CocktailLayer} from 'cocktail-configurator'
+import {ComponentService} from 'cocktail-configurator'
+import {ComponentListComponent} from 'cocktail-configurator'
+
 @Component({
     selector: 'app-create-recipe',
     templateUrl: './create-recipe.component.html',
@@ -24,7 +30,10 @@ import {RecipeImagePickerComponent} from "../recipe-image-picker/recipe-image-pi
 export class CreateRecipeComponent implements OnInit {
     @ViewChild(RecipeImagePickerComponent) recipeImagePicker: RecipeImagePickerComponent;
 
-    components: TdmComponent[];
+    cocktail: Cocktail;
+    components: CocktailComponent[] = [];
+
+    // components: TdmComponent[];
     licenseFees: number[] = [0.25, 0.5, 0.75, 1.00];
     spinnerCounter = 0;
     recipeName: string = "";
@@ -39,16 +48,53 @@ export class CreateRecipeComponent implements OnInit {
                 private http: HttpClient,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private accessGuard: AccessGuard,) {
+                private accessGuard: AccessGuard,
+                private componentService: ComponentService) {
 
+                    this.cocktail = new Cocktail();
+                    componentService.setComponents([
+                      new CocktailComponent("1", "Apfelsaft", "#7d7"),
+                      new CocktailComponent("2", "Bananensaft", "#dd7"),
+                      new CocktailComponent("3", "Kirschsaft", "#d77"),
+                      new CocktailComponent("4", "Maracujasaft", "#da7"),
+                      new CocktailComponent("5", "Ananassaft", "#dc9"),
+                      new CocktailComponent("6", "Reserved 1", "#ddf"),
+                      new CocktailComponent("7", "Reserved 2", "#ddf"),
+                      new CocktailComponent("8", "Reserved 3", "#ddf"),
+                  ]
+                  )
+                    componentService.components.subscribe(components => {
+                      this.components = components;
+                      let layer1 = new CocktailLayer();
+                      layer1.components.push(this.components[0]);
+                      this.cocktail.layers.push(layer1);
+                  
+                      let layer2 = new CocktailLayer();
+                      layer2.components.push(this.components[2]);
+                      this.cocktail.layers.push(layer2);
+                  
+                      let layer3 = new CocktailLayer();
+                      layer3.components.push(this.components[0]);
+                      layer3.components.push(this.components[1]);
+                      // layer3.components.push(this.components[1]);
+                      layer3.components.push(this.components[0]);
+                      // layer3.components.push(new CocktailLayerComponent(this.components[2], 10));
+                      // layer3.components.push(new CocktailLayerComponent(this.components[3], 10));
+                      // layer3.components.push(new CocktailLayerComponent(this.components[4], 10));
+                      // layer3.components.push(new CocktailLayerComponent(this.components[5], 10));
+                      // layer3.components.push(new CocktailLayerComponent(this.components[6], 10));
+                      // layer3.components.push(new CocktailLayerComponent(this.components[7], 10));
+                      this.cocktail.layers.push(layer3);
+                      })
     }
+
 
     ngOnInit() {
         this.spinnerCounter += 1;
         // this.spinnerCounter += 1;
-        this.marketplaceService.components.subscribe(components => {
-            this.components = components;
-        });
+        // this.marketplaceService.components.subscribe(components => {
+        //     this.components = components;
+        // });
 
         var rc = this.recipeService.getRecipeCount();
         var rl = this.recipeService.getRecipeLimit();
@@ -69,27 +115,10 @@ export class CreateRecipeComponent implements OnInit {
                 var valid = true;
                 var recipe = new TdmRecipe();
 
-                var minPhaseAmount = 10;
-                var minTotalAmount = 100;
-                var maxTotalAmount = 120;
-                var maxTotalPause = 5000;
-
                 recipe.technologydataname = this.recipeName;
                 recipe.licensefee = this.recipeLicenseFee;
                 recipe.technologydatadescription = this.recipeDescription.trim();
 
-                if (valid && this.program.getTotalAmount() < minTotalAmount) {
-                    alert("Die Mindestmenge von " + minTotalAmount + " ml wurde unterschritten.");
-                    valid = false;
-                }
-                if (valid && this.program.getTotalAmount() > maxTotalAmount) {
-                    alert("Die Höchstmenge von " + maxTotalAmount + " ml wurde überschritten.");
-                    valid = false;
-                }
-                if (valid && this.program.pauseSequence.getTotalAmount() / this.program.amountPerMillisecond > maxTotalPause) {
-                    alert("Die zulässige Gesamtdauer der Pausen von " + maxTotalPause + " ms wurde überschritten.");
-                    valid = false;
-                }
                 if (valid && recipe.technologydataname.trim().length < 1) {
                     alert("Bitte geben Sie einen Titel mit mindestens einem Zeichen ein.");
                     valid = false;
@@ -102,31 +131,53 @@ export class CreateRecipeComponent implements OnInit {
                     alert("Bitte wählen Sie eine Lizenzgebühr aus.");
                     valid = false;
                 }
-                if (valid && this.program.sequences.length == 0) {
+                if (valid && (this.cocktail.layers.length == 0 || this.cocktail.layers[0].components.length ==0)) {
                     alert("Bitte fügen Sie mindestens eine Zutat hinzu.");
                     valid = false;
                 }
                 if (valid) {
-                    this.spinnerCounter += 1;
+                    this.spinnerCounter += 1;                    
                     // create json
-                    var jsonProgram = {}; // program
-                    jsonProgram['amount-per-millisecond'] = this.program.amountPerMillisecond;
-                    var jsonSequences: any[] = []; // sequences
-                    this.program.sequences.forEach(sequence => {
-                        var jsonSequence = {}; // sequence
-                        jsonSequence['ingredient-id'] = sequence.component.id;
-                        var jsonPhases: any[] = []; // phases
-                        sequence.phases.forEach(phase => {
-                            var jsonPhase = {};
-                            jsonPhase['start'] = phase.start;
-                            jsonPhase['amount'] = phase.amount;
-                            jsonPhase['throughput'] = phase.throughput;
-                            jsonPhases.push(jsonPhase);
+                    var lines: any[] = [];
+                    // total fragments
+                    var count = 0;
+                    this.cocktail.layers.forEach(layer => {
+                        count += layer.components.length;
+                    })
+                
+                    this.cocktail.layers.forEach(layer => {
+                        var programComponents: any[] = [];
+                        layer.components.forEach(component => {
+                        var addNewComponent = true;
+                        programComponents.forEach(pc => {
+                            if (pc["ingredient"] == component.id) {
+                            addNewComponent = false;
+                            var amount = pc["amount"] + this.cocktail.amount / count;
+                            pc["amount"] = amount;
+                            }
                         });
-                        jsonSequence['phases'] = jsonPhases;
-                        jsonSequences.push(jsonSequence);
+                        if (addNewComponent) {
+                            programComponents.push({
+                            "ingredient": component.id,
+                            "amount": this.cocktail.amount / count
+                            });
+                        }
+                        // if (components
+                        // components.push({
+                        //   "ingredient": layerComponent.component.id,
+                        //   "amount": layerComponent.amount
+                        // });
+                        });
+                        lines.push({
+                        "components": programComponents,
+                        "timing": 2,
+                        "sleep": 0
+                        });
                     });
-                    jsonProgram['sequences'] = jsonSequences;
+                    var program = {
+                        "lines": lines
+                    };
+                    var jsonProgram = JSON.stringify(program);
 
                     var jsonRecipe = {};
 
