@@ -43,7 +43,8 @@ import { VaultPayoutDialogComponent } from './vault-payout-dialog/vault-payout-d
 import {RecipeImagePickerModule} from "./recipe-image-picker/recipe-image-picker.module";
 import {VaultTestnetHelpDialogComponent} from "./vault-testnet-help-dialog/vault-testnet-help-dialog.component";
 
-import {CocktailConfiguratorModule, ComponentService} from 'cocktail-configurator'
+import {CocktailConfiguratorModule} from 'cocktail-configurator'
+import {ComponentService} from 'tdm-common'
 
 @NgModule({
     imports: [
@@ -85,7 +86,7 @@ import {CocktailConfiguratorModule, ComponentService} from 'cocktail-configurato
         VaultPayoutDialogComponent,
         VaultTestnetHelpDialogComponent
     ],
-    providers: [AccessGuard, ComponentService],
+    providers: [AccessGuard, ComponentService, {provide: 'componentSourceUrl', useValue: '/api/components'}],
     bootstrap: [ConsoleComponent],
     entryComponents: [VaultPayoutDialogComponent,VaultTestnetHelpDialogComponent]
 })

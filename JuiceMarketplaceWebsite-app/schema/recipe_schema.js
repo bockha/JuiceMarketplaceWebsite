@@ -196,56 +196,53 @@ self.Recipe_Body = {
             minimum: 0,
             maximum: Number.MAX_SAFE_INTEGER
         },
-        program: {
+        "program": {
             type: "object",
             properties: {
-                "amount-per-millisecond": {
-                    type: "number",
-                    minimum: 0.001,
-                    maximum: 1
-                },
-                sequences: {
-                    type: "array",
-                    items: {
-                        type: "object",
-                        properties: {
-                            "ingredient-id": {
-                                type: "string",
-                                format: "uuid"
-                            },
-                            phases: {
-                                type: "array",
-                                items: {
-                                    type: "object",
-                                    properties: {
-                                        start: {
-                                            type: "integer",
-                                            minimum: 0,
-                                            maximum: 1000
-                                        },
-                                        amount: {
-                                            type: "integer",
-                                            minimum: 1,
-                                            maximum: 1000
-                                        },
-                                        throughput: {
-                                            type: "integer",
-                                            minimum: 1,
-                                            maximum: 100
-                                        }
+                "recipe": {
+                    type: "object",
+                    properties: {
+                        "lines": {
+                            type: "array",
+                            items: {
+                                type: "object",
+                                properties: {
+                                    "sleep": {
+                                        type: "integer",
+                                        minimum: 0,
+                                        maximum: 0
                                     },
-                                    required: ['start', 'amount', 'throughput'],
-                                    additionalProperties: false
+                                    "timing": {
+                                        type: "integer",
+                                        minimum: 2,
+                                        maximum: 2
+                                    },
+                                    "components": {
+                                        type: "array",
+                                        items: {
+                                            type: "object",
+                                            properties: {
+                                                "amount": {
+                                                    type: "integer",
+                                                    minimum: 1,
+                                                    maximum: 1000
+                                                },
+                                                "ingredient": {
+                                                    type: "string",
+                                                    format: "uuid"
+                                                }
+                                            },
+                                            required: ["amount", "ingredient"],
+                                        }
+                                    }
                                 },
-                                additionalItems: false
+                                required: ["sleep", "timing", "components"],
                             }
-                        },
-                        required: ['ingredient-id', 'phases'],
-                        additionalProperties: false
-                    }
-                }
+                        }
+                    },
+                    required: ["lines"]
+                },
             },
-            required: ['amount-per-millisecond', 'sequences'],
             additionalProperties: false
         },
         imageRef: {
