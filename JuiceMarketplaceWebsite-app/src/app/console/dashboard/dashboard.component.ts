@@ -162,7 +162,6 @@ export class DashboardComponent implements OnInit {
             }
 
 
-            console.log("fertsch");
             self.revenueHistoryData = {
                 chartType: 'ComboChart',
                 dataTable: data,

@@ -21,7 +21,6 @@ export class RecipeService {
     }
 
     updateRecipes() {
-        console.log("Updating recipes");
         this.http.get<TdmRecipe[]>(this.recipesUrl).subscribe(recipes => {
             this._recipes.next(recipes);
         }, error => {

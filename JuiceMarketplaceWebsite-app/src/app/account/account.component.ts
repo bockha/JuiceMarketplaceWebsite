@@ -18,11 +18,9 @@ export class AccountComponent implements OnInit {
 
     constructor(private userService: UserService, private router: Router) {
         this.userService.isLoggedIn().subscribe(loggedIn => {
-            console.log("UserService loggedin:" + loggedIn);
             this.loggedin = loggedIn;
             if (this.loggedin) {
                 userService.getUser().subscribe(user => {
-                    console.log("User is:" + user);
                     this.user = user;
                 });
             }

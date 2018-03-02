@@ -35,9 +35,7 @@ export class AccessGuard implements CanActivate {
     }
 
     guardLoggedIn(): Observable<boolean> {
-        console.log("guardLoggedIn");
         return this.http.get<boolean>("/auth/loggedin").flatMap(loggedin => {
-            console.log("loggedin = " + loggedin);
             if (!loggedin) {
                 window.location.href = "/";
             }

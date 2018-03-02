@@ -41,7 +41,6 @@ export class DashboardService {
         let fromDate = moment.utc([from.getFullYear(),from.getMonth(), from.getDate(),from.getHours(), from.getMinutes(), from.getSeconds()]);
         let toDate = moment.utc([to.getFullYear(),to.getMonth(), to.getDate(),to.getHours(), to.getMinutes(), to.getSeconds()]);
         let url = '/api/users/me/reports/revenue/history?from=' + fromDate.format()  + '&to=' + toDate.format()  ;
-        console.log(url);
         var result = this.http.get<any[]>(url).map((data: any) => {
 
             var reports = new Array<RevenueReport>(data.length);
