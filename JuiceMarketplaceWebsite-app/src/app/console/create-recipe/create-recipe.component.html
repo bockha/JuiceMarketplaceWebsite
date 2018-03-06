@@ -1,69 +1,87 @@
 <app-spinner [counter]="spinnerCounter"></app-spinner>
-<h1 class="headline">Neues Getränk anlegen</h1>
+<div fxLayout="row" fxLayoutAlign="left center">
+    <div fxFlex="fill">
+        <h1 class="headline">Neues Getränk anlegen</h1>
+    </div>
+    <div>
+        <button (click)="actionSaveRecipe()" mat-raised-button color="primary" class="mat-elevation-z1">
+            Speichern
+        </button>
+    </div>
+</div>
 
 <div *ngIf="recipesLeft > 0" fxLayout="column" fxLayoutGap="10px">
     <mat-card class="iuno-card">
-        <!-- <mat-card fxFill class="iuno-card mat-elevation-z2"> -->
-       <mat-card-content fxLayout="row" fxLayout.lt-md="column">
-           <div fxFlex.gt-md="50" fxFlex="auto" class="left-div">
-               <mat-card-header>
-                   <mat-card-title>
-                       <span class="card-title">Produktdetails</span>
-                   </mat-card-title>
-               </mat-card-header>
-               <mat-card-content>
-                   <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center" class="productdetails">
-                       <!-- recipe title -->
-                       <mat-form-field fxFlexFill>
-                           <input matInput [(ngModel)]="recipeName" placeholder="Titel">
-                       </mat-form-field>
-
-                       <!-- recipe description -->
-                       <mat-form-field fxFlexFill>
-                        <textarea matInput [(ngModel)]="recipeDescription" placeholder="Beschreibung"
-                                  style="width: 100%; height: 100px;"></textarea>
-                       </mat-form-field>
-                       <!-- recipe license fee -->
-                       <mat-form-field fxFlexFill>
-                           <mat-select placeholder="Lizenzgebühr" [(ngModel)]="recipeLicenseFee" name="licenseFee">
-                               <mat-option *ngFor="let fee of licenseFees" [value]="fee">
-                                   {{fee}} IUNO
-                               </mat-option>
-                           </mat-select>
-                       </mat-form-field>
-                   </div>
-               </mat-card-content>
-           </div>
-           <div fxFlex="500px" fxLayout="row" fxLayoutAlign="center">
-               <app-recipe-image-picker #recipeImagePicker></app-recipe-image-picker>
-           </div>
-       </mat-card-content>
-        <!-- </mat-card>
-        <mat-card class="iuno-card"> -->
         <mat-card-header>
             <mat-card-title>
                 <span class="card-title">Rezeptur</span>
             </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <div fxLayout="row">
-                <app-component-list></app-component-list>
-                <beaker [cocktail]="cocktail"></beaker>
-                <ingredients-listing [cocktail]="cocktail"></ingredients-listing>
+            <div fxLayout="row" fxFlex="100" fxLayoutAlign="center center" fxLayoutGap="30px">
+                <cocktail-component-list></cocktail-component-list>
+                <cocktail-beaker [cocktail]="cocktail"></cocktail-beaker>
+                <cocktail-ingredients-listing [cocktail]="cocktail"></cocktail-ingredients-listing>
             </div>
             <!-- recipe program -->
             <!-- <div fxFlex="100">
-                <juice-program-configurator [program]=program [components]=components></juice-program-configurator>
-            </div> -->
+                        <juice-program-configurator [program]=program [components]=components></juice-program-configurator>
+                    </div> -->
         </mat-card-content>
-        <mat-card-actions>
-            <div fxFlex="100" fxLayoutAlign="center center">
-                <button (click)="actionSaveRecipe()" mat-raised-button color="primary" class="mat-elevation-z1">
-                    Speichern
-                </button>
-            </div>
-        </mat-card-actions>
     </mat-card>
+    <mat-card class="iuno-card">
+        <!-- <mat-card fxFill class="iuno-card mat-elevation-z2"> -->
+        <mat-card-header>
+            <mat-card-title>
+                <span class="card-title">Produktdetails</span>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content fxLayout="row">
+            <div fxFlex="100">
+                <mat-card-content>
+                    <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center" class="productdetails">
+                        <!-- recipe title -->
+                        <mat-form-field fxFlexFill>
+                            <input matInput [(ngModel)]="recipeName" placeholder="Titel">
+                        </mat-form-field>
+
+                        <!-- recipe description -->
+                        <mat-form-field fxFlexFill>
+                            <textarea matInput [(ngModel)]="recipeDescription" placeholder="Beschreibung" style="width: 100%; height: 100px;"></textarea>
+                        </mat-form-field>
+                        <!-- recipe license fee -->
+                        <mat-form-field fxFlexFill>
+                            <mat-select placeholder="Lizenzgebühr" [(ngModel)]="recipeLicenseFee" name="licenseFee">
+                                <mat-option *ngFor="let fee of licenseFees" [value]="fee">
+                                    {{fee}} IUNO
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+            </div>
+        </mat-card-content>
+        <!-- </mat-card>
+        <mat-card class="iuno-card"> -->
+    </mat-card>
+    <mat-card class="iuno-card">
+        <mat-card-header>
+            <mat-card-title>
+                <span class="card-title">Bild</span>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div fxFlex="100" fxLayoutAlign="center">
+                <app-recipe-image-picker #recipeImagePicker></app-recipe-image-picker>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+    <div fxLayoutAlign="center center">
+        <button (click)="actionSaveRecipe()" mat-raised-button color="primary" class="mat-elevation-z1">
+            Speichern
+        </button>
+    </div>
 
 </div>
 
@@ -73,7 +91,15 @@
             Rezeptlimit erreicht!
         </mat-card-header>
         <mat-card-content>
-            Sie haben bereits ihr Limit von {{recipeLimit}} Rezepten am Marktplatz erreicht.<br>
+            Sie haben bereits ihr Limit von {{recipeLimit}} Rezepten am Marktplatz erreicht.
+            <br>
         </mat-card-content>
+        <!-- <mat-card-actions>
+                <div fxFlex="100" fxLayoutAlign="center center">
+                    <button (click)="actionSaveRecipe()" mat-raised-button color="primary" class="mat-elevation-z1">
+                        Speichern
+                    </button>
+                </div>
+            </mat-card-actions> -->
     </mat-card>
 </div>
