@@ -20,7 +20,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {NgcCookieConsentConfig, NgcCookieConsentModule} from 'ngx-cookieconsent';
 
-
 const cookieConfig: NgcCookieConsentConfig = {
     "cookie": {
         "domain": "iuno.axoom.cloud"
@@ -68,9 +67,9 @@ const cookieConfig: NgcCookieConsentConfig = {
         MatMenuModule,
         FlexLayoutModule,
         ConsoleModule,
-
     ],
-    providers: [],
+    providers: [
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

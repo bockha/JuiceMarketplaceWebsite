@@ -5,31 +5,30 @@ import {Router, ActivatedRoute} from '@angular/router';
 import * as $ from 'jquery';
 
 import {MarketplaceService} from '../services/marketplace.service';
-import {TdmComponent} from '../juice-program-configurator/models/tdmcomponent';
-import {TdmProgram} from '../juice-program-configurator/models/tdmprogram';
-import {TdmRecipe} from '../juice-program-configurator/models/tdmrecipe';
 import {RecipeService} from '../services/recipe.service';
 import {AccessGuard} from '../services/user.service';
 import "rxjs/add/operator/combineLatest"
 import {RecipeImagePickerComponent} from "../recipe-image-picker/recipe-image-picker/recipe-image-picker.component";
 
+import {Recipe} from 'tdm-common'
 import {Cocktail} from 'tdm-common'
 import {CocktailComponent} from 'tdm-common'
 import {CocktailLayer} from 'tdm-common'
 import {ComponentService} from 'tdm-common'
-import {ComponentListComponent, DragAndDropService} from 'cocktail-configurator'
+import {ComponentListComponent, DragAndDropService, BeakerComponent} from 'cocktail-configurator'
 
 @Component({
     selector: 'app-create-recipe',
     templateUrl: './create-recipe.component.html',
     styleUrls: ['./create-recipe.component.css'],
-    providers: [MarketplaceService, RecipeService, DragAndDropService],
+    providers: [MarketplaceService, RecipeService],
 })
 
 @Injectable()
 export class CreateRecipeComponent implements OnInit {
     @ViewChild(RecipeImagePickerComponent) recipeImagePicker: RecipeImagePickerComponent;
 
+    recipe = new Recipe()
     cocktail: Cocktail;
     components: CocktailComponent[] = [];
 
@@ -39,7 +38,6 @@ export class CreateRecipeComponent implements OnInit {
     recipeName: string = "";
     recipeDescription: string = "";
     recipeLicenseFee: number = -1;
-    program = new TdmProgram();
     recipesLeft = 0;
     recipeLimit = 0;
     recipeCount = 0;
@@ -118,21 +116,21 @@ export class CreateRecipeComponent implements OnInit {
         this.accessGuard.guardLoggedIn().subscribe(loggedIn => {
             if (loggedIn) {
                 var valid = true;
-                var recipe = new TdmRecipe();
+                var recipe = new Recipe();
 
-                recipe.technologydataname = this.recipeName;
-                recipe.licensefee = this.recipeLicenseFee;
-                recipe.technologydatadescription = this.recipeDescription.trim();
+                recipe.title = this.recipeName;
+                recipe.licenseFee = this.recipeLicenseFee;
+                recipe.description = this.recipeDescription.trim();
 
-                if (valid && recipe.technologydataname.trim().length < 1) {
+                if (valid && recipe.title.trim().length < 1) {
                     alert("Bitte geben Sie einen Titel mit mindestens einem Zeichen ein.");
                     valid = false;
                 }
-                if (valid && recipe.technologydatadescription.length < 1) {
+                if (valid && recipe.description.length < 1) {
                     alert("Bitte geben Sie eine Beschreibung mit mindestens einem Zeichen ein.");
                     valid = false;
                 }
-                if (valid && recipe.licensefee == -1) {
+                if (valid && recipe.licenseFee == -1) {
                     alert("Bitte wählen Sie eine Lizenzgebühr aus.");
                     valid = false;
                 }
@@ -144,55 +142,17 @@ export class CreateRecipeComponent implements OnInit {
                     this.spinnerCounter += 1;                    
                     // create json
                     var program = this.cocktail.getMachineProgram()
+                    recipe.program = JSON.stringify(program)
                     console.log("MachineProgram:")
                     console.log(program)
-                    // var lines: any[] = [];
-                    // // total fragments
-                    // var count = 0;
-                    // this.cocktail.layers.forEach(layer => {
-                    //     count += layer.components.length;
-                    // })
-                
-                    // this.cocktail.layers.forEach(layer => {
-                    //     var programComponents: any[] = [];
-                    //     layer.components.forEach(component => {
-                    //     var addNewComponent = true;
-                    //     programComponents.forEach(pc => {
-                    //         if (pc["ingredient"] == component.id) {
-                    //             addNewComponent = false;
-                    //             var amount = pc["amount"] + this.cocktail.amount / count;
-                    //             pc["amount"] = amount;
-                    //         }
-                    //     });
-                    //     if (addNewComponent) {
-                    //         programComponents.push({
-                    //             "ingredient": component.id,
-                    //             "amount": this.cocktail.amount / count
-                    //         });
-                    //     }
-                    //     // if (components
-                    //     // components.push({
-                    //     //   "ingredient": layerComponent.component.id,
-                    //     //   "amount": layerComponent.amount
-                    //     // });
-                    //     });
-                    //     lines.push({
-                    //         "components": programComponents,
-                    //         "timing": 2,
-                    //         "sleep": 0
-                    //     });
-                    // });
-                    // var program = {
-                    //     "lines": lines
-                    // };
-
                     var jsonRecipe = {};
-                    jsonRecipe["title"] = recipe.technologydataname;
-                    jsonRecipe["description"] = recipe.technologydatadescription;
-                    jsonRecipe["license-fee"] = recipe.licensefee * 100000;
-                    jsonRecipe["program"] = program;
-                    jsonRecipe["imageRef"] = this.recipeImagePicker.getSelectedImage();
-                    jsonRecipe["backgroundColor"] = this.recipeImagePicker.backgroundColor;
+                    jsonRecipe = JSON.stringify(recipe)
+                    // jsonRecipe["title"] = recipe.technologydataname;
+                    // jsonRecipe["description"] = recipe.technologydatadescription;
+                    // jsonRecipe["license-fee"] = recipe.licensefee * 100000;
+                    // jsonRecipe["program"] = program;
+                    // jsonRecipe["imageRef"] = this.recipeImagePicker.getSelectedImage();
+                    // jsonRecipe["backgroundColor"] = this.recipeImagePicker.backgroundColor;
 
                     this.http.post('/api/users/me/recipes', jsonRecipe).subscribe(
                         data => {
