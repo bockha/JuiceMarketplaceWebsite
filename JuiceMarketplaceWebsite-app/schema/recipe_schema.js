@@ -191,12 +191,12 @@ self.Recipe_Body = {
             minLength: 1,
             maxLength: 30000
         },
-        "license-fee": {
+        licenseFee: {
             type: "integer",
             minimum: 0,
             maximum: Number.MAX_SAFE_INTEGER
         },
-        "program": {
+        program: {
             type: "object",
             properties: {
                 "recipe": {
@@ -256,7 +256,7 @@ self.Recipe_Body = {
             pattern: '^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{4}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$'
         }
     },
-    required: ['title', 'description', 'license-fee', 'program'],
+    required: ['title', 'description', 'licenseFee', 'program'],
     additionalProperties: false
 };
 

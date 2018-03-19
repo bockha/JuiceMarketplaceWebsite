@@ -64,16 +64,28 @@ export class CreateRecipeComponent implements OnInit {
                 //       new CocktailComponent("8", "Reserved 3", "#ddf"),
                 //   ]
                 //   )
-                    componentService.components.subscribe(components => {
+                componentService.setRecommendComponentIds(
+                    [
+                      "570a5df0-a044-4e22-b6e6-b10af872d75c", // Mineralwasser
+                      "198f1571-4846-4467-967a-00427ab0208d", // Apfelsaft
+                      "f6d361a9-5a6f-42ad-bff7-0913750809e4", // Orangensaft
+                      "fac1ee6f-185f-47fb-8c56-af57cd428aa8", // Mangosaft
+                      "0425393d-5b84-4815-8eda-1c27d35766cf", // Kirschsaft
+                      "4cfa2890-6abd-4e21-a7ab-17613ed9a5c9", // Bananensaft
+                      "14b72ce5-fec1-48ec-83ff-24b124f98dc8", // Maracuijasaft
+                      "bf2cfd66-5b6f-4655-8e7f-04090308f6db", // Ananassaft
+                    ]
+                  )
+                      componentService.components.subscribe(components => {
                       this.components = components;
                       if (components.length > 3) {
                       let layer1 = new CocktailLayer();
                       layer1.components.push(this.components[0]);
-                      this.cocktail.layers.push(layer1);
+                    //   this.cocktail.layers.push(layer1);
                   
                       let layer2 = new CocktailLayer();
                       layer2.components.push(this.components[2]);
-                      this.cocktail.layers.push(layer2);
+                    //   this.cocktail.layers.push(layer2);
                   
                       let layer3 = new CocktailLayer();
                       layer3.components.push(this.components[0]);
@@ -86,7 +98,7 @@ export class CreateRecipeComponent implements OnInit {
                       // layer3.components.push(new CocktailLayerComponent(this.components[5], 10));
                       // layer3.components.push(new CocktailLayerComponent(this.components[6], 10));
                       // layer3.components.push(new CocktailLayerComponent(this.components[7], 10));
-                      this.cocktail.layers.push(layer3);
+                    //   this.cocktail.layers.push(layer3);
                       }
                       })
     }
@@ -119,7 +131,7 @@ export class CreateRecipeComponent implements OnInit {
                 var recipe = new Recipe();
 
                 recipe.title = this.recipeName;
-                recipe.licenseFee = this.recipeLicenseFee;
+                recipe.licenseFee = this.recipeLicenseFee * 100000;
                 recipe.description = this.recipeDescription.trim();
 
                 if (valid && recipe.title.trim().length < 1) {
@@ -142,11 +154,10 @@ export class CreateRecipeComponent implements OnInit {
                     this.spinnerCounter += 1;                    
                     // create json
                     var program = this.cocktail.getMachineProgram()
-                    recipe.program = JSON.stringify(program)
-                    console.log("MachineProgram:")
-                    console.log(program)
-                    var jsonRecipe = {};
-                    jsonRecipe = JSON.stringify(recipe)
+                    recipe.program = program
+                    // recipe.program = JSON.stringify(program)
+                    console.log("Recipe:")
+                    console.log(recipe)
                     // jsonRecipe["title"] = recipe.technologydataname;
                     // jsonRecipe["description"] = recipe.technologydatadescription;
                     // jsonRecipe["license-fee"] = recipe.licensefee * 100000;
@@ -154,7 +165,7 @@ export class CreateRecipeComponent implements OnInit {
                     // jsonRecipe["imageRef"] = this.recipeImagePicker.getSelectedImage();
                     // jsonRecipe["backgroundColor"] = this.recipeImagePicker.backgroundColor;
 
-                    this.http.post('/api/users/me/recipes', jsonRecipe).subscribe(
+                    this.http.post('/api/users/me/recipes', recipe).subscribe(
                         data => {
                             this.spinnerCounter -= 1;
                         },

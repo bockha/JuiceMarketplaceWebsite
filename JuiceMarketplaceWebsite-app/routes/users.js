@@ -129,7 +129,7 @@ router.post('/:id/recipes', validate({
             // recipe information for further processing
             const title = recipe['title'].trim();
             const description = recipe['description'].trim();
-            const licenseFee = recipe['license-fee'];
+            const licenseFee = recipe['licenseFee'];
 
             // check metadata
             let valid = true;
