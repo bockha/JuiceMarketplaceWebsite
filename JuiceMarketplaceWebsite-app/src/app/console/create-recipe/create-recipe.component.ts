@@ -110,7 +110,6 @@ export class CreateRecipeComponent implements OnInit {
         if (windowWidth < 960) {
             editMode = true
         }
-        console.log("width = "+windowWidth+", getEditMode = "+editMode)
         return editMode
     }
 
