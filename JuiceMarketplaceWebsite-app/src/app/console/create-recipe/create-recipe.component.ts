@@ -104,18 +104,13 @@ export class CreateRecipeComponent implements OnInit {
                       })
     }
 
-    @HostListener('window:resize', ['$event'])
-    onResize(event: UIEvent) {
-        let window = event.target as Window
-        if (window.innerWidth < 960) {
-            if (!this.beaker.editMode) {
-                this.beaker.setEditMode(true)
-            }
-        } else {
-            if (this.beaker.editMode) {
-                this.beaker.setEditMode(false)
-            }
+    getBeakerEditMode() {
+        var editMode = false
+        let windowWidth = window.innerWidth
+        if (windowWidth < 960) {
+            editMode = true
         }
+        return editMode
     }
 
     ngOnInit() {
@@ -137,6 +132,10 @@ export class CreateRecipeComponent implements OnInit {
             }
         });
     }
+
+    // ngAfterViewInit() {
+    //     this.updateEditMode()
+    // }
 
     actionSaveRecipe() {
         this.accessGuard.guardLoggedIn().subscribe(loggedIn => {
