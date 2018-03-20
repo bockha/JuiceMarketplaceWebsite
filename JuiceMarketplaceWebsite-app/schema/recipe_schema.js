@@ -191,7 +191,7 @@ self.Recipe_Body = {
             minLength: 1,
             maxLength: 30000
         },
-        "license-fee": {
+        licenseFee: {
             type: "integer",
             minimum: 0,
             maximum: Number.MAX_SAFE_INTEGER
@@ -199,53 +199,50 @@ self.Recipe_Body = {
         program: {
             type: "object",
             properties: {
-                "amount-per-millisecond": {
-                    type: "number",
-                    minimum: 0.001,
-                    maximum: 1
-                },
-                sequences: {
-                    type: "array",
-                    items: {
-                        type: "object",
-                        properties: {
-                            "ingredient-id": {
-                                type: "string",
-                                format: "uuid"
-                            },
-                            phases: {
-                                type: "array",
-                                items: {
-                                    type: "object",
-                                    properties: {
-                                        start: {
-                                            type: "integer",
-                                            minimum: 0,
-                                            maximum: 1000
-                                        },
-                                        amount: {
-                                            type: "integer",
-                                            minimum: 1,
-                                            maximum: 1000
-                                        },
-                                        throughput: {
-                                            type: "integer",
-                                            minimum: 1,
-                                            maximum: 100
-                                        }
+                "recipe": {
+                    type: "object",
+                    properties: {
+                        "lines": {
+                            type: "array",
+                            items: {
+                                type: "object",
+                                properties: {
+                                    "sleep": {
+                                        type: "integer",
+                                        minimum: 0,
+                                        maximum: 0
                                     },
-                                    required: ['start', 'amount', 'throughput'],
-                                    additionalProperties: false
+                                    "timing": {
+                                        type: "integer",
+                                        minimum: 2,
+                                        maximum: 2
+                                    },
+                                    "components": {
+                                        type: "array",
+                                        items: {
+                                            type: "object",
+                                            properties: {
+                                                "amount": {
+                                                    type: "integer",
+                                                    minimum: 1,
+                                                    maximum: 1000
+                                                },
+                                                "ingredient": {
+                                                    type: "string",
+                                                    format: "uuid"
+                                                }
+                                            },
+                                            required: ["amount", "ingredient"],
+                                        }
+                                    }
                                 },
-                                additionalItems: false
+                                required: ["sleep", "timing", "components"],
                             }
-                        },
-                        required: ['ingredient-id', 'phases'],
-                        additionalProperties: false
-                    }
-                }
+                        }
+                    },
+                    required: ["lines"]
+                },
             },
-            required: ['amount-per-millisecond', 'sequences'],
             additionalProperties: false
         },
         imageRef: {
@@ -259,7 +256,7 @@ self.Recipe_Body = {
             pattern: '^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{4}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$'
         }
     },
-    required: ['title', 'description', 'license-fee', 'program'],
+    required: ['title', 'description', 'licenseFee', 'program'],
     additionalProperties: false
 };
 

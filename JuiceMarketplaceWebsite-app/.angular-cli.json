@@ -58,6 +58,9 @@
       "port": 3004
     },
     "styleExt": "css",
-    "component": {}
+    "component": {},
+    "build": {
+      "preserveSymlinks": true
+    }
   }
 }
