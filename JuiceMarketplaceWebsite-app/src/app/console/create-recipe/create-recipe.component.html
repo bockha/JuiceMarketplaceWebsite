@@ -11,29 +11,23 @@
 </div>
 
 <div *ngIf="recipesLeft > 0" fxLayout="column" fxLayoutGap="10px">
-    <mat-card class="iuno-card">
+    <mat-card (window:resize)="onResize($event);" class="iuno-card">
         <mat-card-header>
             <mat-card-title>
                 <span class="card-title">Rezeptur</span>
             </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <div fxLayout="row" fxFlex="100" fxLayoutAlign="center center" fxLayoutGap="30px">
-                <div fxFlex="30" fxLayoutAlign="center center">
-                <cocktail-component-list  style="width: 320px; height: 450px;"></cocktail-component-list>
+            <div fxLayout.gt-md="row" fxLayout.lt-md="column" fxFlex="100" fxLayoutAlign.gt-md="center start" fxLayoutAlign.lt-md="center"
+                fxLayoutGap="30px" style="background-color: #0f0;">
+                <div fxLayoutAlign="center center" fxFlex="30" fxShow.lt-md="false" style="background-color: #ff0;">
+                    <cocktail-component-list style="max-width: 300px; height: 450px;"></cocktail-component-list>
+                </div>
+                <cocktail-beaker #beaker [cocktail]="cocktail" fxFlex="300px" style="height: 450px;"></cocktail-beaker>
+                <div style="background-color: #00f;" fxLayoutAlign="center start" fxFlex="30">
+                    <cocktail-ingredients-listing style="" [cocktail]="cocktail" style="min-width: 200px; max-width: 320px"></cocktail-ingredients-listing>
+                </div>
             </div>
-            <!-- <div fxFlex="fill" fxLayoutAlign="center center"> -->
-                    <div style="width: 300px; height: 450px;">
-                            <cocktail-beaker [cocktail]="cocktail"></cocktail-beaker>
-                        </div>
-                    
-                    <!-- <cocktail-beaker [cocktail]="cocktail"></cocktail-beaker> -->
-                <!-- </div> -->
-                <div fxFlex="30" fxLayoutAlign="center center">
-                        <cocktail-ingredients-listing style="width: 320px; height: 450px;" [cocktail]="cocktail"></cocktail-ingredients-listing>
-                        <!-- <cocktail-ingredients-listing [cocktail]="cocktail"></cocktail-ingredients-listing> -->
-            </div>
-        </div>
         </mat-card-content>
     </mat-card>
     <mat-card class="iuno-card">

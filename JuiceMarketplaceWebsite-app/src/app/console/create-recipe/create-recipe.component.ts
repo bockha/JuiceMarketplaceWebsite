@@ -1,4 +1,4 @@
-import {Injectable, ViewChild} from '@angular/core';
+import {Injectable, ViewChild, ElementRef, HostListener} from '@angular/core';
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router, ActivatedRoute} from '@angular/router';
@@ -27,6 +27,7 @@ import {ComponentListComponent, DragAndDropService, BeakerComponent} from 'cockt
 @Injectable()
 export class CreateRecipeComponent implements OnInit {
     @ViewChild(RecipeImagePickerComponent) recipeImagePicker: RecipeImagePickerComponent;
+    @ViewChild(BeakerComponent) beaker: BeakerComponent;
 
     recipe = new Recipe()
     cocktail: Cocktail;
@@ -103,6 +104,19 @@ export class CreateRecipeComponent implements OnInit {
                       })
     }
 
+    @HostListener('window:resize', ['$event'])
+    onResize(event: UIEvent) {
+        let window = event.target as Window
+        if (window.innerWidth < 960) {
+            if (!this.beaker.editMode) {
+                this.beaker.setEditMode(true)
+            }
+        } else {
+            if (this.beaker.editMode) {
+                this.beaker.setEditMode(false)
+            }
+        }
+    }
 
     ngOnInit() {
         this.spinnerCounter += 1;
