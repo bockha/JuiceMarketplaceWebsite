@@ -53,19 +53,6 @@ export class CreateRecipeComponent implements OnInit {
 
         this.cocktail = new Cocktail();
         this.cocktail.amount = 100;
-        // componentService.sourceUrl="/api/components";
-        // componentService.updateComponents();
-        //     componentService.setComponents([
-        //       new CocktailComponent("1", "Apfelsaft", "#7d7"),
-        //       new CocktailComponent("2", "Bananensaft", "#dd7"),
-        //       new CocktailComponent("3", "Kirschsaft", "#d77"),
-        //       new CocktailComponent("4", "Maracujasaft", "#da7"),
-        //       new CocktailComponent("5", "Ananassaft", "#dc9"),
-        //       new CocktailComponent("6", "Reserved 1", "#ddf"),
-        //       new CocktailComponent("7", "Reserved 2", "#ddf"),
-        //       new CocktailComponent("8", "Reserved 3", "#ddf"),
-        //   ]
-        //   )
         componentService.setRecommendComponentIds(
             [
                 "570a5df0-a044-4e22-b6e6-b10af872d75c", // Mineralwasser
