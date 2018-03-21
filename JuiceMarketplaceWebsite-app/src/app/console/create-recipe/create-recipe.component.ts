@@ -52,7 +52,7 @@ export class CreateRecipeComponent implements OnInit {
                 private componentService: ComponentService) {
 
         this.cocktail = new Cocktail();
-        this.cocktail.amount = 120;
+        this.cocktail.amount = 100;
         // componentService.sourceUrl="/api/components";
         // componentService.updateComponents();
         //     componentService.setComponents([
@@ -77,31 +77,9 @@ export class CreateRecipeComponent implements OnInit {
                 "14b72ce5-fec1-48ec-83ff-24b124f98dc8", // Maracuijasaft
                 "bf2cfd66-5b6f-4655-8e7f-04090308f6db", // Ananassaft
             ]
-        )
+        );
         componentService.components.subscribe(components => {
             this.components = components;
-            if (components.length > 3) {
-                let layer1 = new CocktailLayer();
-                layer1.components.push(this.components[0]);
-                //   this.cocktail.layers.push(layer1);
-
-                let layer2 = new CocktailLayer();
-                layer2.components.push(this.components[2]);
-                //   this.cocktail.layers.push(layer2);
-
-                let layer3 = new CocktailLayer();
-                layer3.components.push(this.components[0]);
-                layer3.components.push(this.components[1]);
-                // layer3.components.push(this.components[1]);
-                layer3.components.push(this.components[0]);
-                // layer3.components.push(new CocktailLayerComponent(this.components[2], 10));
-                // layer3.components.push(new CocktailLayerComponent(this.components[3], 10));
-                // layer3.components.push(new CocktailLayerComponent(this.components[4], 10));
-                // layer3.components.push(new CocktailLayerComponent(this.components[5], 10));
-                // layer3.components.push(new CocktailLayerComponent(this.components[6], 10));
-                // layer3.components.push(new CocktailLayerComponent(this.components[7], 10));
-                //   this.cocktail.layers.push(layer3);
-            }
         })
     }
 
