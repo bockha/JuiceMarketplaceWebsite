@@ -223,7 +223,7 @@ self.Recipe_Body = {
                                             type: "object",
                                             properties: {
                                                 "amount": {
-                                                    type: "number",
+                                                    type: "integer",
                                                     minimum: 1,
                                                     maximum: 1000
                                                 },
