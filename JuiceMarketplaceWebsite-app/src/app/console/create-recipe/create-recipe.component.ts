@@ -124,17 +124,9 @@ export class CreateRecipeComponent implements OnInit {
                 if (valid) {
                     this.spinnerCounter += 1;
                     // create json
-                    var program = this.cocktail.getMachineProgram()
-                    recipe.program = program
-                    // recipe.program = JSON.stringify(program)
-                    console.log("Recipe:")
-                    console.log(recipe)
-                    // jsonRecipe["title"] = recipe.technologydataname;
-                    // jsonRecipe["description"] = recipe.technologydatadescription;
-                    // jsonRecipe["license-fee"] = recipe.licensefee * 100000;
-                    // jsonRecipe["program"] = program;
-                    // jsonRecipe["imageRef"] = this.recipeImagePicker.getSelectedImage();
-                    // jsonRecipe["backgroundColor"] = this.recipeImagePicker.backgroundColor;
+                    recipe.program = this.cocktail.getMachineProgram();
+                    console.log("Recipe:");
+                    console.log(recipe);
 
                     this.http.post('/api/users/me/recipes', recipe).subscribe(
                         data => {
