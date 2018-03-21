@@ -42,6 +42,7 @@ export class CreateRecipeComponent implements OnInit {
     recipesLeft = 0;
     recipeLimit = 0;
     recipeCount = 0;
+
     constructor(private marketplaceService: MarketplaceService,
                 private recipeService: RecipeService,
                 private http: HttpClient,
@@ -50,58 +51,58 @@ export class CreateRecipeComponent implements OnInit {
                 private accessGuard: AccessGuard,
                 private componentService: ComponentService) {
 
-                    this.cocktail = new Cocktail();
-                    this.cocktail.amount = 120;
-                    // componentService.sourceUrl="/api/components";
-                    // componentService.updateComponents();
-                //     componentService.setComponents([
-                //       new CocktailComponent("1", "Apfelsaft", "#7d7"),
-                //       new CocktailComponent("2", "Bananensaft", "#dd7"),
-                //       new CocktailComponent("3", "Kirschsaft", "#d77"),
-                //       new CocktailComponent("4", "Maracujasaft", "#da7"),
-                //       new CocktailComponent("5", "Ananassaft", "#dc9"),
-                //       new CocktailComponent("6", "Reserved 1", "#ddf"),
-                //       new CocktailComponent("7", "Reserved 2", "#ddf"),
-                //       new CocktailComponent("8", "Reserved 3", "#ddf"),
-                //   ]
-                //   )
-                componentService.setRecommendComponentIds(
-                    [
-                      "570a5df0-a044-4e22-b6e6-b10af872d75c", // Mineralwasser
-                      "198f1571-4846-4467-967a-00427ab0208d", // Apfelsaft
-                      "f6d361a9-5a6f-42ad-bff7-0913750809e4", // Orangensaft
-                      "fac1ee6f-185f-47fb-8c56-af57cd428aa8", // Mangosaft
-                      "0425393d-5b84-4815-8eda-1c27d35766cf", // Kirschsaft
-                      "4cfa2890-6abd-4e21-a7ab-17613ed9a5c9", // Bananensaft
-                      "14b72ce5-fec1-48ec-83ff-24b124f98dc8", // Maracuijasaft
-                      "bf2cfd66-5b6f-4655-8e7f-04090308f6db", // Ananassaft
-                    ]
-                  )
-                      componentService.components.subscribe(components => {
-                      this.components = components;
-                      if (components.length > 3) {
-                      let layer1 = new CocktailLayer();
-                      layer1.components.push(this.components[0]);
-                    //   this.cocktail.layers.push(layer1);
-                  
-                      let layer2 = new CocktailLayer();
-                      layer2.components.push(this.components[2]);
-                    //   this.cocktail.layers.push(layer2);
-                  
-                      let layer3 = new CocktailLayer();
-                      layer3.components.push(this.components[0]);
-                      layer3.components.push(this.components[1]);
-                      // layer3.components.push(this.components[1]);
-                      layer3.components.push(this.components[0]);
-                      // layer3.components.push(new CocktailLayerComponent(this.components[2], 10));
-                      // layer3.components.push(new CocktailLayerComponent(this.components[3], 10));
-                      // layer3.components.push(new CocktailLayerComponent(this.components[4], 10));
-                      // layer3.components.push(new CocktailLayerComponent(this.components[5], 10));
-                      // layer3.components.push(new CocktailLayerComponent(this.components[6], 10));
-                      // layer3.components.push(new CocktailLayerComponent(this.components[7], 10));
-                    //   this.cocktail.layers.push(layer3);
-                      }
-                      })
+        this.cocktail = new Cocktail();
+        this.cocktail.amount = 120;
+        // componentService.sourceUrl="/api/components";
+        // componentService.updateComponents();
+        //     componentService.setComponents([
+        //       new CocktailComponent("1", "Apfelsaft", "#7d7"),
+        //       new CocktailComponent("2", "Bananensaft", "#dd7"),
+        //       new CocktailComponent("3", "Kirschsaft", "#d77"),
+        //       new CocktailComponent("4", "Maracujasaft", "#da7"),
+        //       new CocktailComponent("5", "Ananassaft", "#dc9"),
+        //       new CocktailComponent("6", "Reserved 1", "#ddf"),
+        //       new CocktailComponent("7", "Reserved 2", "#ddf"),
+        //       new CocktailComponent("8", "Reserved 3", "#ddf"),
+        //   ]
+        //   )
+        componentService.setRecommendComponentIds(
+            [
+                "570a5df0-a044-4e22-b6e6-b10af872d75c", // Mineralwasser
+                "198f1571-4846-4467-967a-00427ab0208d", // Apfelsaft
+                "f6d361a9-5a6f-42ad-bff7-0913750809e4", // Orangensaft
+                "fac1ee6f-185f-47fb-8c56-af57cd428aa8", // Mangosaft
+                "0425393d-5b84-4815-8eda-1c27d35766cf", // Kirschsaft
+                "4cfa2890-6abd-4e21-a7ab-17613ed9a5c9", // Bananensaft
+                "14b72ce5-fec1-48ec-83ff-24b124f98dc8", // Maracuijasaft
+                "bf2cfd66-5b6f-4655-8e7f-04090308f6db", // Ananassaft
+            ]
+        )
+        componentService.components.subscribe(components => {
+            this.components = components;
+            if (components.length > 3) {
+                let layer1 = new CocktailLayer();
+                layer1.components.push(this.components[0]);
+                //   this.cocktail.layers.push(layer1);
+
+                let layer2 = new CocktailLayer();
+                layer2.components.push(this.components[2]);
+                //   this.cocktail.layers.push(layer2);
+
+                let layer3 = new CocktailLayer();
+                layer3.components.push(this.components[0]);
+                layer3.components.push(this.components[1]);
+                // layer3.components.push(this.components[1]);
+                layer3.components.push(this.components[0]);
+                // layer3.components.push(new CocktailLayerComponent(this.components[2], 10));
+                // layer3.components.push(new CocktailLayerComponent(this.components[3], 10));
+                // layer3.components.push(new CocktailLayerComponent(this.components[4], 10));
+                // layer3.components.push(new CocktailLayerComponent(this.components[5], 10));
+                // layer3.components.push(new CocktailLayerComponent(this.components[6], 10));
+                // layer3.components.push(new CocktailLayerComponent(this.components[7], 10));
+                //   this.cocktail.layers.push(layer3);
+            }
+        })
     }
 
     getBeakerEditMode() {
@@ -124,7 +125,7 @@ export class CreateRecipeComponent implements OnInit {
         var rl = this.recipeService.getRecipeLimit();
         rl.subscribe(limit => this.recipeLimit = limit);
         rc.subscribe(count => this.recipeCount = count);
-        rc.combineLatest(rl, (count, limit)=> limit-count).subscribe(result => {
+        rc.combineLatest(rl, (count, limit) => limit - count).subscribe(result => {
             this.recipesLeft = result;
             this.spinnerCounter -= 1;
             if (this.recipesLeft <= 0) {
@@ -159,12 +160,12 @@ export class CreateRecipeComponent implements OnInit {
                     alert("Bitte wählen Sie eine Lizenzgebühr aus.");
                     valid = false;
                 }
-                if (valid && (this.cocktail.layers.length == 0 || this.cocktail.layers[0].components.length ==0)) {
+                if (valid && (this.cocktail.layers.length == 0 || this.cocktail.layers[0].components.length == 0)) {
                     alert("Bitte fügen Sie mindestens eine Zutat hinzu.");
                     valid = false;
                 }
                 if (valid) {
-                    this.spinnerCounter += 1;                    
+                    this.spinnerCounter += 1;
                     // create json
                     var program = this.cocktail.getMachineProgram()
                     recipe.program = program
@@ -187,12 +188,12 @@ export class CreateRecipeComponent implements OnInit {
                             if (error.status == 201) { // this isn't an error. @see https://github.com/angular/angular/issues/18396
                                 this.router.navigateByUrl('/console/recipes');
                             }
-                            else if(error.status == 409) {
+                            else if (error.status == 409) {
                                 alert("Ein Rezept mit diesem Namen existiert bereits");
                                 this.spinnerCounter -= 1;
                             }
                             else {
-                                alert("Es ist ein Fehler aufgetreten.\nDas Rezept konnte nicht gespeichert werden. Fehler: " +  error.message);
+                                alert("Es ist ein Fehler aufgetreten.\nDas Rezept konnte nicht gespeichert werden. Fehler: " + error.message);
                                 this.spinnerCounter -= 1;
                             }
                         }
