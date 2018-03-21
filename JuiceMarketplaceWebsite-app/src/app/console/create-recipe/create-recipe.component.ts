@@ -71,8 +71,8 @@ export class CreateRecipeComponent implements OnInit {
     }
 
     getBeakerEditMode() {
-        var editMode = false
-        let windowWidth = window.innerWidth
+        var editMode = false;
+        let windowWidth = window.innerWidth;
         if (windowWidth < 960) {
             editMode = true
         }
@@ -81,10 +81,6 @@ export class CreateRecipeComponent implements OnInit {
 
     ngOnInit() {
         this.spinnerCounter += 1;
-        // this.spinnerCounter += 1;
-        // this.marketplaceService.components.subscribe(components => {
-        //     this.components = components;
-        // });
 
         var rc = this.recipeService.getRecipeCount();
         var rl = this.recipeService.getRecipeLimit();
@@ -98,10 +94,6 @@ export class CreateRecipeComponent implements OnInit {
             }
         });
     }
-
-    // ngAfterViewInit() {
-    //     this.updateEditMode()
-    // }
 
     actionSaveRecipe() {
         this.accessGuard.guardLoggedIn().subscribe(loggedIn => {
