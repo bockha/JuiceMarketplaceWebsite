@@ -28,8 +28,10 @@ export class RecipeService {
         });
     }
 
-    deleteRecipe(recipe: Recipe) {
-        this.http.delete(this.recipesUrl + "/" + recipe.id, {
+    //TODO: Do not use any. Use Recipe instead! Issue #133
+    deleteRecipe(recipe: any) {
+        console.log(recipe);
+        this.http.delete(this.recipesUrl + "/" + recipe.technologydatauuid, {
             responseType: 'text',
         }).subscribe(response => {
             this.updateRecipes();
