@@ -13,7 +13,8 @@ export class DashboardService {
     constructor(private http: HttpClient) {
     }
 
-    getTopRecipeForUser(): Observable<Recipe> {
+    //TODO: Use Observable<Recipe> after issue #133 was fixed
+    getTopRecipeForUser(): Observable<any> {
         var limit = 1;
         var fromDate = moment().utc().year(2000).format();
         var toDate = moment().utc().format();

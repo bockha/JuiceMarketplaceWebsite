@@ -48,9 +48,11 @@ export class DashboardComponent implements OnInit {
 
         // pupulate topRecipe
         this.dashboardService.getTopRecipeForUser().subscribe(recipe => {
+            console.log(recipe);
             this.topRecipe = recipe;
             if (recipe) {
-                this.topRecipeName = recipe.title;
+                //TODO: use recipe.name after issue #133 was fixed
+                this.topRecipeName = recipe.technologydataname;
             } else {
                 this.topRecipeName = null;
             }
