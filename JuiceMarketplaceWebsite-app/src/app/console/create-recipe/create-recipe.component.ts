@@ -98,12 +98,16 @@ export class CreateRecipeComponent implements OnInit {
     actionSaveRecipe() {
         this.accessGuard.guardLoggedIn().subscribe(loggedIn => {
             if (loggedIn) {
-                var valid = true;
-                var recipe = new Recipe();
+                let valid = true;
+                //TODO: Declare recipe as Recipe from TDM-Common after Issue #136 was fixed.
+                // const recipe = new Recipe();
+                const recipe: any = {};
 
                 recipe.title = this.recipeName;
                 recipe.licenseFee = this.recipeLicenseFee * 100000;
                 recipe.description = this.recipeDescription.trim();
+                recipe.imageRef = this.recipeImagePicker.getSelectedImage();
+                recipe.backgroundColor = this.recipeImagePicker.backgroundColor;
 
                 if (valid && recipe.title.trim().length < 1) {
                     alert("Bitte geben Sie einen Titel mit mindestens einem Zeichen ein.");
