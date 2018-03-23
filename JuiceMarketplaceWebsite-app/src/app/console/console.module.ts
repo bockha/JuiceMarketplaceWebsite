@@ -34,7 +34,6 @@ import {ConsoleComponent} from './console.component';
 import {CreateRecipeComponent} from './create-recipe/create-recipe.component';
 import {RecipesComponent} from './recipes/recipes.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
-import {JuiceProgramConfiguratorModule} from './juice-program-configurator/juice-program-configurator.module';
 import {UtilitiesModule} from '../utilities/utilities.module';
 import {AccessGuard} from './services/user.service';
 import {Ng2GoogleChartsModule} from "ng2-google-charts";
@@ -42,6 +41,9 @@ import { VaultComponent } from './vault/vault.component';
 import { VaultPayoutDialogComponent } from './vault-payout-dialog/vault-payout-dialog.component';
 import {RecipeImagePickerModule} from "./recipe-image-picker/recipe-image-picker.module";
 import {VaultTestnetHelpDialogComponent} from "./vault-testnet-help-dialog/vault-testnet-help-dialog.component";
+
+import {CocktailConfiguratorModule, DragAndDropService} from 'cocktail-configurator'
+import {ComponentService} from 'tdm-common'
 
 @NgModule({
     imports: [
@@ -65,13 +67,13 @@ import {VaultTestnetHelpDialogComponent} from "./vault-testnet-help-dialog/vault
         MatSelectModule,
         MatInputModule,
         MatFormFieldModule,
-        JuiceProgramConfiguratorModule,
         RecipeImagePickerModule,
         UtilitiesModule,
         Ng2GoogleChartsModule,
         MatDialogModule,
         MatSliderModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        CocktailConfiguratorModule
     ],
     declarations: [
         ConsoleComponent,
@@ -82,7 +84,12 @@ import {VaultTestnetHelpDialogComponent} from "./vault-testnet-help-dialog/vault
         VaultPayoutDialogComponent,
         VaultTestnetHelpDialogComponent
     ],
-    providers: [AccessGuard],
+    providers: [
+        AccessGuard,
+        ComponentService, 
+        DragAndDropService,
+        {provide: 'componentSourceUrl', useValue: '/api/components'}
+    ],
     bootstrap: [ConsoleComponent],
     entryComponents: [VaultPayoutDialogComponent,VaultTestnetHelpDialogComponent]
 })

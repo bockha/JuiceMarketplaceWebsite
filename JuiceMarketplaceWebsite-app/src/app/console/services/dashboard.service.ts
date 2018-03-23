@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import * as moment from 'moment';
-import {TdmRecipe} from '../juice-program-configurator/models/tdmrecipe';
+import {Recipe} from 'tdm-common';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/mergeMap';
 import {RevenueReport} from "../models/RevenueReport";
@@ -13,12 +13,13 @@ export class DashboardService {
     constructor(private http: HttpClient) {
     }
 
-    getTopRecipeForUser(): Observable<TdmRecipe> {
+    //TODO: Use Observable<Recipe> after issue #133 was fixed
+    getTopRecipeForUser(): Observable<any> {
         var limit = 1;
         var fromDate = moment().utc().year(2000).format();
         var toDate = moment().utc().format();
         var url = '/api/users/me/reports/recipes/top?limit=' + limit + '&from=' + fromDate + '&to=' + toDate;
-        return this.http.get<TdmRecipe[]>(url).flatMap(recipes => {
+        return this.http.get<Recipe[]>(url).flatMap(recipes => {
             if (recipes.length > 0) {
                 return Observable.of(recipes[0] || 0);
             } else {
@@ -41,7 +42,6 @@ export class DashboardService {
         let fromDate = moment.utc([from.getFullYear(),from.getMonth(), from.getDate(),from.getHours(), from.getMinutes(), from.getSeconds()]);
         let toDate = moment.utc([to.getFullYear(),to.getMonth(), to.getDate(),to.getHours(), to.getMinutes(), to.getSeconds()]);
         let url = '/api/users/me/reports/revenue/history?from=' + fromDate.format()  + '&to=' + toDate.format()  ;
-        console.log(url);
         var result = this.http.get<any[]>(url).map((data: any) => {
 
             var reports = new Array<RevenueReport>(data.length);

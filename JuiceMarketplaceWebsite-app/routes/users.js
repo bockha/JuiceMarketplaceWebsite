@@ -123,21 +123,13 @@ router.post('/:id/recipes', validate({
                 return res.send('Sie haben bereits ihr Limit von ' + limit + ' Rezepten am Marktplatz erreicht.');
             }
 
-            const minPhaseAmount = 10;
-            const minTotalAmount = 99;
-            const maxTotalAmount = 121;
-            const maxTotalPause = 5001;
-
             // Save recipe for user
             const recipe = req.body;
-            const program = recipe['program'];
 
             // recipe information for further processing
             const title = recipe['title'].trim();
             const description = recipe['description'].trim();
-            const licenseFee = recipe['license-fee'];
-            const machineProgram = programConverter.convertProgramToMachineProgram(program);
-            const machineProgramString = JSON.stringify(machineProgram);
+            const licenseFee = recipe['licenseFee'];
 
             // check metadata
             let valid = true;
@@ -167,15 +159,27 @@ router.post('/:id/recipes', validate({
             // check total amount
             let totalAmount = 0;
             let totalPause = 0;
-
+            const minTotalAmount = 99;
+            const maxTotalAmount = 121;
+            const maxTotalPause = 5001;
+            
+            const machineProgram = recipe['program'];
             const lines = machineProgram['recipe']['lines'];
+            var ingredients = {};
             lines.forEach(function (line) {
                 const components = line['components'];
                 totalPause += line['sleep'];
                 components.forEach(function (component) {
                     totalAmount += component['amount'];
+                    if (component['ingredient']) {
+                        ingredients[component['ingredient']] = ingredients[component['ingredient']] + 1;
+                    } else {
+                        ingredients[component['ingredient']] = 1;
+                    }
                 });
             });
+
+            const componentIds = Object.keys(ingredients);
 
             if (totalAmount > maxTotalAmount) {
                 logger.warn('Submitted program exceeding max total amount size');
@@ -201,14 +205,10 @@ router.post('/:id/recipes', validate({
                 return res.send('Ungültiges Rezept: ' + validText);
             }
 
-            const componentsIds = [];
-            program['sequences'].forEach(function (sequence) {
-                componentsIds.push(sequence['ingredient-id']);
-            });
-
             let encryptedProgram;
             // Encrypt the recipe using our own encryption before passing it to the marketplace core
             try {
+                const machineProgramString = JSON.stringify(machineProgram);
                 encryptedProgram = encryption.encryptData(machineProgramString);
             }
             catch (err) {
@@ -222,7 +222,7 @@ router.post('/:id/recipes', validate({
             coreData.technologyDataDescription = description;
             coreData.technologyUUID = CONFIG.TECHNOLOGY_UUID;
             coreData.licenseFee = licenseFee;
-            coreData.componentList = componentsIds;
+            coreData.componentList = componentIds;
             coreData.backgroundColor = recipe.backgroundColor;
             coreData.image = recipe.imageRef ? imageService.loadImage(recipe.imageRef + '.svg'): undefined;
 

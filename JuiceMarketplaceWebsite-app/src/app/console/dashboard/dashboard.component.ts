@@ -4,7 +4,7 @@ import {ViewEncapsulation} from '@angular/core'
 import * as moment from 'moment';
 
 import {DashboardService} from '../services/dashboard.service';
-import {TdmRecipe} from '../juice-program-configurator/models/tdmrecipe';
+import {Recipe} from 'tdm-common';
 import {RevenueReport} from "../models/RevenueReport";
 import * as async from 'async';
 import {RecipeReport} from "../models/RecipeReport";
@@ -23,7 +23,7 @@ import {VaultService} from "../services/vault.service";
 
 export class DashboardComponent implements OnInit {
     amountToday: number = null;
-    topRecipe: TdmRecipe = null;
+    topRecipe: Recipe = null;
     topRecipeName: string = null;
 
 
@@ -48,8 +48,10 @@ export class DashboardComponent implements OnInit {
 
         // pupulate topRecipe
         this.dashboardService.getTopRecipeForUser().subscribe(recipe => {
+            console.log(recipe);
             this.topRecipe = recipe;
             if (recipe) {
+                //TODO: use recipe.name after issue #133 was fixed
                 this.topRecipeName = recipe.technologydataname;
             } else {
                 this.topRecipeName = null;
@@ -162,7 +164,6 @@ export class DashboardComponent implements OnInit {
             }
 
 
-            console.log("fertsch");
             self.revenueHistoryData = {
                 chartType: 'ComboChart',
                 dataTable: data,

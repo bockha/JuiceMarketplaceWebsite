@@ -25,9 +25,7 @@ export class ConsoleComponent implements OnInit {
     private userService: UserService
   ) {
     if (userService.isLoggedIn()) {
-      console.log("LoggedIn!");
-    } else {
-      console.log("Not LoggedIn!");
+
     }
   }
 
