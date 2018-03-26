@@ -15,7 +15,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
     }
 }
 
-self.createCoupon = function (name, callback) {
+self.createCoupon = function (callback) {
     if (typeof(callback) !== 'function') {
 
         callback = function () {
