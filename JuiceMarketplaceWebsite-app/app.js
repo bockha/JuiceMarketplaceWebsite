@@ -50,6 +50,7 @@ app.use(passport.session()); // persistent login sessions
 
 
 // -- PUBLIC CONTENT --
+app.use('/assets/', express.static(path.join(__dirname, 'public')));
 app.use('/auth', require('./routes/auth')(passport));
 app.use('/api/reports', require('./routes/reports'));
 app.use('/coupon', require('./routes/coupon'));
