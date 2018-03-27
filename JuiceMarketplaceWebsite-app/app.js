@@ -63,7 +63,7 @@ app.use('/api/recipes', isLoggedIn, require('./routes/recipes'));
 app.use('/api/components', isLoggedIn, require('./routes/components'));
 
 // -- RESTRICTED TO ROLES
-app.use('/api/admin/', isAdmin);
+app.use('/api/admin/', isAdmin, require('./routes/admin'));
 
 app.all('*', function (req, res, next) {
     // Just send the index.html for other files to support HTML5Mode
