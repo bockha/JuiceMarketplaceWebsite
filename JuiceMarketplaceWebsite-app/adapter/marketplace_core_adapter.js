@@ -400,6 +400,25 @@ self.getActivatedLicenseCountForUser = function (user, accessToken, callback) {
     doRequest(options, callback);
 };
 
+self.getProtocols = function (eventType, from, to, accessToken, callback) {
+
+    const options = buildOptionsForRequest(
+        'GET',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/protocols',
+        {
+            eventType: eventType,
+            from: from,
+            to: to
+        }
+    );
+    options.headers.authorization = 'Bearer ' + accessToken;
+
+    doRequest(options, callback);
+};
+
 module.exports = self;
 
 

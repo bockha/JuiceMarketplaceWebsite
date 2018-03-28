@@ -21,7 +21,7 @@ router.post('/', validate({
         }
 
 
-        couponAdapter.createCoupon("", function (err, id) {
+        couponAdapter.createCoupon(function (err, id) {
             if (err || !id) {
                 if (err.statusCode === 900) {
                     return res.render('coupon/faucet', {

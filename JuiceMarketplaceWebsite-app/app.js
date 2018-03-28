@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const queryParser = require('express-query-int');
@@ -9,6 +8,8 @@ const passport = require('passport');
 const session = require('cookie-session');
 const contentTypeValidation = require('./services/content_type_validation');
 const uaParser = require('ua-parser');
+const isLoggedIn = require('./services/authentication_service').isLoggedIn;
+const isAdmin = require('./services/authentication_service').isAdmin;
 
 const config = require('./config/config_loader');
 
@@ -60,6 +61,9 @@ app.use('/', express.static(path.join(__dirname, 'dist')));
 app.use('/api/users', isLoggedIn, require('./routes/users'));
 app.use('/api/recipes', isLoggedIn, require('./routes/recipes'));
 app.use('/api/components', isLoggedIn, require('./routes/components'));
+
+// -- RESTRICTED TO ROLES
+app.use('/api/admin/', isAdmin, require('./routes/admin'));
 
 app.all('*', function (req, res, next) {
     // Just send the index.html for other files to support HTML5Mode
@@ -132,14 +136,3 @@ if (app.get('env') === 'development') {
 }
 
 module.exports = app;
-
-
-// -- FUNCTIONS --
-
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-
-    res.sendStatus(401);
-}
