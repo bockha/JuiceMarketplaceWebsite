@@ -12,22 +12,24 @@ self.isLoggedIn = function (req, res, next) {
 };
 
 self.isUserWithRole = function (role, req, res, next) {
-    if (req.isAuthenticated()) {
-        oAuthServer.getUserInfoForToken(req.user.token.accessToken, function (err, userInfo) {
-            if (err) {
-                return next(err);
-            }
+    if (!req.isAuthenticated()) {
+        return res.sendStatus(401);
+    }
 
-            if (userInfo.roles && userInfo.roles.indexOf(role) > -1) {
-                return next();
-            }
+    oAuthServer.getUserInfoForToken(req.user.token.accessToken, function (err, userInfo) {
+        if (err) {
+            return next(err);
+        }
 
+        if (!userInfo.roles || userInfo.roles.indexOf(role) <= -1) {
             logger.warn('[authentication_service] unauthorized api request for role: ' + role);
             logger.warn('[authentication_service] requesting user: ' + JSON.stringify(req.token.user));
 
-            res.sendStatus(401);
-        });
-    }
+            return res.sendStatus(401);
+        }
+
+        return next();
+    });
 };
 
 self.isAdmin = function (req, res, next) {
