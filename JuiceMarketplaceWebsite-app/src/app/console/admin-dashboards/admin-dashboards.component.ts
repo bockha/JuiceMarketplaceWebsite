@@ -1,23 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {AdminService} from "../services/admin.service";
+import * as moment from "moment";
+import {GoogleChartComponent} from "ng2-google-charts";
 
 @Component({
-  selector: 'app-admin-dashboards',
-  templateUrl: './admin-dashboards.component.html',
-  styleUrls: ['./admin-dashboards.component.css']
+    selector: 'app-admin-dashboards',
+    templateUrl: './admin-dashboards.component.html',
+    styleUrls: ['./admin-dashboards.component.css'],
+    providers: [AdminService]
 })
 export class AdminDashboardsComponent implements OnInit {
 
-  constructor() { }
+    constructor(private adminService: AdminService) {
+    }
 
-    machinesConnectedData =  {
+    @ViewChild('timelinechart') timelinechart: GoogleChartComponent;
+
+    connectedChartOption = 'day';
+    machinesConnectedData = {
         chartType: 'Timeline',
         dataTable: [
-            [{type: 'string', id: 'Role'},{type: 'string', id: 'dummy bar label'},{type: 'string', role: 'tooltip'},{type: 'string', role: 'style'},{type: 'date', id: 'Start'},{type: 'date', id: 'End'}],
-            ['1',null,'4 Verkaufte Lizenzen','#00ff00',new Date(2018,3,15,10,1,0),new Date(2018,3,15,10,50,0)],
-            ['1',null,'4 Verkaufte Lizenzen','#00ffff',new Date(2018,3,15,8,1,0),new Date(2018,3,15,10,0,0)],
-            ['2',null,'4 Verkaufte Lizenzen','#00ff00',new Date(2018,3,15,9,1,0),new Date(2018,3,15,9,1,0)],
-            ['3',null,'4 Verkaufte Lizenzen','#ffff00',new Date(2018,3,15,9,1,0),new Date(2018,3,15,10,50,0)],
-            ['4',null,'4 Verkaufte Lizenzen','#00ffaa',new Date(2018,3,15,9,30,0),new Date(2018,3,15,10,30,0)]
+            [{type: 'string', id: 'Role'}, {type: 'string', id: 'dummy bar label'}, {
+                type: 'string',
+                role: 'tooltip'
+            }, {type: 'string', role: 'style'}, {type: 'date', id: 'Start'}, {type: 'date', id: 'End'}]
         ],
         options: {
             title: 'Aktivität der Maschinen',
@@ -39,9 +45,9 @@ export class AdminDashboardsComponent implements OnInit {
             [49.000273, 8.409850, 4],
             [48.817400, 9.065440, 5],
         ],
-        options:{
+        options: {
             region: 'DE',
-            sizeAxis: { minValue: 0, maxValue: 10 },
+            sizeAxis: {minValue: 0, maxValue: 10}
         }
     };
 
@@ -49,38 +55,108 @@ export class AdminDashboardsComponent implements OnInit {
         chartType: "Sankey",
         dataTable: [
             ['From', 'To', 'Weight'],
-            ['A','Mineralwasser', 1],
-            ['A','Orangensaft', 1],
-            ['A','Apfelsaft', 1],
-            ['A','Mangosaft', 1],
-            ['A','Maracujasaft', 1],
-            ['A','Ananassaft', 1],
-            ['A','Bananensaft', 1],
-            ['A','Kirschsaft', 1],
-            ['B','Mineralwasser', 1],
-            ['B','Orangensaft', 1],
-            ['B','Apfelsaft', 1],
-            ['B','Mangosaft', 1],
-            ['B','Maracujasaft', 1],
-            ['B','Ananassaft', 1],
-            ['B','Bananensaft', 1],
-            ['B','Limettensaft', 1],
-            ['C','Mineralwasser', 1],
-            ['C','Orangensaft', 1],
-            ['C','Apfelsaft', 1],
-            ['C','Mangosaft', 1],
-            ['C','Maracujasaft', 1],
-            ['C','Rum', 1],
-            ['C','Wodka', 1],
-            ['C','Limettensaft', 1]
+            ['A', 'Mineralwasser', 1],
+            ['A', 'Orangensaft', 1],
+            ['A', 'Apfelsaft', 1],
+            ['A', 'Mangosaft', 1],
+            ['A', 'Maracujasaft', 1],
+            ['A', 'Ananassaft', 1],
+            ['A', 'Bananensaft', 1],
+            ['A', 'Kirschsaft', 1],
+            ['B', 'Mineralwasser', 1],
+            ['B', 'Orangensaft', 1],
+            ['B', 'Apfelsaft', 1],
+            ['B', 'Mangosaft', 1],
+            ['B', 'Maracujasaft', 1],
+            ['B', 'Ananassaft', 1],
+            ['B', 'Bananensaft', 1],
+            ['B', 'Limettensaft', 1],
+            ['C', 'Mineralwasser', 1],
+            ['C', 'Orangensaft', 1],
+            ['C', 'Apfelsaft', 1],
+            ['C', 'Mangosaft', 1],
+            ['C', 'Maracujasaft', 1],
+            ['C', 'Rum', 1],
+            ['C', 'Wodka', 1],
+            ['C', 'Limettensaft', 1]
         ],
-        options:{
+        options: {
             width: 600
         }
+    };
+
+    createConnectionDiagram(from: Date, to: Date, data: any) {
+        this.machinesConnectedData.dataTable = [];
+        this.machinesConnectedData.dataTable.push(
+            [
+                {type: 'string', id: 'Role'},
+                {type: 'date', id: 'Start'},
+                {type: 'date', id: 'End'}
+            ]);
+
+        let sortedByMachine = {};
+        for (let line of data) {
+            if (!sortedByMachine.hasOwnProperty(line.clientid)) {
+                sortedByMachine[line.clientid] = [];
+                if (!line.payload.connected) {
+                    sortedByMachine[line.clientid].push(from);
+                }
+            }
+            sortedByMachine[line.clientid].push(new Date(line.sourcetimestamp));
+
+
+        }
+        for (let machine in sortedByMachine) {
+            if (sortedByMachine[machine].length % 2 != 0) {
+                sortedByMachine[machine].push(new Date());
+            }
+
+            for (let i = 0; i < sortedByMachine[machine].length; i += 2) {
+                let graphline = [];
+                graphline.push(machine);
+                graphline.push(sortedByMachine[machine][i]);
+                graphline.push(sortedByMachine[machine][i+1]);
+                this.machinesConnectedData.dataTable.push(graphline);
+            }
+
+
+        }
+        this.machinesConnectedData.options['hAxis'] = {minValue: from,maxValue: to};
+        this.timelinechart.redraw();
+
     }
 
-  ngOnInit() {
-  }
+    acquireConnectionProtocol(){
+
+        let from: Date;
+        let to: Date;
+        switch(this.connectedChartOption){
+            case 'day':
+                from = moment().startOf('day').toDate();
+                to = moment().endOf('day').toDate();
+                break;
+            case 'week':
+                from = moment().startOf('day').subtract(1, 'week').toDate();
+                to = moment().endOf('day').toDate();
+                break;
+            case 'month':
+                from = moment().startOf('day').subtract(1, 'month').toDate();
+                to = moment().endOf('day').toDate();
+                break;
+            case 'year':
+                from = moment().startOf('day').subtract(1, 'year').toDate();
+                to = moment().endOf('day').toDate();
+                break;
+        }
+
+        this.adminService.getConnectionProtocols(from, to).subscribe(data => this.createConnectionDiagram(from, to, data), error2 => console.log(error2));
+    }
+
+    ngOnInit() {
+        this.acquireConnectionProtocol()
+
+    }
+
 
 }
 

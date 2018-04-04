@@ -1,5 +1,13 @@
 <p>
-  <google-chart [data]="machinesConnectedData"></google-chart>
-  <google-chart [data]="machinesGeolocationData"></google-chart>
-  <google-chart [data]="componentConfigurationData"></google-chart>
+    <mat-form-field>
+        <mat-select [(value)]="connectedChartOption" (change)="acquireConnectionProtocol()">
+            <mat-option value="day">Tag</mat-option>
+            <mat-option value="week">Woche</mat-option>
+            <mat-option value="month">Monat</mat-option>
+            <mat-option value="year">Jahr</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <google-chart #timelinechart [data]="machinesConnectedData"></google-chart>
+    <!--<google-chart [data]="machinesGeolocationData"></google-chart>-->
+    <!--<google-chart [data]="componentConfigurationData"></google-chart>-->
 </p>
