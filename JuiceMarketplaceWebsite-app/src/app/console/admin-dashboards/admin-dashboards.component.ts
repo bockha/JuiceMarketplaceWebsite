@@ -16,7 +16,8 @@ export class AdminDashboardsComponent implements OnInit {
 
     @ViewChild('timelinechart') timelinechart: GoogleChartComponent;
 
-    connectedChartOption = 'day';
+    connectedChartOption = 'week';
+    connectedChartDisabled = false;
     machinesConnectedData = {
         chartType: 'Timeline',
         dataTable: [
@@ -87,6 +88,11 @@ export class AdminDashboardsComponent implements OnInit {
 
     createConnectionDiagram(from: Date, to: Date, data: any) {
         this.machinesConnectedData.dataTable = [];
+        if(data.length == 0){
+            this.connectedChartDisabled = true;
+            return;
+        }
+        this.connectedChartDisabled = false;
         this.machinesConnectedData.dataTable.push(
             [
                 {type: 'string', id: 'Role'},
