@@ -400,7 +400,7 @@ self.getActivatedLicenseCountForUser = function (user, accessToken, callback) {
     doRequest(options, callback);
 };
 
-self.getProtocols = function (eventType, from, to, accessToken, callback) {
+self.getProtocols = function (eventType, clientId, from, to, limit, accessToken, callback) {
 
     const options = buildOptionsForRequest(
         'GET',
@@ -410,8 +410,29 @@ self.getProtocols = function (eventType, from, to, accessToken, callback) {
         '/protocols',
         {
             eventType: eventType,
+            clientId: clientId,
             from: from,
-            to: to
+            to: to,
+            limit: limit
+        }
+    );
+    options.headers.authorization = 'Bearer ' + accessToken;
+
+    doRequest(options, callback);
+};
+
+self.getLastProtocolForEachClient = function (eventType, from, to, accessToken, callback) {
+
+    const options = buildOptionsForRequest(
+        'GET',
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.HOST,
+        CONFIG.HOST_SETTINGS.MARKETPLACE_CORE.PORT,
+        '/protocols/last',
+        {
+            eventType: eventType,
+            from: from,
+            to: to,
         }
     );
     options.headers.authorization = 'Bearer ' + accessToken;
