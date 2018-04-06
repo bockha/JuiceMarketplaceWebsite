@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {AdminService} from "../services/admin.service";
 import * as moment from "moment";
 import {GoogleChartComponent} from "ng2-google-charts";
+import {Observable} from "rxjs/Observable";
 
 @Component({
     selector: 'app-admin-dashboards',
@@ -15,6 +16,12 @@ export class AdminDashboardsComponent implements OnInit {
     }
 
     @ViewChild('timelinechart') timelinechart: GoogleChartComponent;
+
+
+    connectionObservable1: Observable<Object>;
+    connectionObservable2: Observable<Object>;
+    connectionObservableC: Observable<Object>;
+
 
     connectedChartOption = 'week';
     connectedChartDisabled = false;
@@ -86,9 +93,9 @@ export class AdminDashboardsComponent implements OnInit {
         }
     };
 
-    createConnectionDiagram(from: Date, to: Date, data: any) {
+    createConnectionDiagram(from: Date, to: Date, data: any, lastdata: any) {
         this.machinesConnectedData.dataTable = [];
-        if(data.length == 0){
+        if (data.length == 0 && lastdata.length == 0) {
             this.connectedChartDisabled = true;
             return;
         }
@@ -112,6 +119,13 @@ export class AdminDashboardsComponent implements OnInit {
 
 
         }
+        for(let line of lastdata){
+            if (line.payload.connected && !sortedByMachine.hasOwnProperty(line.clientid)){
+                sortedByMachine[line.clientid] = [];
+                sortedByMachine[line.clientid].push(from);
+            }
+        }
+
         for (let machine in sortedByMachine) {
             if (sortedByMachine[machine].length % 2 != 0) {
                 sortedByMachine[machine].push(new Date());
@@ -121,41 +135,67 @@ export class AdminDashboardsComponent implements OnInit {
                 let graphline = [];
                 graphline.push(machine);
                 graphline.push(sortedByMachine[machine][i]);
-                graphline.push(sortedByMachine[machine][i+1]);
+                graphline.push(sortedByMachine[machine][i + 1]);
                 this.machinesConnectedData.dataTable.push(graphline);
             }
 
 
         }
-        this.machinesConnectedData.options['hAxis'] = {minValue: from,maxValue: to};
+        this.machinesConnectedData.options['hAxis'] = {minValue: from, maxValue: to};
         this.timelinechart.redraw();
 
     }
 
-    acquireConnectionProtocol(){
+    acquireConnectionProtocol() {
 
         let from: Date;
         let to: Date;
-        switch(this.connectedChartOption){
+        let lcfrom: Date;
+        let lcto: Date;
+        switch (this.connectedChartOption) {
             case 'day':
                 from = moment().startOf('day').toDate();
                 to = moment().endOf('day').toDate();
+
+                lcfrom = moment().startOf('day').subtract(1, 'month').toDate();
+                lcto = moment().endOf('day').toDate();
+
                 break;
             case 'week':
                 from = moment().startOf('day').subtract(1, 'week').toDate();
                 to = moment().endOf('day').toDate();
+
+                lcfrom = moment().startOf('day').subtract(1, 'month').toDate();
+                lcto = moment().endOf('day').toDate();
+
                 break;
             case 'month':
                 from = moment().startOf('day').subtract(1, 'month').toDate();
                 to = moment().endOf('day').toDate();
+
+
+                lcfrom = moment().startOf('day').subtract(2, 'month').toDate();
+                lcto = moment().endOf('day').toDate();
+
                 break;
             case 'year':
                 from = moment().startOf('day').subtract(1, 'year').toDate();
                 to = moment().endOf('day').toDate();
+
+
+                lcfrom = moment().startOf('day').subtract(2, 'year').toDate();
+                lcto = moment().endOf('day').toDate();
+
                 break;
         }
 
-        this.adminService.getConnectionProtocols(from, to).subscribe(data => this.createConnectionDiagram(from, to, data), error2 => console.log(error2));
+
+        this.connectionObservable1 = this.adminService.getConnectionProtocols(from, to);
+        this.connectionObservable2  = this.adminService.getLastConnectionProtocols(lcfrom, lcto);
+        this.connectionObservableC = this.connectionObservable1.combineLatest(this.connectionObservable2,(x,y)=>{return {a:x,b:y}});
+        this.connectionObservableC.subscribe(d => this.createConnectionDiagram(from, to, d['a'], d['b']), error2 => console.log(error2));
+
+
     }
 
     ngOnInit() {

@@ -16,4 +16,11 @@ export class AdminService {
         return this.http.get(url);
     }
 
+    getLastConnectionProtocols(from: Date, to: Date): Observable<Object>{
+        const fromDate = moment.utc([from.getFullYear(),from.getMonth(), from.getDate(),from.getHours(), from.getMinutes(), from.getSeconds()]);
+        const toDate = moment.utc([to.getFullYear(),to.getMonth(), to.getDate(),to.getHours(), to.getMinutes(), to.getSeconds()]);
+        const url = '/api/admin/protocols/last?eventType=connection&from=' + fromDate.format() + '&to=' + toDate.format();
+        return this.http.get(url);
+    }
+
 }
