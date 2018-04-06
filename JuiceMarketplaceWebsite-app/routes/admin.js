@@ -29,7 +29,7 @@ router.get('/protocols', validate({
 });
 
 router.get('/protocols/last', validate({
-    query: validation_schema.Protocols_Query,
+    query: validation_schema.Protocols_Last_Query,
     body: validation_schema.Empty
 }), function (req, res, next) {
     const token = req.user.token;
