@@ -1,4 +1,5 @@
 const oAuthServer = require('../adapter/auth_service_adapter');
+const logger = require('../global/logger');
 
 const self = {};
 
@@ -23,7 +24,7 @@ self.isUserWithRole = function (role, req, res, next) {
 
         if (!userInfo.roles || userInfo.roles.indexOf(role) <= -1) {
             logger.warn('[authentication_service] unauthorized api request for role: ' + role);
-            logger.warn('[authentication_service] requesting user: ' + JSON.stringify(req.token.user));
+            logger.warn('[authentication_service] requesting user: ' + JSON.stringify(req.user.token.user));
 
             return res.sendStatus(401);
         }
