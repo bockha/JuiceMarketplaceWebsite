@@ -28,10 +28,9 @@ export class AdminDashboardsComponent implements OnInit {
     machinesConnectedData = {
         chartType: 'Timeline',
         dataTable: [
-            [{type: 'string', id: 'Role'}, {type: 'string', id: 'dummy bar label'}, {
-                type: 'string',
-                role: 'tooltip'
-            }, {type: 'string', role: 'style'}, {type: 'date', id: 'Start'}, {type: 'date', id: 'End'}]
+            [ {type: 'string', id: 'Role'},
+                {type: 'date', id: 'Start'},
+                {type: 'date', id: 'End'}]
         ],
         options: {
             title: 'Aktivität der Maschinen',
@@ -106,7 +105,7 @@ export class AdminDashboardsComponent implements OnInit {
                 {type: 'date', id: 'Start'},
                 {type: 'date', id: 'End'}
             ]);
-
+        data.reverse();
         let sortedByMachine = {};
         for (let line of data) {
             if (!sortedByMachine.hasOwnProperty(line.clientid)) {
